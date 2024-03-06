@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class DataSerializer
 	{

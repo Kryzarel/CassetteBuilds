@@ -1,4 +1,4 @@
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public readonly struct MoveMonsterPair
 	{

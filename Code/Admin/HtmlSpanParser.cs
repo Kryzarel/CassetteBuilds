@@ -1,22 +1,22 @@
 using System;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class HtmlSpanParser
 	{
 		public static ReadOnlySpan<char> NextRow(this ReadOnlySpan<char> table, out ReadOnlySpan<char> row)
 		{
-			return Next(table, out row, "<tr", "</tr>");
+			return table.Next(out row, "<tr", "</tr>");
 		}
 
 		public static ReadOnlySpan<char> NextCol(this ReadOnlySpan<char> row, out ReadOnlySpan<char> col)
 		{
-			return Next(row, out col, "<td", "</td>");
+			return row.Next(out col, "<td", "</td>");
 		}
 
 		public static ReadOnlySpan<char> Next(this ReadOnlySpan<char> span, out ReadOnlySpan<char> contents, ReadOnlySpan<char> start, ReadOnlySpan<char> end)
 		{
-			contents = GetBetween(span, start, end, includeStart: true, includeEnd: true);
+			contents = span.GetBetween(start, end, includeStart: true, includeEnd: true);
 			if (contents.IsEmpty) return default;
 
 			ReadOnlySpan<char> remaining = span[contents.Length..];

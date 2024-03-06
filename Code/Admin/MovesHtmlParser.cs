@@ -1,32 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class MovesHtmlParser
 	{
-		private struct MutableMove
-		{
-			public string Name;
-			public string Type;
-			public string Category;
-			public int Power;
-			public int Accuracy;
-			public int Cost;
-			public string Link;
-
-			public readonly Move ToMove()
-			{
-				return new Move(Name, Type, Category, Power, Accuracy, Cost, Link);
-			}
-
-			public override readonly string ToString()
-			{
-				return $"{Name} | {Type} | {Category} | {Power} | {Accuracy} | {Cost} | {Link}";
-			}
-		}
-
 		public static Move[] Parse(ReadOnlySpan<char> html, string baseUrl)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
@@ -40,14 +18,14 @@ namespace Cassette_Builds
 
 		private static Move[] ParseTable(ReadOnlySpan<char> table, string baseUrl)
 		{
-			List<MutableMove> moves = new(150);
+			List<Move> moves = new(150);
 
 			while (!table.IsEmpty)
 			{
 				table = table.NextRow(out ReadOnlySpan<char> row);
 				if (row.IsEmpty) break;
 
-				MutableMove move = default;
+				Move move = default;
 
 				// Name & Link
 				{
@@ -103,7 +81,7 @@ namespace Cassette_Builds
 
 				moves.Add(move);
 			}
-			return moves.Select(m => m.ToMove()).ToArray();
+			return moves.ToArray();
 		}
 	}
 }

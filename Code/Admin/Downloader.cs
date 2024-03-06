@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class Downloader
 	{
@@ -28,7 +28,7 @@ namespace Cassette_Builds
 			int retries = 0;
 			const int retryDelay = 100; // Delay in milliseconds to wait before retrying
 
-			while(retries < maxRetries)
+			while (retries < maxRetries)
 			{
 				try
 				{
@@ -56,31 +56,12 @@ namespace Cassette_Builds
 			return File.Exists(path) ? await File.ReadAllTextAsync(path) : await DownloadAndSaveText(url, path, maxRetries: 5);
 		}
 
-		public static async Task DownloadAndSaveFiles(string url, string[] links, string directory, string[] fileNames, string extension)
+		public static async Task<byte[]> DownloadAndSaveFile(string url, string directory, string fileName, string extension)
 		{
-			if (!Directory.Exists(directory))
-			{
-				Directory.CreateDirectory(directory);
-			}
-
-			Task[] tasks = new Task[links.Length];
-
-			for (int i = 0; i < links.Length; i++)
-			{
-				Task<byte[]> downloadTask = Client.GetByteArrayAsync(url + links[i]);
-				tasks[i] = DownloadAndSaveFile(downloadTask, directory, fileNames[i], extension);
-			}
-			await Task.WhenAll(tasks);
-		}
-
-		private static async Task DownloadAndSaveFile(Task<byte[]> downloadTask, string directory, string fileName, string extension)
-		{
-			if (!extension.StartsWith('.'))
-				extension += '.';
-
-			string fullPath = Path.Combine(directory, fileName) + extension;
-			byte[] bytes = await downloadTask;
+			string fullPath = Path.ChangeExtension(Path.Combine(directory, fileName), extension);
+			byte[] bytes = await Client.GetByteArrayAsync(url);
 			await File.WriteAllBytesAsync(fullPath, bytes);
+			return bytes;
 		}
 	}
 }

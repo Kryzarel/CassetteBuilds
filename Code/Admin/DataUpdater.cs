@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class DataUpdater
 	{
@@ -13,9 +13,13 @@ namespace Cassette_Builds
 		{
 			try
 			{
-				if (clearCache && Directory.Exists("Wiki Pages"))
+				if (clearCache)
 				{
-					Directory.Delete("Wiki Pages", recursive: true);
+					if (Directory.Exists("Wiki Pages"))
+						Directory.Delete("Wiki Pages", recursive: true);
+
+					if (Directory.Exists("Images"))
+						Directory.Delete("Images", recursive: true);
 				}
 				await Task.WhenAll(UpdateMonsters(), UpdateMoves());
 			}
@@ -24,16 +28,39 @@ namespace Cassette_Builds
 				Console.WriteLine("Update failed with error: " + e);
 				return e;
 			}
+			Console.WriteLine("Update successful");
 			return null;
 		}
 
 		public static async Task UpdateMonsters()
 		{
 			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", "Wiki Pages/Species.html");
-			Monster[] monsters = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, out string[] imageLinks, out string[] imageNames);
+			Monster[] monsters = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl);
+
+			// Manually set Magikrab's image that is hidden under "SPOILER" in the species list
+			// TODO: Change this to get the image from the actual monster page?
+			monsters[0] = monsters[0] with { ImageLink = "/images/d/d8/Magikrab.png" };
+
 			Task t1 = DataSerializer.SerializeToCsv("Data/Monsters.csv", monsters);
-			Task t2 = Downloader.DownloadAndSaveFiles(WebsiteUrl, imageLinks, "Images", imageNames, ".png");
+			Task t2 = DownloadAndSaveImages(monsters, WebsiteUrl, "Images", ".png");
 			await Task.WhenAll(t1, t2);
+		}
+
+		private static async Task DownloadAndSaveImages(Monster[] monsters, string url, string directory, string extension)
+		{
+			if (!Directory.Exists(directory))
+			{
+				Directory.CreateDirectory(directory);
+			}
+
+			Task[] tasks = new Task[monsters.Length];
+
+			for (int i = 0; i < monsters.Length; i++)
+			{
+				Monster monster = monsters[i];
+				tasks[i] = Downloader.DownloadAndSaveFile(url + monster.ImageLink, directory, monster.Name, extension);
+			}
+			await Task.WhenAll(tasks);
 		}
 
 		public static async Task UpdateMoves()

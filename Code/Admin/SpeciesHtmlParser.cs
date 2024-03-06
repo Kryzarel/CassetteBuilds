@@ -1,37 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Cassette_Builds
+namespace Cassette_Builds.Code.Admin
 {
 	public static class SpeciesHtmlParser
 	{
-		private struct MutableMonster
-		{
-			public int Number;
-			public string Name;
-			public string Type;
-			public int HP;
-			public int MeleeAttack;
-			public int MeleeDefense;
-			public int RangedAttack;
-			public int RangedDefense;
-			public int Speed;
-			public string Link;
-			public string ImageLink;
-
-			public readonly Monster ToMonster()
-			{
-				return new Monster(Number, Name, Type, HP, MeleeAttack, MeleeDefense, RangedAttack, RangedDefense, Speed, Link);
-			}
-
-			public override readonly string ToString()
-			{
-				return $"{Number} | {Name} | {Type} | {HP} | {MeleeAttack} | {MeleeDefense} | {RangedAttack} | {RangedDefense} | {Speed} | {Link} | {ImageLink}";
-			}
-		}
-
-		public static Monster[] Parse(ReadOnlySpan<char> html, string baseUrl, out string[] imageLinks, out string[] imageNames)
+		public static Monster[] Parse(ReadOnlySpan<char> html, string baseUrl)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 			html = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
@@ -39,19 +13,19 @@ namespace Cassette_Builds
 
 			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
 			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
-			return ParseTable(tableContent, baseUrl, out imageLinks, out imageNames);
+			return ParseTable(tableContent, baseUrl);
 		}
 
-		private static Monster[] ParseTable(ReadOnlySpan<char> table, string baseUrl, out string[] imageLinks, out string[] imageNames)
+		private static Monster[] ParseTable(ReadOnlySpan<char> table, string baseUrl)
 		{
-			List<MutableMonster> monsters = new(150);
+			List<Monster> monsters = new(150);
 
 			while (!table.IsEmpty)
 			{
 				table = table.NextRow(out ReadOnlySpan<char> row);
 				if (row.IsEmpty) break;
 
-				MutableMonster monster = default;
+				Monster monster = default;
 
 				// Image Link
 				{
@@ -124,11 +98,7 @@ namespace Cassette_Builds
 
 				monsters.Add(monster);
 			}
-
-			imageNames = monsters.Select(m => m.Name).ToArray();
-			imageLinks = monsters.Select(m => m.ImageLink).ToArray();
-			imageLinks[0] = "/images/d/d8/Magikrab.png"; // Manually set magikrab image that is hidden under "spoiler"
-			return monsters.Select(m => m.ToMonster()).ToArray();
+			return monsters.ToArray();
 		}
 	}
 }
