@@ -17,7 +17,7 @@ namespace Cassette_Builds.Code.Admin
 			ParseTable(tableContent, move, moveMonsterPairs);
 		}
 
-		private static void ParseTable(ReadOnlySpan<char> table, string move, List<MoveMonsterPair> monsters)
+		private static void ParseTable(ReadOnlySpan<char> table, string move, List<MoveMonsterPair> moveMonsterPairs)
 		{
 			while (!table.IsEmpty)
 			{
@@ -33,7 +33,7 @@ namespace Cassette_Builds.Code.Admin
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
 					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
-					monsters.Add(new MoveMonsterPair(move, new string(name)));
+					moveMonsterPairs.Add(new MoveMonsterPair(move, new string(name)));
 				}
 			}
 		}

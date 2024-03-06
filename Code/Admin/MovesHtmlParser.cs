@@ -5,7 +5,7 @@ namespace Cassette_Builds.Code.Admin
 {
 	public static class MovesHtmlParser
 	{
-		public static Move[] Parse(ReadOnlySpan<char> html, string baseUrl)
+		public static List<Move> Parse(ReadOnlySpan<char> html, string baseUrl)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 			html = html[html.IndexOf("id=\"List_of_moves\"", cmp)..];
@@ -16,9 +16,9 @@ namespace Cassette_Builds.Code.Admin
 			return ParseTable(tableContent, baseUrl);
 		}
 
-		private static Move[] ParseTable(ReadOnlySpan<char> table, string baseUrl)
+		private static List<Move> ParseTable(ReadOnlySpan<char> table, string baseUrl)
 		{
-			List<Move> moves = new(150);
+			List<Move> moves = new(300);
 
 			while (!table.IsEmpty)
 			{
@@ -81,7 +81,7 @@ namespace Cassette_Builds.Code.Admin
 
 				moves.Add(move);
 			}
-			return moves.ToArray();
+			return moves;
 		}
 	}
 }

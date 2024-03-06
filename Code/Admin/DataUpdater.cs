@@ -8,6 +8,7 @@ namespace Cassette_Builds.Code.Admin
 	public static class DataUpdater
 	{
 		public const string WebsiteUrl = "https://wiki.cassettebeasts.com";
+		public const int MaxConcurrentDownloads = 10;
 
 		public static async Task<Exception?> UpdateAll(bool clearCache = false)
 		{
@@ -35,7 +36,7 @@ namespace Cassette_Builds.Code.Admin
 		public static async Task UpdateMonsters()
 		{
 			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", "Wiki Pages/Species.html");
-			Monster[] monsters = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl);
+			List<Monster> monsters = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl);
 
 			// Manually set Magikrab's image that is hidden under "SPOILER" in the species list
 			// TODO: Change this to get the image from the actual monster page?
@@ -46,51 +47,59 @@ namespace Cassette_Builds.Code.Admin
 			await Task.WhenAll(t1, t2);
 		}
 
-		private static async Task DownloadAndSaveImages(Monster[] monsters, string url, string directory, string extension)
+		private static async Task DownloadAndSaveImages(IList<Monster> monsters, string url, string directory, string extension)
 		{
 			if (!Directory.Exists(directory))
 			{
 				Directory.CreateDirectory(directory);
 			}
 
-			Task[] tasks = new Task[monsters.Length];
+			Task[] tasks = new Task[Math.Min(MaxConcurrentDownloads, monsters.Count)];
 
-			for (int i = 0; i < monsters.Length; i++)
+			for (int i = 0, j = 0; i < monsters.Count; i++, j = i % tasks.Length)
 			{
 				Monster monster = monsters[i];
-				tasks[i] = Downloader.DownloadAndSaveFile(url + monster.ImageLink, directory, monster.Name, extension);
+				tasks[j] = Downloader.DownloadAndSaveFile(url + monster.ImageLink, directory, monster.Name, extension);
+				if (j + 1 >= tasks.Length)
+				{
+					await Task.WhenAll(tasks); // Wait for the current batch of tasks
+				}
 			}
-			await Task.WhenAll(tasks);
+			await Task.WhenAll(tasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
 		}
 
 		public static async Task UpdateMoves()
 		{
 			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", "Wiki Pages/Moves.html");
-			Move[] moves = MovesHtmlParser.Parse(movesHtml, WebsiteUrl);
+			List<Move> moves = MovesHtmlParser.Parse(movesHtml, WebsiteUrl);
 			Task t1 = DataSerializer.SerializeToCsv("Data/Moves.csv", moves);
 			Task t2 = UpdateMoveMonsterPairs(moves);
 			await Task.WhenAll(t1, t2);
 		}
 
-		public static async Task UpdateMoveMonsterPairs(Move[] moves)
+		public static async Task UpdateMoveMonsterPairs(IList<Move> moves)
 		{
-			List<MoveMonsterPair> moveMonsterPairs = new(140 * 280);
+			Task<string>[] allTasks = new Task<string>[moves.Count];
+			Task<string>[] tasks = new Task<string>[Math.Min(MaxConcurrentDownloads, moves.Count)];
 
-			Task<string>[] tasks = new Task<string>[moves.Length];
-			for (int i = 0; i < moves.Length; i++)
+			for (int i = 0, j = 0; i < moves.Count; i++, j = i % tasks.Length)
 			{
 				Move move = moves[i];
-				tasks[i] = Downloader.ReadFileOrDownload(move.Link, $"Wiki Pages/Moves/{move.Name}.html");
+				tasks[j] = allTasks[i] = Downloader.ReadFileOrDownload(move.Link, $"Wiki Pages/Moves/{move.Name}.html");
+				if (j + 1 >= tasks.Length)
+				{
+					await Task.WhenAll(tasks); // Wait for the current batch of tasks
+				}
 			}
-			await Task.WhenAll(tasks);
+			await Task.WhenAll(allTasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
 
-			for (int i = 0; i < moves.Length; i++)
+			// Parse synchronously to avoid data corruption since List<T> is not thread-safe
+			List<MoveMonsterPair> movesPerMonster = new(15_000);
+			for (int i = 0; i < moves.Count; i++)
 			{
-				MovesPerMonsterHtmlParser.Parse(tasks[i].Result, moves[i].Name, moveMonsterPairs);
+				MovesPerMonsterHtmlParser.Parse(allTasks[i].Result, moves[i].Name, movesPerMonster);
 			}
-
-			moveMonsterPairs.Sort(Compare);
-			MoveMonsterPair[] movesPerMonster = moveMonsterPairs.ToArray();
+			movesPerMonster.Sort(Compare);
 			await DataSerializer.SerializeToCsv("Data/MovesPerMonster.csv", movesPerMonster);
 		}
 

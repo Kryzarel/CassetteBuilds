@@ -5,7 +5,7 @@ namespace Cassette_Builds.Code.Admin
 {
 	public static class SpeciesHtmlParser
 	{
-		public static Monster[] Parse(ReadOnlySpan<char> html, string baseUrl)
+		public static List<Monster> Parse(ReadOnlySpan<char> html, string baseUrl)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 			html = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
@@ -16,7 +16,7 @@ namespace Cassette_Builds.Code.Admin
 			return ParseTable(tableContent, baseUrl);
 		}
 
-		private static Monster[] ParseTable(ReadOnlySpan<char> table, string baseUrl)
+		private static List<Monster> ParseTable(ReadOnlySpan<char> table, string baseUrl)
 		{
 			List<Monster> monsters = new(150);
 
@@ -98,7 +98,7 @@ namespace Cassette_Builds.Code.Admin
 
 				monsters.Add(monster);
 			}
-			return monsters.ToArray();
+			return monsters;
 		}
 	}
 }
