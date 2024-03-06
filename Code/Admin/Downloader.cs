@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,7 +19,32 @@ namespace Cassette_Builds
 			await File.WriteAllTextAsync(path, html);
 		}
 
-		public static async Task<string> DownloadAndSaveText(string url, string path)
+		/// <summary>
+		/// For some reason downloading multiple HTMLs from the wiki in parallel sometimes causes it to throw an HTTP error.
+		/// This version try-catches errors and re-attempts the download after a delay when that happens.
+		/// </summary>
+		public static async Task<string> DownloadAndSaveText(string url, string path, int maxRetries)
+		{
+			int retries = 0;
+			const int retryDelay = 100; // Delay in milliseconds to wait before retrying
+
+			while(retries < maxRetries)
+			{
+				try
+				{
+					return await DownloadAndSaveText(url, path);
+				}
+				catch (Exception e)
+				{
+					retries++;
+					Console.WriteLine($"Failed to download {url} with error: {e}\nRetrying in {retryDelay}ms");
+					await Task.Delay(retryDelay);
+				}
+			}
+			return string.Empty;
+		}
+
+		private static async Task<string> DownloadAndSaveText(string url, string path)
 		{
 			string html = await Client.GetStringAsync(url);
 			await SaveText(path, html);
@@ -27,7 +53,7 @@ namespace Cassette_Builds
 
 		public static async Task<string> ReadFileOrDownload(string url, string path)
 		{
-			return File.Exists(path) ? await File.ReadAllTextAsync(path) : await DownloadAndSaveText(url, path);
+			return File.Exists(path) ? await File.ReadAllTextAsync(path) : await DownloadAndSaveText(url, path, maxRetries: 5);
 		}
 
 		public static async Task DownloadAndSaveFiles(string url, string[] links, string directory, string[] fileNames, string extension)

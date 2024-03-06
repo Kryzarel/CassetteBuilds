@@ -27,22 +27,24 @@ namespace Cassette_Builds
 			}
 		}
 
-		public static Move[] Parse(string htmlStr, string baseUrl)
+		public static Move[] Parse(ReadOnlySpan<char> html, string baseUrl)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-			ReadOnlySpan<char> html = htmlStr;
-			ReadOnlySpan<char> table = html[html.IndexOf("<table", cmp)..html.IndexOf("</table>", cmp)];
-			ReadOnlySpan<char> remaining = table.NextRow(out _); // Skip header row
-			return Parse(remaining, baseUrl);
+			html = html[html.IndexOf("id=\"List_of_moves\"", cmp)..];
+			int index = html.IndexOf("<table", cmp);
+
+			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
+			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
+			return ParseTable(tableContent, baseUrl);
 		}
 
-		private static Move[] Parse(ReadOnlySpan<char> remaining, string baseUrl)
+		private static Move[] ParseTable(ReadOnlySpan<char> table, string baseUrl)
 		{
 			List<MutableMove> moves = new(150);
 
-			while (!remaining.IsEmpty)
+			while (!table.IsEmpty)
 			{
-				remaining = remaining.NextRow(out ReadOnlySpan<char> row);
+				table = table.NextRow(out ReadOnlySpan<char> row);
 				if (row.IsEmpty) break;
 
 				MutableMove move = default;

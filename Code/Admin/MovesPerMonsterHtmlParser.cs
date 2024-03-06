@@ -5,24 +5,23 @@ namespace Cassette_Builds
 {
 	public static class MovesPerMonsterHtmlParser
 	{
-		public static void Parse(string htmlStr, string move, List<MoveMonsterPair> moveMonsterPairs)
+		public static void Parse(ReadOnlySpan<char> html, string move, List<MoveMonsterPair> moveMonsterPairs)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-			ReadOnlySpan<char> html = htmlStr;
 			html = html[html.IndexOf("id=\"Compatible_Species\"", cmp)..];
 			int index = html.IndexOf("<table", cmp);
-			if (index < 0) return;
+			if (index < 0) return; // Some moves are not usable by any mosters (derp)
 
 			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
-			ReadOnlySpan<char> remaining = table.NextRow(out _); // Skip header row
-			Parse(remaining, move, moveMonsterPairs);
+			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
+			ParseTable(tableContent, move, moveMonsterPairs);
 		}
 
-		private static void Parse(ReadOnlySpan<char> remaining, string move, List<MoveMonsterPair> monsters)
+		private static void ParseTable(ReadOnlySpan<char> table, string move, List<MoveMonsterPair> monsters)
 		{
-			while (!remaining.IsEmpty)
+			while (!table.IsEmpty)
 			{
-				remaining = remaining.NextRow(out ReadOnlySpan<char> row);
+				table = table.NextRow(out ReadOnlySpan<char> row);
 				if (row.IsEmpty) break;
 
 				// Image

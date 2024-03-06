@@ -31,22 +31,24 @@ namespace Cassette_Builds
 			}
 		}
 
-		public static Monster[] Parse(string htmlStr, string baseUrl, out string[] imageLinks, out string[] imageNames)
+		public static Monster[] Parse(ReadOnlySpan<char> html, string baseUrl, out string[] imageLinks, out string[] imageNames)
 		{
 			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-			ReadOnlySpan<char> html = htmlStr;
-			ReadOnlySpan<char> table = html[html.IndexOf("<table", cmp)..html.IndexOf("</table>", cmp)];
-			ReadOnlySpan<char> remaining = table.NextRow(out _); // Skip header row
-			return Parse(remaining, baseUrl, out imageLinks, out imageNames);
+			html = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
+			int index = html.IndexOf("<table", cmp);
+
+			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
+			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
+			return ParseTable(tableContent, baseUrl, out imageLinks, out imageNames);
 		}
 
-		private static Monster[] Parse(ReadOnlySpan<char> remaining, string baseUrl, out string[] imageLinks, out string[] imageNames)
+		private static Monster[] ParseTable(ReadOnlySpan<char> table, string baseUrl, out string[] imageLinks, out string[] imageNames)
 		{
 			List<MutableMonster> monsters = new(150);
 
-			while (!remaining.IsEmpty)
+			while (!table.IsEmpty)
 			{
-				remaining = remaining.NextRow(out ReadOnlySpan<char> row);
+				table = table.NextRow(out ReadOnlySpan<char> row);
 				if (row.IsEmpty) break;
 
 				MutableMonster monster = default;
