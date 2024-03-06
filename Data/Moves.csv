@@ -1,0 +1,288 @@
+Name,Type,Category,Power,Accuracy,Cost,Link
+Abramacabra,Beast,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Abramacabra_(move)
+Acid Reflex,Poison,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Acid_Reflex
+Acorn Mortar,Plant,Ranged Attack,100,75,3,https://wiki.cassettebeasts.com/wiki/Acorn_Mortar
+Air Camouflage,Air,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Air_Camouflage
+Air Coating,Air,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Air_Coating_(move)
+Air Resistance,Air,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Air_Resistance
+Air Wall,Air,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Air_Wall_(move)
+AP Boost,Astral,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/AP_Boost_(move)
+AP Donate,Typeless,Miscellaneous,0,-1,1,https://wiki.cassettebeasts.com/wiki/AP_Donate
+AP Drain,Astral,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/AP_Drain_(move)
+AP Factory,Typeless,Miscellaneous,0,-1,-1,https://wiki.cassettebeasts.com/wiki/AP_Factory
+AP Refund,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/AP_Refund
+AP Starter,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/AP_Starter
+AP Steal,Poison,Miscellaneous,0,70,0,https://wiki.cassettebeasts.com/wiki/AP_Steal
+Astral Camouflage,Astral,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Astral_Camouflage
+Astral Coating,Astral,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Astral_Coating_(move)
+Astral Resistance,Astral,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Astral_Resistance
+Astral Wall,Astral,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Astral_Wall_(move)
+Automation,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Automation
+Avalanche,Ice,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Avalanche
+Bad Forecast,Poison,Status Effect,0,50,1,https://wiki.cassettebeasts.com/wiki/Bad_Forecast
+Bad Joke,Typeless,Miscellaneous,0,-1,0,https://wiki.cassettebeasts.com/wiki/Bad_Joke
+Battering Ram,Typeless,Melee Attack,70,85,3,https://wiki.cassettebeasts.com/wiki/Battering_Ram
+Battery,Lightning,Melee Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Battery
+BE rAnDoM!!,Astral,Miscellaneous,0,100,0,https://wiki.cassettebeasts.com/wiki/BE_rAnDoM!!
+Beast Camouflage,Beast,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Beast_Camouflage
+Beast Coating,Beast,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Beast_Coating_(move)
+Beast Resistance,Beast,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Beast_Resistance
+Beast Wall,Beast,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Beast_Wall_(move)
+Berserker,Beast,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Berserker
+Binvasion,Fire,Ranged Attack,30,100,3,https://wiki.cassettebeasts.com/wiki/Binvasion
+Binvitation,Metal,Miscellaneous,0,50,4,https://wiki.cassettebeasts.com/wiki/Binvitation
+Bish Bash Bosh,Typeless,Melee Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Bish_Bash_Bosh
+Bite,Beast,Melee Attack,80,100,3,https://wiki.cassettebeasts.com/wiki/Bite
+Blizzard,Ice,Ranged Attack,60,100,5,https://wiki.cassettebeasts.com/wiki/Blizzard
+Blood Donation,Beast,Miscellaneous,0,-1,2,https://wiki.cassettebeasts.com/wiki/Blood_Donation
+Bloodlust,Beast,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Bloodlust
+Boil,Water,Melee Attack,90,100,3,https://wiki.cassettebeasts.com/wiki/Boil
+Bolt From The Blue,Lightning,Miscellaneous,0,50,4,https://wiki.cassettebeasts.com/wiki/Bolt_From_The_Blue
+Bon Bon Blast,Typeless,Ranged Attack,70,85,3,https://wiki.cassettebeasts.com/wiki/Bon_Bon_Blast
+Bone Cannon,Beast,Ranged Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Bone_Cannon
+Booby Trap,Typeless,Miscellaneous,30,100,0,https://wiki.cassettebeasts.com/wiki/Booby_Trap
+Bottle Volley,Glass,Ranged Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Bottle_Volley
+Brace for Impact,Metal,Melee Attack,120,100,4,https://wiki.cassettebeasts.com/wiki/Brace_for_Impact
+Breathing Technique,Astral,Miscellaneous,0,50,-1,https://wiki.cassettebeasts.com/wiki/Breathing_Technique
+Brick Blast,Plastic,Ranged Attack,40,100,4,https://wiki.cassettebeasts.com/wiki/Brick_Blast
+Broadcast,Air,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Broadcast
+Burning Passion,Fire,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Burning_Passion
+Bushfire,Plant,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Bushfire
+Butterfly Effect,Air,Ranged Attack,30,100,0,https://wiki.cassettebeasts.com/wiki/Butterfly_Effect
+Call For Help,Typeless,Miscellaneous,0,50,2,https://wiki.cassettebeasts.com/wiki/Call_For_Help
+Carnivore,Beast,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Carnivore
+Change the Record,Typeless,Miscellaneous,0,-1,2,https://wiki.cassettebeasts.com/wiki/Change_the_Record
+Charge,Lightning,Melee Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Charge
+Chemical Imbalance,Poison,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Chemical_Imbalance
+Clay-Fired,Earth,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Clay-Fired
+Clobber,Typeless,Melee Attack,60,100,5,https://wiki.cassettebeasts.com/wiki/Clobber
+Clockwork Mouse,Plastic,Melee Attack,120,100,5,https://wiki.cassettebeasts.com/wiki/Clockwork_Mouse
+Close Encounter,Astral,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Close_Encounter_(move)
+Coal Story,Earth,Ranged Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Coal_Story
+Cold Fusion,Ice,Miscellaneous,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Cold_Fusion
+Compliment,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Compliment
+Copper Chop,Metal,Melee Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Copper_Chop
+Copy That,Air,Miscellaneous,0,-1,2,https://wiki.cassettebeasts.com/wiki/Copy_That
+Copycat,Beast,Miscellaneous,0,100,0,https://wiki.cassettebeasts.com/wiki/Copycat
+Cosmic Kunai,Astral,Ranged Attack,150,100,10,https://wiki.cassettebeasts.com/wiki/Cosmic_Kunai
+Cotton On,Plant,Status Effect,0,-1,4,https://wiki.cassettebeasts.com/wiki/Cotton_On
+Critical AP,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Critical_AP
+Critical Mass,Fire,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Critical_Mass
+Criticise,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Criticise
+Crossfade,Typeless,Miscellaneous,0,100,1,https://wiki.cassettebeasts.com/wiki/Crossfade
+Crumble,Earth,Ranged Attack,30,-1,2,https://wiki.cassettebeasts.com/wiki/Crumble
+Crystal Lens,Glass,Ranged Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Crystal_Lens
+Custom Starter,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Custom_Starter
+Damage Roll,Typeless,Ranged Attack,9,100,3,https://wiki.cassettebeasts.com/wiki/Damage_Roll
+Deep Freeze,Ice,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Deep_Freeze
+Defend,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Defend
+Delegate,Typeless,Miscellaneous,0,100,3,https://wiki.cassettebeasts.com/wiki/Delegate
+Desperation,Typeless,Melee Attack,20,100,1,https://wiki.cassettebeasts.com/wiki/Desperation
+Djinntoxicate,Astral,Ranged Attack,90,100,4,https://wiki.cassettebeasts.com/wiki/Djinntoxicate
+Doc Leaf,Plant,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Doc_Leaf
+Dodge,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Dodge
+Dog Years,Beast,Miscellaneous,0,100,4,https://wiki.cassettebeasts.com/wiki/Dog_Years
+Double Slice,Typeless,Melee Attack,30,100,4,https://wiki.cassettebeasts.com/wiki/Double_Slice
+Double Smack,Typeless,Melee Attack,30,100,2,https://wiki.cassettebeasts.com/wiki/Double_Smack
+Dual Wield,Typeless,Miscellaneous,0,100,2,https://wiki.cassettebeasts.com/wiki/Dual_Wield
+Déjà Vu,Astral,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/D%C3%A9j%C3%A0_Vu
+Earth Camouflage,Earth,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Earth_Camouflage
+Earth Coating,Earth,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Earth_Coating_(move)
+Earth Resistance,Earth,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Earth_Resistance
+Earth Wall,Earth,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Earth_Wall_(move)
+Echolocation,Air,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Echolocation
+Elemental Coating,Typeless,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Elemental_Coating
+Elemental Wall,Typeless,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Elemental_Wall
+Energy Reserves,Lightning,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Energy_Reserves
+Energy Shot,Typeless,Ranged Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Energy_Shot
+Energy Wave,Typeless,Ranged Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Energy_Wave
+Fair Fight,Metal,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Fair_Fight_(move)
+Final Breath,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Final_Breath
+Fire Camouflage,Fire,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Fire_Camouflage
+Fire Coating,Fire,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Fire_Coating_(move)
+Fire Wall,Fire,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Fire_Wall_(move)
+Fireproof,Fire,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Fireproof
+Fission Power,Typeless,Miscellaneous,0,100,1,https://wiki.cassettebeasts.com/wiki/Fission_Power
+Flirt,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Flirt
+Focus,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Focus
+Fog,Water,Status Effect,0,-1,4,https://wiki.cassettebeasts.com/wiki/Fog_(move)
+Fossil,Earth,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Fossil
+Frozen Ground,Ice,Status Effect,0,-1,1,https://wiki.cassettebeasts.com/wiki/Frozen_Ground
+Fusion Power,Typeless,Miscellaneous,200,100,10,https://wiki.cassettebeasts.com/wiki/Fusion_Power
+Galactic Beatdown,Astral,Melee Attack,90,-1,4,https://wiki.cassettebeasts.com/wiki/Galactic_Beatdown
+Gambit,Typeless,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Gambit_(move)
+Gasoline Spray,Fire,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Gasoline_Spray
+Gear Shear,Metal,Ranged Attack,50,100,10,https://wiki.cassettebeasts.com/wiki/Gear_Shear
+Gemstone Wall,Earth,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Gemstone_Wall_(move)
+Glass Bonds,Glass,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Glass_Bonds_(move)
+Glass Camouflage,Glass,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Glass_Camouflage
+Glass Cannon,Glass,Ranged Attack,120,100,4,https://wiki.cassettebeasts.com/wiki/Glass_Cannon
+Glass Coating,Glass,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Glass_Coating_(move)
+Glass Resistance,Glass,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Glass_Resistance
+Glass Wall,Glass,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Glass_Wall_(move)
+Glitter Bomb,Glitter,Ranged Attack,30,100,0,https://wiki.cassettebeasts.com/wiki/Glitter_Bomb
+Glitter Resistance,Glitter,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Glitter_Resistance
+Grounded,Lightning,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Grounded
+Guzzle Fuel,Fire,Miscellaneous,0,100,2,https://wiki.cassettebeasts.com/wiki/Guzzle_Fuel
+Hardback,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Hardback
+Haunt,Astral,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Haunt
+Headshot,Typeless,Ranged Attack,200,100,10,https://wiki.cassettebeasts.com/wiki/Headshot
+Heroic Blade,Typeless,Melee Attack,90,100,3,https://wiki.cassettebeasts.com/wiki/Heroic_Blade
+Hibernate,Astral,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Hibernate
+Hot Potato,Fire,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Hot_Potato
+Hurricane,Air,Ranged Attack,90,100,5,https://wiki.cassettebeasts.com/wiki/Hurricane
+Hypnotise,Astral,Status Effect,0,50,2,https://wiki.cassettebeasts.com/wiki/Hypnotise
+Ice Breaker,Ice,Melee Attack,90,100,4,https://wiki.cassettebeasts.com/wiki/Ice_Breaker
+Ice Camouflage,Ice,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Ice_Camouflage
+Ice Coating,Ice,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Ice_Coating_(move)
+Ice Resistance,Ice,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Ice_Resistance
+Ice Wall,Ice,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Ice_Wall_(move)
+Icicle Dart,Ice,Ranged Attack,70,85,2,https://wiki.cassettebeasts.com/wiki/Icicle_Dart
+Incinerate,Fire,Melee Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Incinerate
+Inflame,Fire,Ranged Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Inflame
+Insomnia,Astral,Miscellaneous,0,70,-1,https://wiki.cassettebeasts.com/wiki/Insomnia
+Ionised Air,Lightning,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Ionised_Air
+Iron Filings,Metal,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Iron_Filings
+Jagged Edge,Typeless,Melee Attack,40,-1,-1,https://wiki.cassettebeasts.com/wiki/Jagged_Edge
+Jump Scare,Typeless,Melee Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Jump_Scare
+Last Rites,Typeless,Melee Attack,200,100,10,https://wiki.cassettebeasts.com/wiki/Last_Rites
+Leech,Plant,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Leech
+Life Absorb,Plant,Melee Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Life_Absorb
+Liftoff,Air,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Liftoff
+Lightning Bolt,Lightning,Ranged Attack,90,100,3,https://wiki.cassettebeasts.com/wiki/Lightning_Bolt
+Lightning Camouflage,Lightning,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Lightning_Camouflage
+Lightning Coating,Lightning,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Lightning_Coating_(move)
+Lightning Wall,Lightning,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Lightning_Wall_(move)
+Liquid Body,Poison,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Liquid_Body
+Machine Curse,Metal,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Machine_Curse
+Magic Tome,Astral,Ranged Attack,70,100,3,https://wiki.cassettebeasts.com/wiki/Magic_Tome
+Magnet,Metal,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Magnet
+Meditate,Astral,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Meditate
+Metal Camouflage,Metal,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Metal_Camouflage
+Metal Coating,Metal,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Metal_Coating_(move)
+Metal Resistance,Metal,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Metal_Resistance
+Metal Riff,Metal,Ranged Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Metal_Riff
+Metal Wall,Metal,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Metal_Wall_(move)
+Meteor Barrage,Earth,Ranged Attack,20,100,4,https://wiki.cassettebeasts.com/wiki/Meteor_Barrage
+Mind-Meld,Astral,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Mind-Meld_(move)
+Moonshine,Astral,Ranged Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Moonshine
+Mountain Smash,Earth,Melee Attack,90,100,4,https://wiki.cassettebeasts.com/wiki/Mountain_Smash
+Multi Shot,Typeless,Ranged Attack,20,100,3,https://wiki.cassettebeasts.com/wiki/Multi_Shot
+Multi Smack,Typeless,Melee Attack,20,100,3,https://wiki.cassettebeasts.com/wiki/Multi_Smack
+Multicopy,Typeless,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Multicopy
+Neutralise,Water,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Neutralise
+New Leaf,Plant,Miscellaneous,0,-1,3,https://wiki.cassettebeasts.com/wiki/New_Leaf
+Nod,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Nod
+Nurse,Typeless,Miscellaneous,0,-1,5,https://wiki.cassettebeasts.com/wiki/Nurse
+Paint Swipe,Typeless,Melee Attack,90,100,1,https://wiki.cassettebeasts.com/wiki/Paint_Swipe
+Parry Stance,Beast,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Parry_Stance_(move)
+Peekaboo,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Peekaboo
+Phase Shift,Astral,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Phase_Shift
+Pity AP,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Pity_AP
+Plant Camouflage,Plant,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plant_Camouflage
+Plant Coating,Plant,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plant_Coating_(move)
+Plant Resistance,Plant,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Plant_Resistance
+Plant Wall,Plant,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plant_Wall_(move)
+Plastic Camouflage,Plastic,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plastic_Camouflage
+Plastic Coating,Plastic,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plastic_Coating_(move)
+Plastic Knife,Plastic,Melee Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Plastic_Knife
+Plastic Resistance,Plastic,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Plastic_Resistance
+Plastic Wall,Plastic,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Plastic_Wall_(move)
+Poison Camouflage,Poison,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Poison_Camouflage
+Poison Coating,Poison,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Poison_Coating_(move)
+Poison Pollen,Plant,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Poison_Pollen
+Poison Resistance,Poison,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Poison_Resistance
+Poison Wall,Poison,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Poison_Wall_(move)
+Pole Vault Assault,Air,Melee Attack,90,100,7,https://wiki.cassettebeasts.com/wiki/Pole_Vault_Assault
+Pre-emptive Strike,Typeless,Melee Attack,30,100,-1,https://wiki.cassettebeasts.com/wiki/Pre-emptive_Strike
+Prismatic,Glitter,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Prismatic
+Provoke,Poison,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Provoke
+Pumpkin Pie,Plant,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Pumpkin_Pie
+Pustule Bomb,Poison,Ranged Attack,60,100,4,https://wiki.cassettebeasts.com/wiki/Pustule_Bomb
+Quick Smack,Typeless,Melee Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Quick_Smack
+Radiation Breath,Poison,Ranged Attack,20,100,4,https://wiki.cassettebeasts.com/wiki/Radiation_Breath
+Radioactive,Fire,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Radioactive
+Raise Arms,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Raise_Arms
+Raise Shields,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Raise_Shields
+Random Starter,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Random_Starter
+Rapid Fire,Fire,Ranged Attack,30,100,5,https://wiki.cassettebeasts.com/wiki/Rapid_Fire
+Recycle,Plastic,Miscellaneous,0,100,0,https://wiki.cassettebeasts.com/wiki/Recycle
+Retribution,Typeless,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Retribution
+Return Fire,Typeless,Ranged Attack,15,100,-1,https://wiki.cassettebeasts.com/wiki/Return_Fire
+Revenge Strike,Typeless,Melee Attack,15,100,-1,https://wiki.cassettebeasts.com/wiki/Revenge_Strike
+Revolving Door,Glass,Miscellaneous,0,100,2,https://wiki.cassettebeasts.com/wiki/Revolving_Door
+Ricochet,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Ricochet
+Ritual,Astral,Status Effect,0,100,6,https://wiki.cassettebeasts.com/wiki/Ritual_(move)
+Roll Again,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Roll_Again
+Sandstorm,Earth,Ranged Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Sandstorm
+Scorch,Fire,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Scorch
+Self-Assured,Typeless,Miscellaneous,0,70,-1,https://wiki.cassettebeasts.com/wiki/Self-Assured
+Self-Destruct,Fire,Ranged Attack,60,100,-1,https://wiki.cassettebeasts.com/wiki/Self-Destruct
+Sharp Edges,Typeless,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Sharp_Edges
+Sharpen,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Sharpen
+Shear Luck,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Shear_Luck
+Shield Bash,Metal,Melee Attack,90,100,3,https://wiki.cassettebeasts.com/wiki/Shield_Bash
+Shooting Star,Astral,Ranged Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Shooting_Star
+Shrapnel,Metal,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Shrapnel_(move)
+Silicon Slash,Glass,Melee Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Silicon_Slash
+Sleep Talk,Typeless,Ranged Attack,120,1,0,https://wiki.cassettebeasts.com/wiki/Sleep_Talk
+Sleep Walk,Typeless,Melee Attack,120,1,0,https://wiki.cassettebeasts.com/wiki/Sleep_Walk
+Slice,Typeless,Melee Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Slice
+Smack,Typeless,Melee Attack,30,100,0,https://wiki.cassettebeasts.com/wiki/Smack
+Snooze Spore,Plant,Status Effect,0,50,2,https://wiki.cassettebeasts.com/wiki/Snooze_Spore
+Snow Rush,Ice,Melee Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Snow_Rush
+Sonic Boom,Air,Ranged Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Sonic_Boom
+Spit,Typeless,Ranged Attack,30,100,0,https://wiki.cassettebeasts.com/wiki/Spit
+Splinter,Plant,Melee Attack,15,-1,-1,https://wiki.cassettebeasts.com/wiki/Splinter
+Spray,Typeless,Ranged Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Spray
+Spring-Load,Plastic,Status Effect,0,-1,-1,https://wiki.cassettebeasts.com/wiki/Spring-Load
+Sprint,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Sprint
+Stab In The Dark,Typeless,Melee Attack,100,10,0,https://wiki.cassettebeasts.com/wiki/Stab_In_The_Dark
+Status Resistance,Metal,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Status_Resistance
+Sticker Trick,Glitter,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Sticker_Trick
+Sticky Spray,Poison,Status Effect,0,100,3,https://wiki.cassettebeasts.com/wiki/Sticky_Spray
+Sticky Tongue,Beast,Melee Attack,40,75,1,https://wiki.cassettebeasts.com/wiki/Sticky_Tongue
+Stony Look,Earth,Status Effect,0,50,2,https://wiki.cassettebeasts.com/wiki/Stony_Look
+Sturdy Armour,Metal,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Sturdy_Armour
+Suction Cup Dart,Plastic,Ranged Attack,120,75,4,https://wiki.cassettebeasts.com/wiki/Suction_Cup_Dart
+Sugar Rush,Typeless,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Sugar_Rush
+Suit Up,Typeless,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Suit_Up
+Summon Tulpa,Astral,Miscellaneous,0,1,0,https://wiki.cassettebeasts.com/wiki/Summon_Tulpa
+Superheated Fist,Fire,Melee Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Superheated_Fist
+Sure-Fire,Fire,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Sure-Fire
+Taunt,Poison,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Taunt
+The Old 1-2,Typeless,Melee Attack,60,100,5,https://wiki.cassettebeasts.com/wiki/The_Old_1-2
+Throw,Typeless,Ranged Attack,50,100,0,https://wiki.cassettebeasts.com/wiki/Throw
+Thunder Blast,Lightning,Ranged Attack,60,100,3,https://wiki.cassettebeasts.com/wiki/Thunder_Blast
+Torrent,Water,Ranged Attack,40,100,4,https://wiki.cassettebeasts.com/wiki/Torrent
+Tower Defence,Earth,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Tower_Defence_(move)
+Toxic Stab,Poison,Melee Attack,90,100,4,https://wiki.cassettebeasts.com/wiki/Toxic_Stab
+Toy Hammer,Plastic,Melee Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Toy_Hammer
+Traffic Jam,Plastic,Status Effect,0,-1,2,https://wiki.cassettebeasts.com/wiki/Traffic_Jam
+Trap Jaw,Beast,Status Effect,0,50,-1,https://wiki.cassettebeasts.com/wiki/Trap_Jaw
+Treasure Dig,Earth,Miscellaneous,0,50,2,https://wiki.cassettebeasts.com/wiki/Treasure_Dig
+Treat,Typeless,Status Effect,0,-1,1,https://wiki.cassettebeasts.com/wiki/Treat
+Trick,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Trick
+Trip,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Trip
+Tripwire,Metal,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Tripwire
+Two Heads,Typeless,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Two_Heads
+Undertow,Water,Ranged Attack,90,100,2,https://wiki.cassettebeasts.com/wiki/Undertow
+Unicast,Lightning,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Unicast
+Unshakeable,Earth,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Unshakeable
+Vampire,Beast,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Vampire
+Vengeful Curse,Astral,Status Effect,0,100,-1,https://wiki.cassettebeasts.com/wiki/Vengeful_Curse
+Wallop,Typeless,Melee Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Wallop
+Water Camouflage,Water,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Water_Camouflage
+Water Coating,Water,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Water_Coating_(move)
+Water Dance,Water,Melee Attack,90,85,2,https://wiki.cassettebeasts.com/wiki/Water_Dance
+Water Wall,Water,Status Effect,0,100,2,https://wiki.cassettebeasts.com/wiki/Water_Wall_(move)
+Waterproof,Water,Miscellaneous,0,100,-1,https://wiki.cassettebeasts.com/wiki/Waterproof
+Waterworks,Water,Ranged Attack,100,90,5,https://wiki.cassettebeasts.com/wiki/Waterworks
+Web Wrap,Poison,Status Effect,0,20,0,https://wiki.cassettebeasts.com/wiki/Web_Wrap
+Window,Glass,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Window_(move)
+Wink,Typeless,Status Effect,0,100,1,https://wiki.cassettebeasts.com/wiki/Wink
+Wonderful 7,Astral,Ranged Attack,90,100,4,https://wiki.cassettebeasts.com/wiki/Wonderful_7
+Woodcutter,Plant,Melee Attack,40,100,3,https://wiki.cassettebeasts.com/wiki/Woodcutter
+Yule Regret That,Ice,Ranged Attack,60,100,4,https://wiki.cassettebeasts.com/wiki/Yule_Regret_That
+Zephyr,Air,Ranged Attack,60,100,2,https://wiki.cassettebeasts.com/wiki/Zephyr
+Zoomies,Beast,Melee Attack,30,100,1,https://wiki.cassettebeasts.com/wiki/Zoomies
