@@ -8,7 +8,7 @@ namespace Cassette_Builds.Code.Admin
 	public static class DataUpdater
 	{
 		public const string WebsiteUrl = "https://wiki.cassettebeasts.com";
-		public const int MaxConcurrentDownloads = 10;
+		public const int MaxConcurrentDownloads = 25;
 
 		public static async Task<Exception?> UpdateAll(bool clearCache = false)
 		{
@@ -81,6 +81,8 @@ namespace Cassette_Builds.Code.Admin
 		{
 			Task<string>[] allTasks = new Task<string>[moves.Count];
 			Task<string>[] tasks = new Task<string>[Math.Min(MaxConcurrentDownloads, moves.Count)];
+			System.Diagnostics.Stopwatch stopwatch = new();
+			stopwatch.Restart();
 
 			for (int i = 0, j = 0; i < moves.Count; i++, j = i % tasks.Length)
 			{
@@ -89,9 +91,12 @@ namespace Cassette_Builds.Code.Admin
 				if (j + 1 >= tasks.Length)
 				{
 					await Task.WhenAll(tasks); // Wait for the current batch of tasks
+					Console.WriteLine($"Batch {i / tasks.Length} done");
 				}
 			}
 			await Task.WhenAll(allTasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
+			stopwatch.Stop();
+			Console.WriteLine($"Elapsed: {stopwatch.Elapsed}");
 
 			// Parse synchronously to avoid data corruption since List<T> is not thread-safe
 			List<MoveMonsterPair> movesPerMonster = new(15_000);
