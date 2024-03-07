@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cassette_Builds.Code.Admin
 {
-    public static class DataUpdater
+	public static class DataUpdater
 	{
 		public const string WebsiteUrl = "https://wiki.cassettebeasts.com";
 		public const int MaxConcurrentDownloads = 25;
@@ -95,6 +95,7 @@ namespace Cassette_Builds.Code.Admin
 				}
 			}
 			await Task.WhenAll(allTasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
+			Console.WriteLine($"Batch {moves.Count / tasks.Length} done");
 			stopwatch.Stop();
 			Console.WriteLine($"Elapsed: {stopwatch.Elapsed}");
 

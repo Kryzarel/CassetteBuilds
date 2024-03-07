@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cassette_Builds.Code.Admin
 {
-    public static class MovesPerMonsterHtmlParser
+	public static class MovesPerMonsterHtmlParser
 	{
 		public static void Parse(ReadOnlySpan<char> html, string move, List<MoveMonsterPair> moveMonsterPairs)
 		{

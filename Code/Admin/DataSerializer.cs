@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Cassette_Builds.Code.Admin
 {
-    public static class DataSerializer
+	public static class DataSerializer
 	{
 		public static async Task SerializeToCsv(string path, IList<Monster> monsters)
 		{
