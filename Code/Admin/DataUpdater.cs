@@ -87,8 +87,13 @@ namespace Cassette_Builds.Code.Admin
 		{
 			StringWriter writer = new(new StringBuilder(3000));
 			string monsterHtml = await Downloader.ReadFileOrDownload(url, $"Wiki Pages/Monsters/{monsterName}.html");
-			string link = MonsterHtmlParser.Parse(monsterHtml, WebsiteUrl, monsterName, writer);
-			await Downloader.DownloadAndSaveFile(link, directory, monsterName, ".png");
+			string imageLink = MonsterHtmlParser.Parse(monsterHtml, WebsiteUrl, monsterName, writer);
+			string imagePath = Path.ChangeExtension(Path.Combine(directory, monsterName), ".png");
+			if (!File.Exists(imagePath))
+			{
+				Directory.CreateDirectory(directory);
+				await Downloader.DownloadAndSaveFile(imageLink, imagePath);
+			}
 			return writer;
 		}
 

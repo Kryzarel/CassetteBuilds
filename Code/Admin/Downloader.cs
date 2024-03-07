@@ -56,15 +56,10 @@ namespace Cassette_Builds.Code.Admin
 			return File.Exists(path) ? await File.ReadAllTextAsync(path) : await DownloadAndSaveText(url, path, maxRetries: 5);
 		}
 
-		public static async Task<byte[]> DownloadAndSaveFile(string url, string directory, string fileName, string extension)
+		public static async Task<byte[]> DownloadAndSaveFile(string url, string path)
 		{
-			if (!Directory.Exists(directory))
-			{
-				Directory.CreateDirectory(directory);
-			}
-			string fullPath = Path.ChangeExtension(Path.Combine(directory, fileName), extension);
 			byte[] bytes = await Client.GetByteArrayAsync(url);
-			await File.WriteAllBytesAsync(fullPath, bytes);
+			await File.WriteAllBytesAsync(path, bytes);
 			return bytes;
 		}
 	}
