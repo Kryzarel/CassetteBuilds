@@ -1,104 +1,91 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Cassette_Builds.Code.Admin
 {
+	/// <summary>
+	/// Parses the table of all monsters from (or species, as the wiki calls them)
+	/// </summary>
 	public static class SpeciesHtmlParser
 	{
-		public static List<Monster> Parse(ReadOnlySpan<char> html, string baseUrl)
+		public static List<(string, string)> Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
-			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-			html = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
-			int index = html.IndexOf("<table", cmp);
+			const StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 
-			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
-			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
-			return ParseTable(tableContent, baseUrl);
+			ReadOnlySpan<char> table = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
+			table = table[table.IndexOf("<table", cmp)..table.IndexOf("</table>", cmp)];
+			return ParseTable(table, baseUrl, writer);
 		}
 
-		private static List<Monster> ParseTable(ReadOnlySpan<char> table, string baseUrl)
+		private static List<(string, string)> ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
-			List<Monster> monsters = new(150);
+			List<(string, string)> namesAndLinks = new(150);
 
-			while (!table.IsEmpty)
+			// Write header
+			if (table.IsEmpty) return namesAndLinks;
+			table = table.NextRow(out ReadOnlySpan<char> headerRow);
+			headerRow = headerRow.NextHeaderCol(out _); // Skip image column
+			while (!headerRow.IsEmpty)
 			{
-				table = table.NextRow(out ReadOnlySpan<char> row);
-				if (row.IsEmpty) break;
+				headerRow = headerRow.NextHeaderCol(out ReadOnlySpan<char> col);
+				writer.Write(col);
+				writer.Write(',');
+			}
+			writer.Write("Wiki Link");
 
-				Monster monster = default;
+			table = table.NextRow(out ReadOnlySpan<char> row);
+			while (!row.IsEmpty)
+			{
+				writer.WriteLine();
 
-				// Image Link
+				// Image (skip)
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					ReadOnlySpan<char> imageLink = col.GetBetween("src=\"", ".png", includeEnd: true);
-					monster.ImageLink = new string(imageLink).Replace("/thumb", "");
 				}
 
+				ReadOnlySpan<char> wikiLink;
 				// Name & Link
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
+					wikiLink = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
-					monster.WikiLink = baseUrl + new string(link);
-					monster.Name = new string(name);
+					writer.Write(name);
+					writer.Write(',');
+
+					namesAndLinks.Add((name.ToString(), baseUrl.ConcatToString(wikiLink)));
 				}
 
 				// Number
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					ReadOnlySpan<char> number = col[(col.IndexOf('#') + 1)..];
-					if (!int.TryParse(number, out monster.Number))
-					{
-						monster.Number = -1;
-					}
+					// ReadOnlySpan<char> numberText = col[(col.IndexOf('#') + 1)..];
+					// int number = int.TryParse(numberText, out int n) ? n : -1;
+					writer.Write(col[(col.IndexOf('#') + 1)..]);
+					writer.Write(',');
 				}
 
 				// Type
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
 					ReadOnlySpan<char> type = col.GetBetween("title=\"", "\"");
-					monster.Type = new string(type);
+					writer.Write(type);
+					writer.Write(',');
 				}
 
-				// HP
+				// HP, MeleeAttack, MeleeDefense, RangedAttack, RangedDefense, Speed
+				for (int i = 0; i < 6; i++)
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.HP = int.Parse(col);
+					writer.Write(col);
+					writer.Write(',');
 				}
 
-				// MeleeAttack
-				{
-					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.MeleeAttack = int.Parse(col);
-				}
-
-				// MeleeDefense
-				{
-					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.MeleeDefense = int.Parse(col);
-				}
-
-				// RangedAttack
-				{
-					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.RangedAttack = int.Parse(col);
-				}
-
-				// RangedDefense
-				{
-					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.RangedDefense = int.Parse(col);
-				}
-
-				// Speed
-				{
-					row = row.NextCol(out ReadOnlySpan<char> col);
-					monster.Speed = int.Parse(col);
-				}
-
-				monsters.Add(monster);
+				writer.Write(baseUrl);
+				writer.Write(wikiLink);
+				table = table.NextRow(out row);
 			}
-			return monsters;
+			return namesAndLinks;
 		}
 	}
 }

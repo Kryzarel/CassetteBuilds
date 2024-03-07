@@ -58,6 +58,10 @@ namespace Cassette_Builds.Code.Admin
 
 		public static async Task<byte[]> DownloadAndSaveFile(string url, string directory, string fileName, string extension)
 		{
+			if (!Directory.Exists(directory))
+			{
+				Directory.CreateDirectory(directory);
+			}
 			string fullPath = Path.ChangeExtension(Path.Combine(directory, fileName), extension);
 			byte[] bytes = await Client.GetByteArrayAsync(url);
 			await File.WriteAllBytesAsync(fullPath, bytes);

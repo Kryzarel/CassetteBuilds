@@ -1,87 +1,95 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 
 namespace Cassette_Builds.Code.Admin
 {
+	/// <summary>
+	/// Parses the table of all moves
+	/// </summary>
 	public static class MovesHtmlParser
 	{
-		public static List<Move> Parse(ReadOnlySpan<char> html, string baseUrl)
+		public static void Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
-			StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-			html = html[html.IndexOf("id=\"List_of_moves\"", cmp)..];
-			int index = html.IndexOf("<table", cmp);
+			const StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 
-			ReadOnlySpan<char> table = html[index..html.IndexOf("</table>", cmp)];
-			ReadOnlySpan<char> tableContent = table.NextRow(out _); // Skip header row
-			return ParseTable(tableContent, baseUrl);
+			ReadOnlySpan<char> table = html[html.IndexOf("id=\"List_of_moves\"", cmp)..];
+			table = table[table.IndexOf("<table", cmp)..table.IndexOf("</table>", cmp)];
+			ParseTable(table, baseUrl, writer);
 		}
 
-		private static List<Move> ParseTable(ReadOnlySpan<char> table, string baseUrl)
+		private static void ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
-			List<Move> moves = new(300);
-
-			while (!table.IsEmpty)
+			// Write header
+			if (table.IsEmpty) return;
+			table = table.NextRow(out ReadOnlySpan<char> headerRow);
+			while (!headerRow.IsEmpty)
 			{
-				table = table.NextRow(out ReadOnlySpan<char> row);
-				if (row.IsEmpty) break;
+				headerRow = headerRow.NextHeaderCol(out ReadOnlySpan<char> col);
+				writer.Write(col);
+				writer.Write(',');
+			}
+			writer.Write("Wiki Link");
 
-				Move move = default;
+			table = table.NextRow(out ReadOnlySpan<char> row);
+			while (!row.IsEmpty)
+			{
+				writer.WriteLine();
 
+				ReadOnlySpan<char> wikiLink;
 				// Name & Link
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
+					wikiLink = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
-					if (name.EndsWith(" (move)", StringComparison.OrdinalIgnoreCase))
+					if (name.EndsWith("(move)", StringComparison.OrdinalIgnoreCase))
 					{
-						name = name[..(name.Length - " (move)".Length)];
+						name = name[..(name.Length - "(move)".Length)].Trim();
 					}
-					move.WikiLink = baseUrl + new string(link);
-					move.Name = new string(name);
+					writer.Write(name);
+					writer.Write(',');
 				}
 
 				// Type
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
 					ReadOnlySpan<char> type = col.GetBetween("title=\"", "\"");
-					move.Type = new string(type);
+					writer.Write(type);
+					writer.Write(',');
 				}
 
 				// Category
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					move.Category = new string(col);
+					writer.Write(col);
+					writer.Write(',');
 				}
 
 				// Power
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					_ = int.TryParse(col, out move.Power);
+					_ = int.TryParse(col, out int number);
+					writer.Write(number);
+					writer.Write(',');
 				}
 
 				// Accuracy
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					int index = col.IndexOf('%');
-					if (index < 0 || !int.TryParse(col[..index], out move.Accuracy))
-					{
-						move.Accuracy = -1;
-					}
+					writer.Write(col);
+					writer.Write(',');
 				}
 
 				// Cost
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					int index = col.IndexOf("AP");
-					if (index < 0 || !int.TryParse(col[..index], out move.Cost))
-					{
-						move.Cost = -1;
-					}
+					writer.Write(col);
+					writer.Write(',');
 				}
 
-				moves.Add(move);
+				writer.Write(baseUrl);
+				writer.Write(wikiLink);
+				table = table.NextRow(out row);
 			}
-			return moves;
 		}
 	}
 }

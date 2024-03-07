@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Cassette_Builds.Code.Admin
@@ -12,6 +14,9 @@ namespace Cassette_Builds.Code.Admin
 
 		public static async Task<Exception?> UpdateAll(bool clearCache = false)
 		{
+			Stopwatch stopwatch = new();
+			stopwatch.Start();
+			Console.WriteLine("Update Started");
 			try
 			{
 				if (clearCache)
@@ -22,98 +27,79 @@ namespace Cassette_Builds.Code.Admin
 					if (Directory.Exists("Images"))
 						Directory.Delete("Images", recursive: true);
 				}
-				await Task.WhenAll(UpdateMonsters(), UpdateMoves());
+				await Task.WhenAll(UpdateMonsters(stopwatch), UpdateMoves(stopwatch));
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("Update failed with error: " + e);
 				return e;
 			}
-			Console.WriteLine("Update successful");
+			stopwatch.Stop();
+			Console.WriteLine($"Update successful. Time elasped: {stopwatch.Elapsed.TotalSeconds}s");
 			return null;
 		}
 
-		public static async Task UpdateMonsters()
+		public static async Task UpdateMonsters(Stopwatch stopwatch)
 		{
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Monsters");
 			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", "Wiki Pages/Species.html");
-			List<Monster> monsters = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl);
+			using FileStream stream = File.Create("Data/Monsters.csv");
+			using StreamWriter writer = new(stream);
+			List<(string, string)> namesAndLinks = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, writer);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monsters...Done");
 
-			// Manually set Magikrab's image that is hidden under "SPOILER" in the species list
-			// TODO: Change this to get the image from the actual monster page?
-			monsters[0] = monsters[0] with { ImageLink = "/images/d/d8/Magikrab.png" };
-
-			Task t1 = DataSerializer.SerializeToCsv("Data/Monsters.csv", monsters);
-			Task t2 = DownloadAndSaveImages(monsters, WebsiteUrl, "Images", ".png");
-			await Task.WhenAll(t1, t2);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Monster Moves and Images");
+			await ParseMonsters(namesAndLinks);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monster Moves and Images...Done");
 		}
 
-		private static async Task DownloadAndSaveImages(IList<Monster> monsters, string url, string directory, string extension)
+		private static async Task ParseMonsters(List<(string, string)> namesAndLinks)
 		{
-			if (!Directory.Exists(directory))
-			{
-				Directory.CreateDirectory(directory);
-			}
+			Task<StringWriter>[] tasks = new Task<StringWriter>[Math.Min(MaxConcurrentDownloads, namesAndLinks.Count)];
 
-			Task[] tasks = new Task[Math.Min(MaxConcurrentDownloads, monsters.Count)];
+			using FileStream stream = File.Create("Data/MovesPerMonster.csv");
+			using StreamWriter writer = new(stream);
+			writer.Write("Monster,Move");
 
-			for (int i = 0, j = 0; i < monsters.Count; i++, j = i % tasks.Length)
+			int j = 0;
+			for (int i = 0; i < namesAndLinks.Count; i++, j = i % tasks.Length)
 			{
-				Monster monster = monsters[i];
-				tasks[j] = Downloader.DownloadAndSaveFile(url + monster.ImageLink, directory, monster.Name, extension);
+				(string monsterName, string link) = namesAndLinks[i];
+				tasks[j] = ParseMonster(link, monsterName, "Images");
 				if (j + 1 >= tasks.Length)
 				{
 					await Task.WhenAll(tasks); // Wait for the current batch of tasks
+					foreach (Task<StringWriter> task in tasks)
+					{
+						writer.Write(task.Result.GetStringBuilder());
+					}
 				}
 			}
-			await Task.WhenAll(tasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
+
+			await Task.WhenAll(tasks); // Wait for any remaining tasks (it's fine to await the same task multiple times)
+			for (int i = 0; i <= j; i++) // Make sure to write only until "j", don't write duplicate info
+			{
+				writer.Write(tasks[i].Result.GetStringBuilder());
+			}
 		}
 
-		public static async Task UpdateMoves()
+		private static async Task<StringWriter> ParseMonster(string url, string monsterName, string directory)
 		{
+			StringWriter writer = new(new StringBuilder(3000));
+			string monsterHtml = await Downloader.ReadFileOrDownload(url, $"Wiki Pages/Monsters/{monsterName}.html");
+			string link = MonsterHtmlParser.Parse(monsterHtml, WebsiteUrl, monsterName, writer);
+			await Downloader.DownloadAndSaveFile(link, directory, monsterName, ".png");
+			return writer;
+		}
+
+		public static async Task UpdateMoves(Stopwatch stopwatch)
+		{
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Moves");
 			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", "Wiki Pages/Moves.html");
-			List<Move> moves = MovesHtmlParser.Parse(movesHtml, WebsiteUrl);
-			Task t1 = DataSerializer.SerializeToCsv("Data/Moves.csv", moves);
-			Task t2 = UpdateMoveMonsterPairs(moves);
-			await Task.WhenAll(t1, t2);
-		}
-
-		public static async Task UpdateMoveMonsterPairs(IList<Move> moves)
-		{
-			Task<string>[] allTasks = new Task<string>[moves.Count];
-			Task<string>[] tasks = new Task<string>[Math.Min(MaxConcurrentDownloads, moves.Count)];
-			System.Diagnostics.Stopwatch stopwatch = new();
-			stopwatch.Restart();
-
-			for (int i = 0, j = 0; i < moves.Count; i++, j = i % tasks.Length)
-			{
-				Move move = moves[i];
-				tasks[j] = allTasks[i] = Downloader.ReadFileOrDownload(move.WikiLink, $"Wiki Pages/Moves/{move.Name}.html");
-				if (j + 1 >= tasks.Length)
-				{
-					await Task.WhenAll(tasks); // Wait for the current batch of tasks
-					Console.WriteLine($"Batch {i / tasks.Length} done");
-				}
-			}
-			await Task.WhenAll(allTasks); // Wait for any remaining tasks (it's fine to await the same tasks multiple times)
-			Console.WriteLine($"Batch {moves.Count / tasks.Length} done");
-			stopwatch.Stop();
-			Console.WriteLine($"Elapsed: {stopwatch.Elapsed}");
-
-			// Parse synchronously to avoid data corruption since List<T> is not thread-safe
-			List<MoveMonsterPair> movesPerMonster = new(15_000);
-			for (int i = 0; i < moves.Count; i++)
-			{
-				MovesPerMonsterHtmlParser.Parse(allTasks[i].Result, moves[i].Name, movesPerMonster);
-			}
-			movesPerMonster.Sort(Compare);
-			await DataSerializer.SerializeToCsv("Data/MovesPerMonster.csv", movesPerMonster);
-		}
-
-		private static int Compare(MoveMonsterPair a, MoveMonsterPair b)
-		{
-			int result = a.Move.CompareTo(b.Move);
-			if (result != 0) return result;
-			return a.Monster.CompareTo(b.Monster);
+			using FileStream stream = File.Create("Data/Moves.csv");
+			using StreamWriter writer = new(stream);
+			MovesHtmlParser.Parse(movesHtml, WebsiteUrl, writer);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Moves...Done");
 		}
 	}
 }

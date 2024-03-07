@@ -14,6 +14,11 @@ namespace Cassette_Builds.Code.Admin
 			return row.Next(out col, "<td", "</td>");
 		}
 
+		public static ReadOnlySpan<char> NextHeaderCol(this ReadOnlySpan<char> row, out ReadOnlySpan<char> col)
+		{
+			return row.Next(out col, "<th", "</th>");
+		}
+
 		public static ReadOnlySpan<char> Next(this ReadOnlySpan<char> span, out ReadOnlySpan<char> contents, ReadOnlySpan<char> start, ReadOnlySpan<char> end)
 		{
 			contents = span.GetBetween(start, end, includeStart: true, includeEnd: true);
@@ -33,6 +38,14 @@ namespace Cassette_Builds.Code.Admin
 			index = span.IndexOf(end, StringComparison.OrdinalIgnoreCase);
 			if (index < 0) return default;
 			return span[..(index + (includeEnd ? end.Length : 0))];
+		}
+
+		public static string ConcatToString(this in ReadOnlySpan<char> a, in ReadOnlySpan<char> b)
+		{
+			Span<char> result = stackalloc char[a.Length + b.Length];
+			a.CopyTo(result);
+			b.CopyTo(result[a.Length..]);
+			return new string(result);
 		}
 	}
 }

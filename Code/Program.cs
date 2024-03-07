@@ -6,9 +6,9 @@ using Cassette_Builds.Code.Database;
 using Monster = Cassette_Builds.Code.Database.Monster;
 using Move = Cassette_Builds.Code.Database.Move;
 
-BenchmarkRunner.Run<Benchmarks>();
+// BenchmarkRunner.Run<Benchmarks>();
 
-// await DataUpdater.UpdateAll(clearCache: false);
+await DataUpdater.UpdateAll(clearCache: false);
 
 // string monster = "Khufo";
 // string[] moves = new string[] { "Echolocation", "Critical Mass", "Wonderful 7", /* "Sticky Spray" */ };
