@@ -36,7 +36,7 @@ namespace Cassette_Builds.Code.Admin
 					{
 						name = name[..(name.Length - " (move)".Length)];
 					}
-					move.Link = baseUrl + new string(link);
+					move.WikiLink = baseUrl + new string(link);
 					move.Name = new string(name);
 				}
 

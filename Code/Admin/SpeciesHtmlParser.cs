@@ -39,7 +39,7 @@ namespace Cassette_Builds.Code.Admin
 					row = row.NextCol(out ReadOnlySpan<char> col);
 					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
-					monster.Link = baseUrl + new string(link);
+					monster.WikiLink = baseUrl + new string(link);
 					monster.Name = new string(name);
 				}
 

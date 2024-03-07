@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cassette_Builds.Code.Admin
 {
-	public static class DataUpdater
+    public static class DataUpdater
 	{
 		public const string WebsiteUrl = "https://wiki.cassettebeasts.com";
 		public const int MaxConcurrentDownloads = 25;
@@ -87,7 +87,7 @@ namespace Cassette_Builds.Code.Admin
 			for (int i = 0, j = 0; i < moves.Count; i++, j = i % tasks.Length)
 			{
 				Move move = moves[i];
-				tasks[j] = allTasks[i] = Downloader.ReadFileOrDownload(move.Link, $"Wiki Pages/Moves/{move.Name}.html");
+				tasks[j] = allTasks[i] = Downloader.ReadFileOrDownload(move.WikiLink, $"Wiki Pages/Moves/{move.Name}.html");
 				if (j + 1 >= tasks.Length)
 				{
 					await Task.WhenAll(tasks); // Wait for the current batch of tasks

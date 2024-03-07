@@ -1,4 +1,4 @@
-Number,Name,Type,HP,MeleeAttack,MeleeDefense,RangedAttack,RangedDefense,Speed,Link
+Number,Name,Type,HP,MeleeAttack,MeleeDefense,RangedAttack,RangedDefense,Speed,WikiLink
 0,Magikrab,Astral,105,160,105,160,150,120,https://wiki.cassettebeasts.com/wiki/Magikrab
 1,Springheel,Beast,90,130,80,80,90,130,https://wiki.cassettebeasts.com/wiki/Springheel
 2,Hopskin,Beast,90,170,100,90,100,150,https://wiki.cassettebeasts.com/wiki/Hopskin

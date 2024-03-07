@@ -4,20 +4,20 @@ using System.Threading.Tasks;
 
 namespace Cassette_Builds.Code.Admin
 {
-	public static class DataSerializer
+    public static class DataSerializer
 	{
 		public static async Task SerializeToCsv(string path, IList<Monster> monsters)
 		{
 			using FileStream stream = File.Create(path);
 			using StreamWriter writer = new(stream);
 
-			await writer.WriteAsync($"{nameof(Monster.Number)},{nameof(Monster.Name)},{nameof(Monster.Type)},{nameof(Monster.HP)},{nameof(Monster.MeleeAttack)},{nameof(Monster.MeleeDefense)},{nameof(Monster.RangedAttack)},{nameof(Monster.RangedDefense)},{nameof(Monster.Speed)},{nameof(Monster.Link)}");
+			await writer.WriteAsync($"{nameof(Monster.Number)},{nameof(Monster.Name)},{nameof(Monster.Type)},{nameof(Monster.HP)},{nameof(Monster.MeleeAttack)},{nameof(Monster.MeleeDefense)},{nameof(Monster.RangedAttack)},{nameof(Monster.RangedDefense)},{nameof(Monster.Speed)},{nameof(Monster.WikiLink)}");
 
 			for (int i = 0; i < monsters.Count; i++)
 			{
 				Monster monster = monsters[i];
 				await writer.WriteLineAsync();
-				await writer.WriteAsync($"{monster.Number},{monster.Name},{monster.Type},{monster.HP},{monster.MeleeAttack},{monster.MeleeDefense},{monster.RangedAttack},{monster.RangedDefense},{monster.Speed},{monster.Link}");
+				await writer.WriteAsync($"{monster.Number},{monster.Name},{monster.Type},{monster.HP},{monster.MeleeAttack},{monster.MeleeDefense},{monster.RangedAttack},{monster.RangedDefense},{monster.Speed},{monster.WikiLink}");
 			}
 		}
 
@@ -26,13 +26,13 @@ namespace Cassette_Builds.Code.Admin
 			using FileStream stream = File.Create(path);
 			using StreamWriter writer = new(stream);
 
-			await writer.WriteAsync($"{nameof(Move.Name)},{nameof(Move.Type)},{nameof(Move.Category)},{nameof(Move.Power)},{nameof(Move.Accuracy)},{nameof(Move.Cost)},{nameof(Move.Link)}");
+			await writer.WriteAsync($"{nameof(Move.Name)},{nameof(Move.Type)},{nameof(Move.Category)},{nameof(Move.Power)},{nameof(Move.Accuracy)},{nameof(Move.Cost)},{nameof(Move.WikiLink)}");
 
 			for (int i = 0; i < moves.Count; i++)
 			{
 				Move move = moves[i];
 				await writer.WriteLineAsync();
-				await writer.WriteAsync($"{move.Name},{move.Type},{move.Category},{move.Power},{move.Accuracy},{move.Cost},{move.Link}");
+				await writer.WriteAsync($"{move.Name},{move.Type},{move.Category},{move.Power},{move.Accuracy},{move.Cost},{move.WikiLink}");
 			}
 		}
 

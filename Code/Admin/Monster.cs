@@ -11,12 +11,12 @@ namespace Cassette_Builds.Code.Admin
 		public int RangedAttack;
 		public int RangedDefense;
 		public int Speed;
-		public string Link;
+		public string WikiLink;
 		public string ImageLink;
 
 		public override readonly string ToString()
 		{
-			return $"{Number} | {Name} | {Type} | {HP} | {MeleeAttack} | {MeleeDefense} | {RangedAttack} | {RangedDefense} | {Speed} | {Link} | {ImageLink}";
+			return $"{Number} | {Name} | {Type} | {HP} | {MeleeAttack} | {MeleeDefense} | {RangedAttack} | {RangedDefense} | {Speed} | {WikiLink} | {ImageLink}";
 		}
 	}
 }
