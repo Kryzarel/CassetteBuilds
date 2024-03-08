@@ -40,11 +40,8 @@ namespace Cassette_Builds.Code.Admin
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
 					wikiLink = col.GetBetween("href=\"", "\"");
-					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
-					if (name.EndsWith("(move)", StringComparison.OrdinalIgnoreCase))
-					{
-						name = name[..(name.Length - "(move)".Length)].Trim();
-					}
+					col = col[col.IndexOf("title=\"")..];
+					ReadOnlySpan<char> name = col.GetBetween(">", "</a>");
 					writer.Write(name);
 					writer.Write(',');
 				}
