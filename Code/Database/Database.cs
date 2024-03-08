@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Cassette_Builds.Code.Database
 {
@@ -7,6 +9,7 @@ namespace Cassette_Builds.Code.Database
 		public static readonly Monster[] Monsters;
 		public static readonly Move[] Moves;
 		public static readonly bool[,] MonsterMoves;
+		public static readonly ReadOnlyDictionary<string, int> MovesReverseLookup;
 
 		static Database()
 		{
@@ -14,6 +17,13 @@ namespace Cassette_Builds.Code.Database
 			Moves = DataDeserializer.DeserializeMoves("Data/Moves.csv");
 			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs("Data/MovesPerMonster.csv");
 			MonsterMoves = ComputeMonsterMoves(movesPerMonster, Monsters, Moves);
+
+			Dictionary<string, int> reverseLookup = new(Moves.Length);
+			MovesReverseLookup = reverseLookup.AsReadOnly();
+			for (int i = 0; i < Moves.Length; i++)
+			{
+				reverseLookup[Moves[i].Name] = i;
+			}
 		}
 
 		public static bool[,] ComputeMonsterMoves(MoveMonsterPair[] movesPerMonster, Monster[] monsters, Move[] moves)

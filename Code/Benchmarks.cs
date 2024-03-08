@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using Cassette_Builds.Code.Core;
 using Kryz.Collections;
@@ -17,7 +18,6 @@ namespace Cassette_Builds.Code
 
 		static Benchmarks()
 		{
-			_ = Database.Database.Moves;
 			moveIndexes = new int[moves.Length];
 			MoveFinder.GetMoveIndexes(moves, moveIndexes);
 		}
@@ -43,9 +43,17 @@ namespace Cassette_Builds.Code
 		}
 
 		[Benchmark]
-		public void Compatible()
+		public int MoveIndexesLookup_Default()
 		{
-			using ReadOnlyNonAllocBuffer<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWith(moveIndexes);
+			ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes(moves, moveIndexes);
+			return indexes[0];
+		}
+
+		[Benchmark]
+		public int MoveIndexesLookup_Reverse()
+		{
+			ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes_ReverseLookup(moves, moveIndexes);
+			return indexes[0];
 		}
 	}
 }
