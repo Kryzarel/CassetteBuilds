@@ -6,7 +6,7 @@ using Cassette_Builds.Code.Database;
 using Cassette_Builds.Code.Misc;
 
 // BenchmarkRunner.Run<Benchmarks>();
-// Benchmarks.PrintTest();
+Benchmarks.PrintTest();
 
 // await DataUpdater.UpdateAll(clearCache: false);
 
