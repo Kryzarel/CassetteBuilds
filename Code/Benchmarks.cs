@@ -1,42 +1,47 @@
+using System;
 using BenchmarkDotNet.Attributes;
-using Cassette_Builds.Code.Database;
+using Cassette_Builds.Code.Core;
+using Kryz.Collections;
 
 namespace Cassette_Builds.Code
 {
 	[MemoryDiagnoser]
 	public class Benchmarks
 	{
-		public static readonly Monster[] Monsters = DataDeserializer.DeserializeMonsters("Data/Monsters.csv");
-		public static readonly Move[] Moves = DataDeserializer.DeserializeMoves("Data/Moves.csv");
-		public static readonly MoveMonsterPair[] MoveMonsterPairs = DataDeserializer.DeserializeMoveMonsterPairs("Data/MovesPerMonster.csv");
+		private static readonly string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
+		private static readonly int[] moveIndexes;
 
 		static Benchmarks()
 		{
 			_ = Database.Database.Moves;
+			moveIndexes = new int[moves.Length];
+			MoveFinder.GetMoveIndexes(moves, moveIndexes);
+		}
+
+		public static void PrintTest()
+		{
+			using ReadOnlyNonAllocBuffer<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWith(moveIndexes);
+			PrintMonsters(monsterIndexes);
+		}
+
+		public static void PrintMonsters(in ReadOnlySpan<int> monsterIndexes)
+		{
+			if (monsterIndexes.IsEmpty)
+			{
+				Console.WriteLine("No monsters found");
+				return;
+			}
+
+			foreach (int index in monsterIndexes)
+			{
+				Console.WriteLine(Database.Database.Monsters[index]);
+			}
 		}
 
 		[Benchmark]
-		public Monster[] MonstersBench()
+		public void Compatible()
 		{
-			return DataDeserializer.DeserializeMonsters("Data/Monsters.csv");
-		}
-
-		[Benchmark]
-		public Move[] MovesBench()
-		{
-			return DataDeserializer.DeserializeMoves("Data/Moves.csv");
-		}
-
-		[Benchmark]
-		public MoveMonsterPair[] MovesPerMonsterBench()
-		{
-			return DataDeserializer.DeserializeMoveMonsterPairs("Data/MovesPerMonster.csv");
-		}
-
-		[Benchmark]
-		public bool[,] MonsterMoves2DBench()
-		{
-			return Database.Database.ComputeMonsterMoves(MoveMonsterPairs, Monsters, Moves);
+			using ReadOnlyNonAllocBuffer<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWith(moveIndexes);
 		}
 	}
 }
