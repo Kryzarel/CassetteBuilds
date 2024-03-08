@@ -1,79 +1,72 @@
 using System;
-using Kryz.Collections;
 using Kryz.CSV;
 
 namespace Cassette_Builds.Code.Database
 {
-	public static class DataDeserializer
+    public static class DataDeserializer
 	{
 		public static Monster[] DeserializeMonsters(string path)
 		{
-			return CsvDeserializer.Deserialize(path, CreateMonsterFromRow);
+			return CsvDeserializer.FromFile(path, CreateMonsterFromRow);
 		}
 
 		public static Move[] DeserializeMoves(string path)
 		{
-			return CsvDeserializer.Deserialize(path, CreateMoveFromRow);
+			return CsvDeserializer.FromFile(path, CreateMoveFromRow);
 		}
 
 		public static MoveMonsterPair[] DeserializeMoveMonsterPairs(string path)
 		{
-			return CsvDeserializer.Deserialize(path, CreateMoveMonsterPairFromRow);
+			return CsvDeserializer.FromFile(path, CreateMoveMonsterPairFromRow);
 		}
 
 		public static MoveMonsterPair[] DeserializeMoveMonsterPairsOld(string path)
 		{
-			return CsvDeserializer.Deserialize(path, CreateMoveMonsterPairFromRowOld);
+			return CsvDeserializer.FromFile(path, CreateMoveMonsterPairFromRowOld);
 		}
 
-		private static Monster CreateMonsterFromRow(int index, in ReadOnlySpan<char> row, in ReadOnlySpan<int> separatorCache)
+		private static Monster CreateMonsterFromRow(in CsvRow row)
 		{
-			return new Monster(index,
-				number: int.TryParse(row.GetSection(1, separatorCache), out int n) ? n : -1,
-				name: string.Intern(new(row.GetSection(0, separatorCache))),
-				type: string.Intern(new(row.GetSection(2, separatorCache))),
-				hp: int.Parse(row.GetSection(3, separatorCache)),
-				meleeAttack: int.Parse(row.GetSection(4, separatorCache)),
-				meleeDefense: int.Parse(row.GetSection(5, separatorCache)),
-				rangedAttack: int.Parse(row.GetSection(6, separatorCache)),
-				rangedDefense: int.Parse(row.GetSection(7, separatorCache)),
-				speed: int.Parse(row.GetSection(8, separatorCache)),
-				wikiLink: string.Intern(new(row.GetSection(9, separatorCache)))
+			return new Monster(row.Index,
+				number: int.TryParse(row[1], out int n) ? n : -1,
+				name: string.Intern(row[0].ToString()),
+				type: string.Intern(row[2].ToString()),
+				hp: int.Parse(row[3]),
+				meleeAttack: int.Parse(row[4]),
+				meleeDefense: int.Parse(row[5]),
+				rangedAttack: int.Parse(row[6]),
+				rangedDefense: int.Parse(row[7]),
+				speed: int.Parse(row[8]),
+				wikiLink: string.Intern(row[9].ToString())
 			);
 		}
 
-		private static Move CreateMoveFromRow(int index, in ReadOnlySpan<char> row, in ReadOnlySpan<int> separatorCache)
+		private static Move CreateMoveFromRow(in CsvRow row)
 		{
-			ReadOnlySpan<char> accuracy = row.GetSection(4, separatorCache);
-			accuracy = accuracy[..Math.Max(0, accuracy.IndexOf('%'))];
-
-			ReadOnlySpan<char> cost = row.GetSection(5, separatorCache);
-			cost = cost[..Math.Max(0, cost.IndexOf("AP"))];
-
-			return new Move(index,
-				name: string.Intern(new(row.GetSection(0, separatorCache))),
-				type: string.Intern(new(row.GetSection(1, separatorCache))),
-				category: string.Intern(new(row.GetSection(2, separatorCache))),
-				power: int.TryParse(row.GetSection(3, separatorCache), out int n) ? n : -1,
-				accuracy: int.TryParse(accuracy, out n) ? n : -1,
-				cost: int.TryParse(cost, out n) ? n : -1,
-				wikiLink: string.Intern(new(row.GetSection(6, separatorCache)))
+			return new Move(row.Index,
+				name: string.Intern(row[0].ToString()),
+				type: string.Intern(row[1].ToString()),
+				category: string.Intern(row[2].ToString()),
+				power: int.TryParse(row[3], out int n) ? n : -1,
+				accuracy: int.TryParse(row[4].TrimEnd('%'), out n) ? n : -1,
+				cost: int.TryParse(row[5].TrimEnd("AP"), out n) ? n : -1,
+				wikiLink: string.Intern(row[6].ToString())
 			);
 		}
 
-		private static MoveMonsterPair CreateMoveMonsterPairFromRow(int index, in ReadOnlySpan<char> row, in ReadOnlySpan<int> separatorCache)
+		private static MoveMonsterPair CreateMoveMonsterPairFromRow(in CsvRow row)
 		{
 			return new MoveMonsterPair(
-				move: string.Intern(new(row.GetSection(1, separatorCache))),
-				monster: string.Intern(new(row.GetSection(0, separatorCache)))
+				move: string.Intern(new(row[1])),
+				monster: string.Intern(new(row[0]))
 			);
 		}
 
-		private static MoveMonsterPair CreateMoveMonsterPairFromRowOld(int index, in ReadOnlySpan<char> row, in ReadOnlySpan<int> separatorCache)
+		private static MoveMonsterPair CreateMoveMonsterPairFromRowOld(in CsvRow row)
 		{
 			return new MoveMonsterPair(
-				move: string.Intern(new(row.GetSection(0, separatorCache))),
-				monster: string.Intern(new(row.GetSection(1, separatorCache)))
+				move: string.Intern(new(row[0])),
+				monster: string.Intern(new(row[1]))
 			);
 		}
 	}

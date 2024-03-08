@@ -73,7 +73,7 @@ namespace Kryz.Collections
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ReadOnlySpan<T> GetSection<T>(this in ReadOnlySpan<T> span, int index, in ReadOnlySpan<int> separatorCache)
+		public static ReadOnlySpan<T> GetSection<T>(this ReadOnlySpan<T> span, int index, ReadOnlySpan<int> separatorCache)
 		{
 			int start = index > 0 ? separatorCache[index - 1] + 1 : 0;
 			int end = index < separatorCache.Length ? separatorCache[index] : span.Length;
