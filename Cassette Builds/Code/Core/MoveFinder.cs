@@ -2,7 +2,7 @@ using System;
 
 namespace Cassette_Builds.Code.Core
 {
-    public static class MoveFinder
+	public static class MoveFinder
 	{
 		public static ReadOnlySpan<int> GetMoveIndexes_ReverseLookup(string[] moves, in Span<int> indexes)
 		{

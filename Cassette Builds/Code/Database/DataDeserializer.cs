@@ -3,7 +3,7 @@ using Kryz.CSV;
 
 namespace Cassette_Builds.Code.Database
 {
-    public static class DataDeserializer
+	public static class DataDeserializer
 	{
 		public static Monster[] DeserializeMonsters(string path)
 		{
