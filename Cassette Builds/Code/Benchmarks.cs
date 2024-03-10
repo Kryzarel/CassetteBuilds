@@ -9,6 +9,7 @@ namespace Cassette_Builds.Code
 	{
 		private static readonly string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
 		private static readonly int[] moveIndexes;
+		private static readonly Random random = new();
 
 		static Benchmarks()
 		{
@@ -20,6 +21,18 @@ namespace Cassette_Builds.Code
 		public int GetMonstersCompatibleWith()
 		{
 			Span<int> monsterIndexes = stackalloc int[Database.Monsters.Length];
+			return MonsterFinder.GetMonstersCompatibleWith(moveIndexes, monsterIndexes);
+		}
+
+		[Benchmark]
+		public int AverageSpeed()
+		{
+			Span<int> monsterIndexes = stackalloc int[Database.Monsters.Length];
+			Span<int> moveIndexes = stackalloc int[random.Next(8)];
+			for (int i = 0; i < moveIndexes.Length; i++)
+			{
+				moveIndexes[i] = random.Next(Database.Moves.Length);
+			}
 			return MonsterFinder.GetMonstersCompatibleWith(moveIndexes, monsterIndexes);
 		}
 	}
