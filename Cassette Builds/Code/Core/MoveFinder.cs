@@ -1,4 +1,5 @@
 using System;
+using Cassette_Builds.Code.Database;
 
 namespace Cassette_Builds.Code.Core
 {
@@ -23,21 +24,9 @@ namespace Cassette_Builds.Code.Core
 
 			for (int i = 0; i < moves.Length; i++)
 			{
-				indexes[i] = FindIndexOfMove(moves[i]);
+				indexes[i] = Database.Database.Moves.Span.FindIndexByName(moves[i]);
 			}
 			return indexes;
-		}
-
-		private static int FindIndexOfMove(string moveName)
-		{
-			for (int i = 0; i < Database.Database.Moves.Length; i++)
-			{
-				if (Database.Database.Moves[i].Name == moveName)
-				{
-					return i;
-				}
-			}
-			return -1;
 		}
 	}
 }

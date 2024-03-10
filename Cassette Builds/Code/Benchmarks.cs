@@ -1,11 +1,10 @@
 using System;
 using BenchmarkDotNet.Attributes;
 using Cassette_Builds.Code.Core;
-using Kryz.Collections;
 
 namespace Cassette_Builds.Code
 {
-	[MemoryDiagnoser]
+    [MemoryDiagnoser]
 	public class Benchmarks
 	{
 		// private static readonly string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
@@ -23,8 +22,9 @@ namespace Cassette_Builds.Code
 
 		public static void PrintTest()
 		{
-			using ReadOnlyNonAllocBuffer<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWith(moveIndexes);
-			PrintMonsters(monsterIndexes);
+			Span<int> monsterIndexes = stackalloc int[Database.Database.Monsters.Length];
+			int count = MonsterFinder.GetMonstersCompatibleWith(moveIndexes, monsterIndexes);
+			PrintMonsters(monsterIndexes[..count]);
 		}
 
 		public static void PrintMonsters(in ReadOnlySpan<int> monsterIndexes)
@@ -37,22 +37,29 @@ namespace Cassette_Builds.Code
 
 			foreach (int index in monsterIndexes)
 			{
-				Console.WriteLine(Database.Database.Monsters[index]);
+				Console.WriteLine(Database.Database.Monsters.Span[index]);
 			}
 		}
 
 		[Benchmark]
-		public int MoveIndexesLookup_Default()
+		public int GetMonstersCompatibleWith()
 		{
-			ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes(moves, moveIndexes);
-			return indexes[0];
+			Span<int> monsterIndexes = stackalloc int[Database.Database.Monsters.Length];
+			return MonsterFinder.GetMonstersCompatibleWith(moveIndexes, monsterIndexes);
 		}
 
-		[Benchmark]
-		public int MoveIndexesLookup_Reverse()
-		{
-			ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes_ReverseLookup(moves, moveIndexes);
-			return indexes[0];
-		}
+		// [Benchmark]
+		// public int MoveIndexesLookup_Default()
+		// {
+		// 	ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes(moves, moveIndexes);
+		// 	return indexes[0];
+		// }
+
+		// [Benchmark]
+		// public int MoveIndexesLookup_Reverse()
+		// {
+		// 	ReadOnlySpan<int> indexes = MoveFinder.GetMoveIndexes_ReverseLookup(moves, moveIndexes);
+		// 	return indexes[0];
+		// }
 	}
 }
