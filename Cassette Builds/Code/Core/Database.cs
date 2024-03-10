@@ -21,7 +21,7 @@ namespace Cassette_Builds.Code.Core
 			MonsterMoves = ComputeMonsterMoves(movesPerMonster, Monsters.Span, Moves.Span);
 		}
 
-		public static ReadOnlyDictionary<string, int> ComputeMovesReverseLookup(ReadOnlySpan<Move> moves)
+		public static ReadOnlyDictionary<string, int> ComputeMovesReverseLookup(in ReadOnlySpan<Move> moves)
 		{
 			Dictionary<string, int> reverseLookup = new(moves.Length);
 			for (int i = 0; i < moves.Length; i++)
@@ -31,7 +31,7 @@ namespace Cassette_Builds.Code.Core
 			return reverseLookup.AsReadOnly();
 		}
 
-		public static bool[] ComputeMonsterMoves(ReadOnlySpan<MoveMonsterPair> movesPerMonster, ReadOnlySpan<Monster> monsters, ReadOnlySpan<Move> moves)
+		public static bool[] ComputeMonsterMoves(in ReadOnlySpan<MoveMonsterPair> movesPerMonster, in ReadOnlySpan<Monster> monsters, in ReadOnlySpan<Move> moves)
 		{
 			bool[] monsterMoves = new bool[monsters.Length * moves.Length];
 

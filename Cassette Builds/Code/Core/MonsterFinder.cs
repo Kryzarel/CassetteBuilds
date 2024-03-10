@@ -7,22 +7,8 @@ namespace Cassette_Builds.Code.Core
 	public static class MonsterFinder
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int GetMonstersCompatibleWith(in ReadOnlySpan<string> moves, in Span<int> buffer)
-		{
-			ReadOnlySpan<int> moveIndexes = MoveFinder.GetMoveIndexesAsSpan(moves, stackalloc int[moves.Length]);
-			return GetMonstersCompatibleWithAsSpan(moveIndexes, buffer).Length;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetMonstersCompatibleWith(in ReadOnlySpan<int> moveIndexes, in Span<int> buffer)
 		{
-			return GetMonstersCompatibleWithAsSpan(moveIndexes, buffer).Length;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ReadOnlySpan<int> GetMonstersCompatibleWithAsSpan(in ReadOnlySpan<string> moves, in Span<int> buffer)
-		{
-			ReadOnlySpan<int> moveIndexes = MoveFinder.GetMoveIndexesAsSpan(moves, stackalloc int[moves.Length]);
 			ReadOnlySpan<bool> monsterMoves = Database.MonsterMoves.Span;
 			int monstersLen = Database.Monsters.Length;
 			if (buffer.Length < monstersLen)
@@ -36,26 +22,26 @@ namespace Cassette_Builds.Code.Core
 					buffer[count++] = i;
 				}
 			}
-			return buffer[..count];
+			return count;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ReadOnlySpan<int> GetMonstersCompatibleWithAsSpan(in ReadOnlySpan<int> moveIndexes, in Span<int> buffer)
 		{
-			ReadOnlySpan<bool> monsterMoves = Database.MonsterMoves.Span;
-			int monstersLen = Database.Monsters.Length;
-			if (buffer.Length < monstersLen)
-				return default;
+			return buffer[..GetMonstersCompatibleWith(moveIndexes, buffer)];
+		}
 
-			int count = 0;
-			for (int i = 0; i < monstersLen; i++)
-			{
-				if (IsCompatible(moveIndexes, monsterMoves, monstersLen, i))
-				{
-					buffer[count++] = i;
-				}
-			}
-			return buffer[..count];
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int GetMonstersCompatibleWith(in ReadOnlySpan<string> moves, in Span<int> buffer)
+		{
+			ReadOnlySpan<int> moveIndexes = MoveFinder.GetMoveIndexesAsSpan(moves, stackalloc int[moves.Length]);
+			return GetMonstersCompatibleWith(moveIndexes, buffer);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ReadOnlySpan<int> GetMonstersCompatibleWithAsSpan(in ReadOnlySpan<string> moves, in Span<int> buffer)
+		{
+			return buffer[..GetMonstersCompatibleWith(moves, buffer)];
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

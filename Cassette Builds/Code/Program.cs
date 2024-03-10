@@ -14,8 +14,8 @@ using Cassette_Builds.Code.Misc;
 
 // BenchmarkRunner.Run<Benchmarks>();
 
-// string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
-string[] moves = new string[] { "Hypnotise", "Mind-Meld", "Sticky Spray" };
+string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
+// string[] moves = new string[] { "Hypnotise", "Mind-Meld", "Sticky Spray" };
 // string[] moves = new string[] { "Beast Wall", "Nurse", "Leech", "Doc Leaf" };
 // string[] moves = new string[] { "Mind-Meld", "Echolocation", "Magnet" };
 // string[] moves = new string[] { "Hypnotise", "Mind-Meld", "Nurse", "Doc Leaf", "Beast Wall" };
