@@ -1,36 +1,34 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
 using Cassette_Builds.Code;
 using Cassette_Builds.Code.Admin;
 using Cassette_Builds.Code.Core;
 using Cassette_Builds.Code.Misc;
 
-// await DataUpdater.UpdateAll(clearCache: false);
-
-// Helpers.PrintMovePagesWithMissingMonsters();
-// Helpers.Print(Database.Monsters, nameof(Database.Monsters));
-// Console.WriteLine();
-// Helpers.Print(Database.Moves, nameof(Database.Moves));
-
-// BenchmarkRunner.Run<Benchmarks>();
-
-string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
-// string[] moves = new string[] { "Hypnotise", "Mind-Meld", "Sticky Spray" };
-// string[] moves = new string[] { "Beast Wall", "Nurse", "Leech", "Doc Leaf" };
-// string[] moves = new string[] { "Mind-Meld", "Echolocation", "Magnet" };
-// string[] moves = new string[] { "Hypnotise", "Mind-Meld", "Nurse", "Doc Leaf", "Beast Wall" };
-PrintMonsters(MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.Monsters.Length]));
-
-static void PrintMonsters(in ReadOnlySpan<int> monsterIndexes)
+internal class Program
 {
-	if (monsterIndexes.IsEmpty)
+	private static void Main(string[] args)
 	{
-		Console.WriteLine("No monsters found");
-		return;
+		FindMonsters(args);
+
+		FindMonsters(new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" });
+		FindMonsters(new string[] { "Hypnotise", "Mind-Meld", "Sticky Spray" });
+		FindMonsters(new string[] { "Beast Wall", "Nurse", "Leech", "Doc Leaf" });
+		FindMonsters(new string[] { "Mind-Meld", "Echolocation", "Magnet" });
+		FindMonsters(new string[] { "Hypnotise", "Mind-Meld", "Nurse", "Doc Leaf", "Beast Wall" });
 	}
 
-	foreach (int index in monsterIndexes)
+	private static async Task Update() => await DataUpdater.UpdateAll(clearCache: false);
+
+	private static void RunBenchmarks() => BenchmarkRunner.Run<Benchmarks>();
+	private static void PrintMovePagesWithMissingMonsters() => Helpers.PrintMovePagesWithMissingMonsters();
+
+	private static void FindMonsters(string[] moves)
 	{
-		Console.WriteLine(Database.Monsters.Span[index]);
+		Console.WriteLine();
+		Helpers.PrintSingleLine<string>(moves, messageWhenEmpty: "No moves selected");
+		ReadOnlySpan<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.Monsters.Length]);
+		Helpers.Print(monsterIndexes, i => Database.Monsters.Span[i], messageWhenEmpty: "No monsters found");
 	}
 }

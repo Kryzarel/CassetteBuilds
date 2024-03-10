@@ -54,7 +54,7 @@ namespace Cassette_Builds.Code.Core
 					return false;
 				}
 			}
-			return true;
+			return !moveIndexes.IsEmpty;
 		}
 	}
 }
