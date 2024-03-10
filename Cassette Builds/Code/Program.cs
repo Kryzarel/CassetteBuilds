@@ -12,11 +12,11 @@ internal class Program
 	{
 		FindMonsters(args);
 
-		FindMonsters(new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" });
-		FindMonsters(new string[] { "Hypnotise", "Mind-Meld", "Sticky Spray" });
-		FindMonsters(new string[] { "Beast Wall", "Nurse", "Leech", "Doc Leaf" });
-		FindMonsters(new string[] { "Mind-Meld", "Echolocation", "Magnet" });
-		FindMonsters(new string[] { "Hypnotise", "Mind-Meld", "Nurse", "Doc Leaf", "Beast Wall" });
+		FindMonsters(["Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld"]);
+		FindMonsters(["Hypnotise", "Mind-Meld", "Sticky Spray"]);
+		FindMonsters(["Beast Wall", "Nurse", "Leech", "Doc Leaf"]);
+		FindMonsters(["Mind-Meld", "Echolocation", "Magnet"]);
+		FindMonsters(["Hypnotise", "Mind-Meld", "Nurse", "Doc Leaf", "Beast Wall"]);
 	}
 
 	private static async Task Update() => await DataUpdater.UpdateAll(clearCache: false);
