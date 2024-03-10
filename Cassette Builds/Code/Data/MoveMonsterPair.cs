@@ -1,6 +1,6 @@
 using System;
 
-namespace Cassette_Builds.Code.Database
+namespace Cassette_Builds.Code.Data
 {
 	public readonly struct MoveMonsterPair : IEquatable<MoveMonsterPair>
 	{

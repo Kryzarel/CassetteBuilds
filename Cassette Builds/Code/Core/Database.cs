@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Cassette_Builds.Code.Data;
 
-namespace Cassette_Builds.Code.Database
+namespace Cassette_Builds.Code.Core
 {
 	public static class Database
 	{
@@ -51,30 +52,6 @@ namespace Cassette_Builds.Code.Database
 				monsterMoves.RefGet(monsters.Length, monsterIndex, moveIndex) = true;
 			}
 			return monsterMoves;
-		}
-
-		public static int FindIndexByName(this in ReadOnlySpan<Monster> monsters, string name)
-		{
-			for (int i = 0; i < monsters.Length; i++)
-			{
-				if (monsters[i].Name == name)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		public static int FindIndexByName(this in ReadOnlySpan<Move> moves, string name)
-		{
-			for (int i = 0; i < moves.Length; i++)
-			{
-				if (moves[i].Name == name)
-				{
-					return i;
-				}
-			}
-			return -1;
 		}
 	}
 }

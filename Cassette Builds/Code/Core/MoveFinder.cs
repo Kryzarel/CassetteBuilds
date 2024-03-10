@@ -1,32 +1,27 @@
 using System;
-using Cassette_Builds.Code.Database;
+using System.Runtime.CompilerServices;
 
 namespace Cassette_Builds.Code.Core
 {
 	public static class MoveFinder
 	{
-		public static ReadOnlySpan<int> GetMoveIndexes_ReverseLookup(string[] moves, in Span<int> indexes)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int GetMoveIndexes(in ReadOnlySpan<string> moves, in Span<int> buffer)
 		{
-			if (moves.Length == 0 || moves.Length > indexes.Length)
-				return default;
-
-			for (int i = 0; i < moves.Length; i++)
-			{
-				indexes[i] = Database.Database.MovesReverseLookup.TryGetValue(moves[i], out int index) ? index : -1;
-			}
-			return indexes;
+			return GetMoveIndexesAsSpan(moves, buffer).Length;
 		}
 
-		public static ReadOnlySpan<int> GetMoveIndexes(string[] moves, in Span<int> indexes)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ReadOnlySpan<int> GetMoveIndexesAsSpan(in ReadOnlySpan<string> moves, in Span<int> buffer)
 		{
-			if (moves.Length == 0 || moves.Length > indexes.Length)
+			if (moves.Length == 0 || moves.Length > buffer.Length)
 				return default;
 
 			for (int i = 0; i < moves.Length; i++)
 			{
-				indexes[i] = Database.Database.Moves.Span.FindIndexByName(moves[i]);
+				buffer[i] = Database.MovesReverseLookup.TryGetValue(moves[i], out int index) ? index : -1;
 			}
-			return indexes;
+			return buffer[..moves.Length];
 		}
 	}
 }

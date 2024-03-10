@@ -1,7 +1,7 @@
 using System;
 using Kryz.CSV;
 
-namespace Cassette_Builds.Code.Database
+namespace Cassette_Builds.Code.Data
 {
 	public static class DataDeserializer
 	{
