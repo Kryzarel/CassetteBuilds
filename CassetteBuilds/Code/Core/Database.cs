@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using CassetteBuilds.Code.Data;
 
 namespace CassetteBuilds.Code.Core
@@ -14,10 +15,15 @@ namespace CassetteBuilds.Code.Core
 
 		static Database()
 		{
-			Monsters = DataDeserializer.DeserializeMonsters("Data/Monsters.csv");
-			Moves = DataDeserializer.DeserializeMoves("Data/Moves.csv");
+			string baseDir = AppContext.BaseDirectory;
+			string monstersPath = Path.Combine(baseDir, "Data", "Monsters.csv");
+			string movesPath = Path.Combine(baseDir, "Data", "Moves.csv");
+			string movesPerMonsterPath = Path.Combine(baseDir, "Data", "MovesPerMonster.csv");
+
+			Monsters = DataDeserializer.DeserializeMonsters(monstersPath);
+			Moves = DataDeserializer.DeserializeMoves(movesPath);
 			MovesReverseLookup = ComputeMovesReverseLookup(Moves.Span);
-			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs("Data/MovesPerMonster.csv");
+			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs(movesPerMonsterPath);
 			MonsterMoves = ComputeMonsterMoves(movesPerMonster, Monsters.Span, Moves.Span);
 		}
 

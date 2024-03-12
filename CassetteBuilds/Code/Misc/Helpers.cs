@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using CassetteBuilds.Code.Data;
 
 namespace CassetteBuilds.Code.Misc
@@ -42,8 +43,12 @@ namespace CassetteBuilds.Code.Misc
 
 		public static void PrintMovePagesWithMissingMonsters()
 		{
-			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs("Data/MovesPerMonster.csv");
-			MoveMonsterPair[] movesPerMonsterOld = DataDeserializer.DeserializeMoveMonsterPairsOld("Data/MovesPerMonster_Old.csv");
+			string baseDir = AppContext.BaseDirectory;
+			string movesPerMonsterPath = Path.Combine(baseDir, "Data", "MovesPerMonster.csv");
+			string movesPerMonsterOldPath = Path.Combine(baseDir, "Data", "MovesPerMonster_Old.csv");
+
+			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs(movesPerMonsterPath);
+			MoveMonsterPair[] movesPerMonsterOld = DataDeserializer.DeserializeMoveMonsterPairsOld(movesPerMonsterOldPath);
 
 			HashSet<MoveMonsterPair> missing = new(movesPerMonster);
 			missing.ExceptWith(movesPerMonsterOld);
