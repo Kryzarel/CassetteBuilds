@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BenchmarkDotNet.Running;
+// using BenchmarkDotNet.Running;
 using CassetteBuilds.Code;
 using CassetteBuilds.Code.Admin;
 using CassetteBuilds.Code.Core;
@@ -21,7 +21,7 @@ internal class Program
 
 	private static async Task Update() => await DataUpdater.UpdateAll(clearCache: false);
 
-	private static void RunBenchmarks() => BenchmarkRunner.Run<Benchmarks>();
+	// private static void RunBenchmarks() => BenchmarkRunner.Run<Benchmarks>();
 	private static void PrintMovePagesWithMissingMonsters() => Helpers.PrintMovePagesWithMissingMonsters();
 
 	private static void FindMonsters(string[] moves)

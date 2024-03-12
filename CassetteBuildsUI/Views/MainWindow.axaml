@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:CassetteBuildsUI.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CassetteBuildsUI.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/daf267bf21608ce58f4728253702f8c075055e81.jpg"
         Title="CassetteBuildsUI">
         <views:MainView />
 </Window>
