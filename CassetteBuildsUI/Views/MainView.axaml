@@ -12,5 +12,21 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <StackPanel>
+    <Border Margin="5" CornerRadius="5" Background="DimGray">
+      <ItemsControl ItemsSource="{Binding MovesToSearch}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <AutoCompleteBox Width="200" SelectedItem="{Binding Value}" ItemsSource="{Binding ((vm:MainViewModel)DataContext).MoveNames, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" FilterMode="Contains" Margin="2"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Border>
+  </StackPanel>
+
 </UserControl>
