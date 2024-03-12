@@ -1,4 +1,4 @@
-namespace Cassette_Builds.Code.Data
+namespace CassetteBuilds.Code.Data
 {
 	public readonly struct Move
 	{

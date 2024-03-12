@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Cassette_Builds.Code.Core
+namespace CassetteBuilds.Code.Core
 {
 	public static class MoveFinder
 	{

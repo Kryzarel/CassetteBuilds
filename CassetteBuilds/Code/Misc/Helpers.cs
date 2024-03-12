@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Cassette_Builds.Code.Data;
+using CassetteBuilds.Code.Data;
 
-namespace Cassette_Builds.Code.Misc
+namespace CassetteBuilds.Code.Misc
 {
 	public static class Helpers
 	{

@@ -1,6 +1,6 @@
 using System;
 
-namespace Cassette_Builds.Code.Admin
+namespace CassetteBuilds.Code.Admin
 {
 	public static class HtmlSpanParser
 	{

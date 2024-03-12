@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Cassette_Builds.Code.Admin
+namespace CassetteBuilds.Code.Admin
 {
 	/// <summary>
 	/// Parses the table of all moves

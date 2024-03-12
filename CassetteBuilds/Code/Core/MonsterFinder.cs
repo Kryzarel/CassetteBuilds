@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
-using Cassette_Builds.Code.Data;
+using CassetteBuilds.Code.Data;
 
-namespace Cassette_Builds.Code.Core
+namespace CassetteBuilds.Code.Core
 {
 	public static class MonsterFinder
 	{

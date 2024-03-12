@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Cassette_Builds.Code.Data
+namespace CassetteBuilds.Code.Data
 {
 	public static class ArrayMapper2D
 	{

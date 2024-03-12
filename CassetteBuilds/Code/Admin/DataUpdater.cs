@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cassette_Builds.Code.Admin
+namespace CassetteBuilds.Code.Admin
 {
 	public static class DataUpdater
 	{

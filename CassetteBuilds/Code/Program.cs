@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
-using Cassette_Builds.Code;
-using Cassette_Builds.Code.Admin;
-using Cassette_Builds.Code.Core;
-using Cassette_Builds.Code.Misc;
+using CassetteBuilds.Code;
+using CassetteBuilds.Code.Admin;
+using CassetteBuilds.Code.Core;
+using CassetteBuilds.Code.Misc;
 
 internal class Program
 {

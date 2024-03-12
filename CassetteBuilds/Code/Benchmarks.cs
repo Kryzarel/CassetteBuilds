@@ -1,13 +1,13 @@
 using System;
 using BenchmarkDotNet.Attributes;
-using Cassette_Builds.Code.Core;
+using CassetteBuilds.Code.Core;
 
-namespace Cassette_Builds.Code
+namespace CassetteBuilds.Code
 {
 	[MemoryDiagnoser]
 	public class Benchmarks
 	{
-		private static readonly string[] moves = new string[] { "Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld" };
+		private static readonly string[] moves = ["Custom Starter", "Critical Mass", "Echolocation", "Mind-Meld"];
 		private static readonly int[] moveIndexes;
 		private static readonly Random random = new();
 
