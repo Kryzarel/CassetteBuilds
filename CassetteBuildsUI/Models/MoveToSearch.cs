@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace CassetteBuildsUI.Models
 {
-    public class MoveToSearch : INotifyPropertyChanged
+	public class MoveToSearch : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler? PropertyChanged;
 

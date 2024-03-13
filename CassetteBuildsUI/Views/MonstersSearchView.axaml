@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
              xmlns:m="clr-namespace:CassetteBuildsUI.Models"
-             xmlns:data="clr-namespace:CassetteBuilds.Code.Data;assembly=CassetteBuilds"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CassetteBuildsUI.Views.MonstersSearchView"
              x:DataType="vm:MonstersSearchViewModel">

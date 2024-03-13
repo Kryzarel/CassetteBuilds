@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="clr-namespace:CassetteBuildsUI.Models"
              xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
              x:Class="CassetteBuildsUI.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -12,6 +13,47 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <ItemsControl ItemsSource="{Binding Searches}">
-  </ItemsControl>
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type m:MonsterModel}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding Name}" Margin="5,1,1,1"/>
+        <TextBlock Text="{Binding Number}" Margin="5,1,1,1"/>
+        <TextBlock Text="{Binding Type}" Margin="5,1,1,1"/>
+      </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type m:MonsterSearch}">
+      <StackPanel Margin="10">
+
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="Find monsters compatible with" Margin="0,0,5,0" VerticalAlignment="Center"/>
+          <AutoCompleteBox Name="MoveBox" Width="170" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
+          <Button Content="Add" Command="{Binding TryAddMove}" CommandParameter="{Binding #MoveBox.SelectedItem}" Margin="5,0,0,0"/>
+        </StackPanel>
+        <ItemsControl ItemsSource="{Binding Moves}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <!-- <UniformGrid Rows="2" Columns="4" VerticalAlignment="Center" HorizontalAlignment="Left"/> -->
+              <WrapPanel/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding .}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                <Button Content="X" Command="{Binding #MoveBox.((m:MonsterSearch)DataContext).TryRemoveMove}" CommandParameter="{Binding .}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ItemsControl ItemsSource="{Binding Results}"/>
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.DataTemplates>
+
+  <StackPanel>
+    <ItemsControl ItemsSource="{Binding Searches}"/>
+  </StackPanel>
 </UserControl>

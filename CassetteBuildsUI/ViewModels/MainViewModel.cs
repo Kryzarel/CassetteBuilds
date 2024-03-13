@@ -1,13 +1,14 @@
 ﻿using System.Collections.ObjectModel;
+using CassetteBuildsUI.Models;
 
 namespace CassetteBuildsUI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-	public ObservableCollection<MonstersSearchViewModel> Searches { get; }
+	public ObservableCollection<MonsterSearch> Searches { get; }
 
 	public MainViewModel()
 	{
-		Searches = [new MonstersSearchViewModel()];
+		Searches = [new MonsterSearch()];
 	}
 }

@@ -6,22 +6,60 @@ namespace CassetteBuilds.Code.Core
 {
 	public static class MonsterFinder
 	{
+		public ref struct Enumerator
+		{
+			private readonly ReadOnlySpan<int> moveIndexes;
+			private readonly ReadOnlySpan<bool> monsterMoves;
+			private readonly ReadOnlySpan<Monster> monsters;
+			private int index;
+
+			public readonly ref readonly Monster Current
+			{
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				get => ref monsters[index];
+			}
+
+			public Enumerator(ReadOnlySpan<int> moveIndexes, ReadOnlySpan<bool> monsterMoves, ReadOnlySpan<Monster> monsters)
+			{
+				this.moveIndexes = moveIndexes;
+				this.monsterMoves = monsterMoves;
+				this.monsters = monsters;
+				index = -1;
+			}
+
+			public bool MoveNext()
+			{
+				int i = index;
+				while (++i < monsters.Length)
+				{
+					if (IsCompatible(moveIndexes, monsterMoves, monsters.Length, i))
+					{
+						index = i;
+						return true;
+					}
+				}
+				return false;
+			}
+
+			public readonly Enumerator GetEnumerator() => this;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Enumerator EnumerateMonstersCompatibleWith(in ReadOnlySpan<int> moveIndexes)
+		{
+			return new Enumerator(moveIndexes, Database.MonsterMovesMem.Span, Database.MonstersMem.Span);
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetMonstersCompatibleWith(in ReadOnlySpan<int> moveIndexes, in Span<Monster> buffer)
 		{
-			ReadOnlySpan<Monster> monsters = Database.MonstersMem.Span;
-			ReadOnlySpan<bool> monsterMoves = Database.MonsterMovesMem.Span;
-			int monstersLen = Database.MonsterMovesMem.Length;
-			if (buffer.Length < monstersLen)
+			if (buffer.Length < Database.MonstersMem.Length)
 				return default;
 
 			int count = 0;
-			for (int i = 0; i < monstersLen; i++)
+			foreach (Monster monster in EnumerateMonstersCompatibleWith(moveIndexes))
 			{
-				if (IsCompatible(moveIndexes, monsterMoves, monstersLen, i))
-				{
-					buffer[count++] = monsters[i];
-				}
+				buffer[count++] = monster;
 			}
 			return count;
 		}
@@ -35,18 +73,13 @@ namespace CassetteBuilds.Code.Core
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetMonstersCompatibleWith(in ReadOnlySpan<int> moveIndexes, in Span<int> buffer)
 		{
-			ReadOnlySpan<bool> monsterMoves = Database.MonsterMovesMem.Span;
-			int monstersLen = Database.MonstersMem.Length;
-			if (buffer.Length < monstersLen)
+			if (buffer.Length < Database.MonstersMem.Length)
 				return default;
 
 			int count = 0;
-			for (int i = 0; i < monstersLen; i++)
+			foreach (Monster monster in EnumerateMonstersCompatibleWith(moveIndexes))
 			{
-				if (IsCompatible(moveIndexes, monsterMoves, monstersLen, i))
-				{
-					buffer[count++] = i;
-				}
+				buffer[count++] = monster.Index;
 			}
 			return count;
 		}
