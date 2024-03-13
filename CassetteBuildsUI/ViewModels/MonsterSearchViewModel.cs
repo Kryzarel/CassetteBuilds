@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CassetteBuilds.Code.Core;
 using CassetteBuilds.Code.Data;
+using CassetteBuildsUI.Models;
+using ReactiveUI;
 
-namespace CassetteBuildsUI.Models
+namespace CassetteBuildsUI.ViewModels
 {
-	public class MonsterSearch
+	public class MonsterSearchViewModel : ViewModelBase
 	{
-		public string? SearchText { get; set; }
-		public string? SelectedMove { get; set; }
+		private string? searchText;
+		public string? SearchText { get => searchText; set => this.RaiseAndSetIfChanged(ref searchText, value); }
+
+		private string? selectedMove;
+		public string? SelectedMove { get => selectedMove; set => this.RaiseAndSetIfChanged(ref selectedMove, value); }
+
 		public ReadOnlyObservableCollection<string> Moves { get; }
 		public ReadOnlyObservableCollection<MonsterModel> Results { get; }
 		public static IReadOnlyList<string> MoveNames { get; }
@@ -20,7 +26,7 @@ namespace CassetteBuildsUI.Models
 		private int count = 0;
 		private readonly int[] moveIndexes = new int[8]; // A monster can't have more than 8 moves
 
-		static MonsterSearch()
+		static MonsterSearchViewModel()
 		{
 			string[] names = new string[Database.Moves.Count];
 			ReadOnlySpan<Move> moves = Database.MovesMem.Span;
@@ -31,7 +37,7 @@ namespace CassetteBuildsUI.Models
 			MoveNames = names;
 		}
 
-		public MonsterSearch()
+		public MonsterSearchViewModel()
 		{
 			Moves = new(moves);
 			Results = new(results);
@@ -43,6 +49,9 @@ namespace CassetteBuildsUI.Models
 				return false;
 			if (!Database.MovesReverseLookup.TryGetValue(moveName, out int index))
 				return false;
+
+			SearchText = null;
+			selectedMove = null;
 
 			moveIndexes[count++] = index;
 			moves.Add(moveName);
