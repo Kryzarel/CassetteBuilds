@@ -6,6 +6,14 @@ namespace CassetteBuilds.Code.Core
 	public static class MoveFinder
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int GetMoveIndex(string? moveName)
+		{
+			if (string.IsNullOrEmpty(moveName))
+				return -1;
+			return Database.MovesReverseLookup.TryGetValue(moveName, out int index) ? index : -1;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetMoveIndexes(in ReadOnlySpan<string> moves, in Span<int> buffer)
 		{
 			return GetMoveIndexesAsSpan(moves, buffer).Length;

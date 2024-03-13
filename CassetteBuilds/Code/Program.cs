@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 // using BenchmarkDotNet.Running;
-using CassetteBuilds.Code;
+// using CassetteBuilds.Code;
 using CassetteBuilds.Code.Admin;
 using CassetteBuilds.Code.Core;
 using CassetteBuilds.Code.Misc;
@@ -28,7 +28,7 @@ internal class Program
 	{
 		Console.WriteLine();
 		Helpers.PrintSingleLine<string>(moves, messageWhenEmpty: "No moves selected");
-		ReadOnlySpan<int> monsterIndexes = MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.Monsters.Length]);
-		Helpers.Print(monsterIndexes, i => Database.Monsters.Span[i], messageWhenEmpty: "No monsters found");
+		ReadOnlySpan<int> monsters = MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.MonstersMem.Length]);
+		Helpers.Print(monsters, i => Database.Monsters[i], messageWhenEmpty: "No monsters found");
 	}
 }

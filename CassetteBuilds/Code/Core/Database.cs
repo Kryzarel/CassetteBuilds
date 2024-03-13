@@ -8,10 +8,14 @@ namespace CassetteBuilds.Code.Core
 {
 	public static class Database
 	{
-		public static readonly ReadOnlyMemory<Monster> Monsters;
-		public static readonly ReadOnlyMemory<Move> Moves;
-		public static readonly ReadOnlyMemory<bool> MonsterMoves;
+		public static readonly IReadOnlyList<Monster> Monsters;
+		public static readonly IReadOnlyList<Move> Moves;
+		public static readonly IReadOnlyList<bool> MonsterMoves;
 		public static readonly ReadOnlyDictionary<string, int> MovesReverseLookup;
+
+		public static readonly ReadOnlyMemory<Monster> MonstersMem;
+		public static readonly ReadOnlyMemory<Move> MovesMem;
+		public static readonly ReadOnlyMemory<bool> MonsterMovesMem;
 
 		static Database()
 		{
@@ -20,11 +24,15 @@ namespace CassetteBuilds.Code.Core
 			string movesPath = Path.Combine(baseDir, "Data", "Moves.csv");
 			string movesPerMonsterPath = Path.Combine(baseDir, "Data", "MovesPerMonster.csv");
 
-			Monsters = DataDeserializer.DeserializeMonsters(monstersPath);
-			Moves = DataDeserializer.DeserializeMoves(movesPath);
-			MovesReverseLookup = ComputeMovesReverseLookup(Moves.Span);
+			Monster[] monsters = DataDeserializer.DeserializeMonsters(monstersPath);
+			Move[] moves = DataDeserializer.DeserializeMoves(movesPath);
+			MovesReverseLookup = ComputeMovesReverseLookup(moves);
 			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs(movesPerMonsterPath);
-			MonsterMoves = ComputeMonsterMoves(movesPerMonster, Monsters.Span, Moves.Span);
+			bool[] monsterMoves = ComputeMonsterMoves(movesPerMonster, monsters, moves);
+
+			Monsters = monsters; MonstersMem = monsters;
+			Moves = moves; MovesMem = moves;
+			MonsterMoves = monsterMoves; MonsterMovesMem = monsterMoves;
 		}
 
 		public static ReadOnlyDictionary<string, int> ComputeMovesReverseLookup(in ReadOnlySpan<Move> moves)

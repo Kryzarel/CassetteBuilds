@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
+             xmlns:m="clr-namespace:CassetteBuildsUI.Models"
+             xmlns:data="clr-namespace:CassetteBuilds.Code.Data;assembly=CassetteBuilds"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CassetteBuildsUI.Views.MonstersSearchView"
+             x:DataType="vm:MonstersSearchViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MonstersSearchViewModel />
+  </Design.DataContext>
+
+  <!-- <UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:MoveToSearch}">
+
+    </DataTemplate>
+  </UserControl.DataTemplates> -->
+
+  <Border Margin="5" CornerRadius="5" Background="DimGray">
+    <StackPanel>
+      <ItemsControl ItemsSource="{Binding MovesToSearch}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="{x:Type m:MoveToSearch}">
+            <AutoCompleteBox Width="170" Watermark="{Binding Number, StringFormat=Move {0}}" SelectedItem="{Binding Move}" ItemsSource="{Binding MoveNames}" FilterMode="Contains" Margin="2"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ItemsControl ItemsSource="{Binding MonstersFound}"/>
+    </StackPanel>
+  </Border>
+
+</UserControl>
