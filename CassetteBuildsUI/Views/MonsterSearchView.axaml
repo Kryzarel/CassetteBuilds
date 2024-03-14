@@ -14,45 +14,39 @@
   </Design.DataContext>
 
   <UserControl.DataTemplates>
-    <DataTemplate DataType="{x:Type m:MonsterModel}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding Name}" Margin="5,1,1,1"/>
-        <TextBlock Text="{Binding Number}" Margin="5,1,1,1"/>
-        <TextBlock Text="{Binding Type}" Margin="5,1,1,1"/>
-      </StackPanel>
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type m:MoveModel}">
       <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding Name}" Margin="5,1,1,1"/>
+        <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
       </StackPanel>
     </DataTemplate>
   </UserControl.DataTemplates>
 
-  <StackPanel Margin="10">
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="Find monsters compatible with" Margin="0,0,5,0" VerticalAlignment="Center"/>
-      <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
-      <Button Name="AddButton" Content="Add" Command="{Binding TryAddMove}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
+  <ScrollViewer>
+    <StackPanel Margin="10" VerticalAlignment="Top" Height="870">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
+        <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
+        <Button Name="AddButton" Content="Add" Command="{Binding TryAddMove}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
+      </StackPanel>
+
+      <ItemsControl ItemsSource="{Binding MovesFilter}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel MinHeight="32"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
+              <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,2,0"/>
+              <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).TryRemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <DataGrid ItemsSource="{Binding Results}" AutoGenerateColumns="True" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="Gray" Height="800"/>
     </StackPanel>
-    <ItemsControl ItemsSource="{Binding MovesFilter}">
-      <ItemsControl.ItemsPanel>
-        <ItemsPanelTemplate>
-          <WrapPanel/>
-        </ItemsPanelTemplate>
-      </ItemsControl.ItemsPanel>
-
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).TryRemoveMove}" CommandParameter="{Binding .}"/>
-          </StackPanel>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
-
-    <ItemsControl ItemsSource="{Binding Results}"/>
-  </StackPanel>
+  </ScrollViewer>
 
 </UserControl>

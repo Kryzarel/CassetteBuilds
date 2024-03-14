@@ -9,6 +9,7 @@ public partial class MonsterSearchView : UserControl
 	{
 		InitializeComponent();
 
+		MoveSearchBox.AddDropdownInteraction();
 		MoveSearchBox.KeyUp += (sender, args) =>
 		{
 			if (args.Key == Avalonia.Input.Key.Enter || args.Key == Avalonia.Input.Key.Return)
@@ -16,7 +17,5 @@ public partial class MonsterSearchView : UserControl
 				AddButton.Command?.Execute(AddButton.CommandParameter);
 			}
 		};
-
-		MoveSearchBox.AddDropdownInteraction();
 	}
 }

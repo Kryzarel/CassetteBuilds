@@ -42,6 +42,7 @@ namespace CassetteBuildsUI.ViewModels
 		{
 			MovesFilter = new(movesFilter);
 			Results = new(results);
+			RecalculateResults();
 		}
 
 		public bool TryAddMove(string? moveName)
@@ -89,8 +90,17 @@ namespace CassetteBuildsUI.ViewModels
 		private void RecalculateResults()
 		{
 			results.Clear();
-			ReadOnlySpan<int> indexes = moveIndexes;
-			foreach (ref readonly Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes[..count]))
+			ReadOnlySpan<int> indexes = moveIndexes.AsSpan()[..count];
+
+			if (indexes.IsEmpty)
+			{
+				foreach (MonsterModel monster in Monsters)
+				{
+					results.Add(monster);
+				}
+			}
+
+			foreach (ref readonly Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes))
 			{
 				results.Add(Logic.Database.Monsters[monster.Index]);
 			}

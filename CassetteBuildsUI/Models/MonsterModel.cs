@@ -17,6 +17,8 @@ namespace CassetteBuildsUI.Models
 		public int RangedDefense { get; }
 		public int Speed { get; }
 		public string WikiLink { get; }
+
+		public string DisplayNumber { get; }
 		public string ImagePath { get; }
 
 		public MonsterModel(Monster monster)
@@ -32,6 +34,8 @@ namespace CassetteBuildsUI.Models
 			RangedDefense = monster.RangedDefense;
 			Speed = monster.Speed;
 			WikiLink = monster.WikiLink;
+
+			DisplayNumber = Number < 0 ? "???" : Number.ToString();
 			ImagePath = Path.ChangeExtension(Path.Combine(AppContext.BaseDirectory, "Images", Name), ".png");
 		}
 	}
