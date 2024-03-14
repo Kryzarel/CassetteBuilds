@@ -16,11 +16,13 @@ namespace CassetteBuildsUI.ViewModels
 		private string? selectedMove;
 		public string? SelectedMove { get => selectedMove; set => this.RaiseAndSetIfChanged(ref selectedMove, value); }
 
-		public ReadOnlyObservableCollection<string> Moves { get; }
+		public ReadOnlyObservableCollection<MoveModel> MovesFilter { get; }
 		public ReadOnlyObservableCollection<MonsterModel> Results { get; }
 		public static IReadOnlyList<string> MoveNames { get; }
+		public static IReadOnlyList<MoveModel> Moves => Logic.Database.Moves;
+		public static IReadOnlyList<MonsterModel> Monsters => Logic.Database.Monsters;
 
-		private readonly ObservableCollection<string> moves = [];
+		private readonly ObservableCollection<MoveModel> movesFilter = [];
 		private readonly ObservableCollection<MonsterModel> results = [];
 
 		private int count = 0;
@@ -28,47 +30,53 @@ namespace CassetteBuildsUI.ViewModels
 
 		static MonsterSearchViewModel()
 		{
-			string[] names = new string[Database.Moves.Count];
-			ReadOnlySpan<Move> moves = Database.MovesMem.Span;
-			for (int i = 0; i < names.Length; i++)
+			string[] moveNames = new string[Database.Moves.Length];
+			foreach (Move move in Database.Moves.Span)
 			{
-				names[i] = moves[i].Name;
+				moveNames[move.Index] = move.Name;
 			}
-			MoveNames = names;
+			MoveNames = moveNames;
 		}
 
 		public MonsterSearchViewModel()
 		{
-			Moves = new(moves);
+			MovesFilter = new(movesFilter);
 			Results = new(results);
 		}
 
 		public bool TryAddMove(string? moveName)
 		{
-			if (count >= moveIndexes.Length || string.IsNullOrWhiteSpace(moveName))
+			if (count >= moveIndexes.Length || moveName == null)
 				return false;
-			if (!Database.MovesReverseLookup.TryGetValue(moveName, out int index))
+			if (!MoveFinder.TryGetMoveIndex(moveName, out int index))
+				return false;
+			return TryAddMove(Moves[index]);
+		}
+
+		public bool TryAddMove(MoveModel? move)
+		{
+			if (count >= moveIndexes.Length || move == null)
 				return false;
 
 			SearchText = null;
-			selectedMove = null;
+			SelectedMove = null;
 
-			moveIndexes[count++] = index;
-			moves.Add(moveName);
+			moveIndexes[count++] = move.Index;
+			movesFilter.Add(move);
 			RecalculateResults();
 			return true;
 		}
 
-		public bool TryRemoveMove(string? moveName)
+		public bool TryRemoveMove(MoveModel? move)
 		{
-			if (count <= 0 || string.IsNullOrEmpty(moveName))
+			if (count <= 0 || move == null)
 				return false;
 
-			int index = moves.IndexOf(moveName);
+			int index = movesFilter.IndexOf(move);
 			if (index < 0 || index > count)
 				return false;
 
-			moves.RemoveAt(index);
+			movesFilter.RemoveAt(index);
 			count--;
 			if (index < count)
 			{
@@ -82,9 +90,9 @@ namespace CassetteBuildsUI.ViewModels
 		{
 			results.Clear();
 			ReadOnlySpan<int> indexes = moveIndexes;
-			foreach (Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes[..count]))
+			foreach (ref readonly Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes[..count]))
 			{
-				results.Add(new MonsterModel { Monster = monster });
+				results.Add(Logic.Database.Monsters[monster.Index]);
 			}
 		}
 	}

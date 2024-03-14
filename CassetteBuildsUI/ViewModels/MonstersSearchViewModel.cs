@@ -14,12 +14,12 @@ public class MonstersSearchViewModel : ViewModelBase
 	public ReadOnlyObservableCollection<string> MonstersFound { get; }
 
 	private readonly int[] moveIndexes = new int[8];
-	private readonly int[] monsterBuffer = new int[Database.MonstersMem.Length];
+	private readonly int[] monsterBuffer = new int[Logic.Database.Monsters.Count];
 	private readonly ObservableCollection<string> monstersFound = [];
 
 	public MonstersSearchViewModel()
 	{
-		ReadOnlySpan<Move> moves = Database.MovesMem.Span;
+		ReadOnlySpan<Move> moves = Database.Moves.Span;
 		string[] moveNames = new string[moves.Length];
 		for (int i = 0; i < moves.Length; i++)
 		{
@@ -45,7 +45,7 @@ public class MonstersSearchViewModel : ViewModelBase
 			moveIndexes[moveToSearch.Index] = MoveFinder.GetMoveIndex(moveToSearch.Move);
 
 			monstersFound.Clear();
-			ReadOnlySpan<Monster> monsters = Database.MonstersMem.Span;
+			ReadOnlySpan<Monster> monsters = Database.Monsters.Span;
 			foreach (int index in MonsterFinder.GetMonstersCompatibleWithAsSpan(moveIndexes, monsterBuffer))
 			{
 				monstersFound.Add(monsters[index].Name);

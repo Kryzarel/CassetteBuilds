@@ -28,7 +28,7 @@ internal class Program
 	{
 		Console.WriteLine();
 		Helpers.PrintSingleLine<string>(moves, messageWhenEmpty: "No moves selected");
-		ReadOnlySpan<int> monsters = MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.MonstersMem.Length]);
-		Helpers.Print(monsters, i => Database.Monsters[i], messageWhenEmpty: "No monsters found");
+		ReadOnlySpan<int> monsters = MonsterFinder.GetMonstersCompatibleWithAsSpan(moves, stackalloc int[Database.Monsters.Length]);
+		Helpers.Print(monsters, i => Database.Monsters.Span[i], messageWhenEmpty: "No monsters found");
 	}
 }

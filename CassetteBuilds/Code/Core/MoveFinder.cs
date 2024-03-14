@@ -6,11 +6,21 @@ namespace CassetteBuilds.Code.Core
 	public static class MoveFinder
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool TryGetMoveIndex(string? moveName, out int index)
+		{
+			if (!string.IsNullOrEmpty(moveName) && Database.MovesReverseLookup.TryGetValue(moveName, out index))
+			{
+				return true;
+			}
+			index = -1;
+			return false;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetMoveIndex(string? moveName)
 		{
-			if (string.IsNullOrEmpty(moveName))
-				return -1;
-			return Database.MovesReverseLookup.TryGetValue(moveName, out int index) ? index : -1;
+			TryGetMoveIndex(moveName, out int index);
+			return index;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
