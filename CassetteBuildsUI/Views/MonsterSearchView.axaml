@@ -26,7 +26,7 @@
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
         <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
-        <Button Name="AddButton" Content="Add" Command="{Binding TryAddMove}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
+        <Button Name="AddButton" Content="Add" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
       </StackPanel>
 
       <ItemsControl ItemsSource="{Binding MovesFilter}">
@@ -39,7 +39,7 @@
           <DataTemplate>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
               <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,2,0"/>
-              <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).TryRemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
+              <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).RemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
             </StackPanel>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
