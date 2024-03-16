@@ -13,7 +13,11 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <StackPanel>
-    <ItemsControl ItemsSource="{Binding Searches}"/>
-  </StackPanel>
+  <TabControl ItemsSource="{Binding Searches}">
+    <TabControl.ItemTemplate>
+      <DataTemplate>
+        <TextBlock Text="Search" FontSize="16"/>
+      </DataTemplate>
+    </TabControl.ItemTemplate>
+  </TabControl>
 </UserControl>

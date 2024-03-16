@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
              xmlns:m="clr-namespace:CassetteBuildsUI.Models"
+             xmlns:views="clr-namespace:CassetteBuildsUI.Views"
+             xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CassetteBuildsUI.Views.MonsterSearchView"
              x:DataType="vm:MonsterSearchViewModel">
@@ -21,32 +22,37 @@
     </DataTemplate>
   </UserControl.DataTemplates>
 
-  <ScrollViewer>
-    <StackPanel Margin="10" VerticalAlignment="Top" Height="870">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-        <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
-        <Button Name="AddButton" Content="Add" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
-      </StackPanel>
-
-      <ItemsControl ItemsSource="{Binding MovesFilter}">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <WrapPanel MinHeight="32"/>
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
-              <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,2,0"/>
-              <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).RemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
-            </StackPanel>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-
-      <DataGrid ItemsSource="{Binding Results}" AutoGenerateColumns="True" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="Gray" Height="800"/>
+  <DockPanel VerticalAlignment="Top">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+      <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
+      <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
+      <Button Name="AddButton" Content="Add" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
     </StackPanel>
-  </ScrollViewer>
+
+    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding MovesFilter}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel MinHeight="32"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
+            <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,2,0"/>
+            <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).RemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
+          </StackPanel>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <DataGrid Name="ResultsGrid"
+              ItemsSource="{Binding Results}"
+              AutoGenerateColumns="True"
+              IsReadOnly="True"
+              GridLinesVisibility="All"
+              BorderThickness="2"
+              BorderBrush="Gray"
+              Height="{Binding $parent.Height, Converter={StaticResource MathAddConverter}, ConverterParameter=-500}"/>
+  </DockPanel>
 
 </UserControl>
