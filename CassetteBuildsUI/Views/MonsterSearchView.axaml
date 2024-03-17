@@ -16,6 +16,7 @@
 
   <UserControl.Styles>
     <Style Selector="DataGridRow:nth-child(odd)">
+      <!-- https://stackoverflow.com/questions/77666670/how-to-use-standard-theme-colors-in-my-avalonia-custom-control -->
       <Setter Property="Background" Value="{DynamicResource DataGridDetailsPresenterBackgroundBrush}"/>
     </Style>
   </UserControl.Styles>
