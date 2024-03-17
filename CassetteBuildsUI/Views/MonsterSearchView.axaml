@@ -14,6 +14,12 @@
     <vm:MonsterSearchViewModel />
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="DataGridRow:nth-child(odd)">
+      <Setter Property="Background" Value="{DynamicResource DataGridDetailsPresenterBackgroundBrush}"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.DataTemplates>
     <DataTemplate DataType="{x:Type m:MoveModel}">
       <StackPanel Orientation="Horizontal">
@@ -22,7 +28,7 @@
     </DataTemplate>
   </UserControl.DataTemplates>
 
-  <DockPanel VerticalAlignment="Top">
+  <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
       <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
       <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
@@ -45,14 +51,8 @@
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    <DataGrid Name="ResultsGrid"
-              ItemsSource="{Binding Results}"
-              AutoGenerateColumns="True"
-              IsReadOnly="True"
-              GridLinesVisibility="All"
-              BorderThickness="2"
-              BorderBrush="Gray"
-              Height="{Binding $parent.Height, Converter={StaticResource MathAddConverter}, ConverterParameter=-500}"/>
+    <DataGrid Name="ResultsGrid" ItemsSource="{Binding Results}" AutoGenerateColumns="True" IsReadOnly="True" GridLinesVisibility="Vertical"/>
+    <!-- GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray" -->
   </DockPanel>
 
 </UserControl>
