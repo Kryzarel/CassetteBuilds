@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using Avalonia.Media.Imaging;
 using CassetteBuilds.Code.Data;
 
 namespace CassetteBuildsUI.Models
@@ -19,7 +22,14 @@ namespace CassetteBuildsUI.Models
 		public string WikiLink { get; }
 
 		public string DisplayNumber { get; }
-		public string ImagePath { get; }
+		public Bitmap Image { get; }
+
+		public static IComparer NumberComparer { get; }
+
+		static MonsterModel()
+		{
+			NumberComparer = Comparer<MonsterModel>.Create(NumberComparison);
+		}
 
 		public MonsterModel(Monster monster)
 		{
@@ -35,8 +45,19 @@ namespace CassetteBuildsUI.Models
 			Speed = monster.Speed;
 			WikiLink = monster.WikiLink;
 
-			DisplayNumber = Number < 0 ? "???" : Number.ToString();
-			ImagePath = Path.ChangeExtension(Path.Combine(AppContext.BaseDirectory, "Images", Name), ".png");
+			DisplayNumber = Number < 0 ? "#???" : string.Format("#{0:000}", Number);
+			string imagePath = Path.ChangeExtension(Path.Combine(AppContext.BaseDirectory, "Images", Name), ".png");
+			using FileStream stream = new(imagePath, FileMode.Open);
+			Image = new Bitmap(stream);
+		}
+
+		public static int NumberComparison(MonsterModel a, MonsterModel b)
+		{
+			if (a.Number < 0 || b.Number < 0)
+			{
+				return a.Index.CompareTo(b.Index);
+			}
+			return a.Number.CompareTo(b.Number);
 		}
 	}
 }

@@ -30,30 +30,44 @@
   </UserControl.DataTemplates>
 
   <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+    <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
       <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
       <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
-      <Button Name="AddButton" Content="Add" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="5,0,0,0"/>
-    </StackPanel>
+      <Button Name="AddButton" Content="Add" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="20,0,0,0" Padding="20,0,20,0"/>
+    </WrapPanel>
 
     <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding MovesFilter}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-          <WrapPanel MinHeight="32"/>
+          <WrapPanel MinHeight="40"/>
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
-            <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,2,0"/>
-            <Button Content="X" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).RemoveMove}" CommandParameter="{Binding .}" Padding="4,2,4,2"/>
+            <TextBlock Name="Text" Text="{Binding Name}" FontSize="16" VerticalAlignment="Center"/>
+            <Button Content="X" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding #MoveSearchBox.((vm:MonsterSearchViewModel)DataContext).RemoveMove}" CommandParameter="{Binding .}" Margin="2,0,0,0" Padding="8,2,8,2"/>
           </StackPanel>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    <DataGrid Name="ResultsGrid" ItemsSource="{Binding Results}" AutoGenerateColumns="True" IsReadOnly="True" GridLinesVisibility="Vertical"/>
     <!-- GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray" -->
+    <DataGrid Name="ResultsGrid" ItemsSource="{Binding Results}" IsReadOnly="True" GridLinesVisibility="Vertical">
+      <DataGrid.Columns>
+        <DataGridTemplateColumn><DataTemplate><Image Source="{Binding Image}" Height="40"/></DataTemplate></DataGridTemplateColumn>
+        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+        <DataGridTextColumn Header="Number" Binding="{Binding DisplayNumber}"/>
+        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+        <DataGridTextColumn Header="HP" Binding="{Binding HP}"/>
+        <DataGridTextColumn Header="M. Attack" Binding="{Binding MeleeAttack}"/>
+        <DataGridTextColumn Header="M. Defense" Binding="{Binding MeleeDefense}"/>
+        <DataGridTextColumn Header="R. Attack" Binding="{Binding RangedAttack}"/>
+        <DataGridTextColumn Header="R. Defense" Binding="{Binding RangedDefense}"/>
+        <DataGridTextColumn Header="Speed" Binding="{Binding Speed}"/>
+        <DataGridTextColumn Header="Wiki Link" Binding="{Binding WikiLink}"/>
+      </DataGrid.Columns>
+    </DataGrid>
   </DockPanel>
 
 </UserControl>
