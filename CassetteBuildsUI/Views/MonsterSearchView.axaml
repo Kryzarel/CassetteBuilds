@@ -5,7 +5,7 @@
              xmlns:m="clr-namespace:CassetteBuildsUI.Models"
              xmlns:views="clr-namespace:CassetteBuildsUI.Views"
              xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
              x:Class="CassetteBuildsUI.Views.MonsterSearchView"
              x:DataType="vm:MonsterSearchViewModel">
   <Design.DataContext>

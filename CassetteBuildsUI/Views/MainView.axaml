@@ -13,7 +13,7 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TabControl ItemsSource="{Binding Searches}">
+  <TabControl ItemsSource="{Binding Searches}" Margin="0,0,0,10">
     <TabControl.ItemTemplate>
       <DataTemplate>
         <TextBlock Text="Search" FontSize="16"/>
