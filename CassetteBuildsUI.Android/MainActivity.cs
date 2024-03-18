@@ -7,7 +7,7 @@ using Avalonia.ReactiveUI;
 namespace CassetteBuildsUI.Android;
 
 [Activity(
-    Label = "CassetteBuildsUI.Android",
+    Label = "Cassette Builds",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

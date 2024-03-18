@@ -22,7 +22,7 @@ public partial class MonsterSearchView : UserControl
 		};
 
 		// Can't bind CustomSortComparer via XAML for some reason, gotta do it in code...
-		FindColumn(ResultsGrid, "Number").CustomSortComparer = MonsterModel.NumberComparer;
+		FindColumn(ResultsGrid, "Number")!.CustomSortComparer = MonsterModel.NumberComparer;
 	}
 
 	public static DataGridColumn? FindColumn(DataGrid dataGrid, string header)
