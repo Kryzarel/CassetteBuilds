@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="clr-namespace:CassetteBuildsUI.Models"
              xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
+             mc:Ignorable="d" d:DesignWidth="405" d:DesignHeight="900"
              x:Class="CassetteBuildsUI.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>

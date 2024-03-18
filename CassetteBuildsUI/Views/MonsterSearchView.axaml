@@ -5,7 +5,7 @@
              xmlns:m="clr-namespace:CassetteBuildsUI.Models"
              xmlns:views="clr-namespace:CassetteBuildsUI.Views"
              xmlns:vm="clr-namespace:CassetteBuildsUI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
+             mc:Ignorable="d" d:DesignWidth="405" d:DesignHeight="900"
              x:Class="CassetteBuildsUI.Views.MonsterSearchView"
              x:DataType="vm:MonsterSearchViewModel">
   <Design.DataContext>
@@ -31,7 +31,7 @@
 
   <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
-      <TextBlock Text="Filter monsters by:" Margin="0,0,5,10" VerticalAlignment="Center"/>
+      <!-- <TextBlock Text="Filter by:" Margin="0,0,5,10" VerticalAlignment="Center"/> -->
       <AutoCompleteBox Name="MoveSearchBox" Width="200" Watermark="Move" Text="{Binding SearchText}" SelectedItem="{Binding SelectedMove}" ItemsSource="{Binding MoveNames}" FilterMode="Contains"/>
       <Button Name="AddButton" Content="Add" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding AddMoveCommand}" CommandParameter="{Binding #MoveSearchBox.SelectedItem}" Margin="20,0,0,0" Padding="20,0,20,0"/>
     </WrapPanel>
