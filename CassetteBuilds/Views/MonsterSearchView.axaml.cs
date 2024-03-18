@@ -12,7 +12,7 @@ public partial class MonsterSearchView : UserControl
 	{
 		InitializeComponent();
 
-		MoveSearchBox.AddDropdownInteraction();
+		MoveSearchBox.AddDropdown();
 		MoveSearchBox.KeyUp += (sender, args) =>
 		{
 			if (args.Key is Key.Enter or Key.Return)

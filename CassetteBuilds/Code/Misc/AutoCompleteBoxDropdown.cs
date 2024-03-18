@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -11,29 +11,22 @@ namespace CassetteBuilds.Logic
 {
 	public static class AutoCompleteBoxDropdown
 	{
-		// // OP way to access private members without reflection. Available only in .NET 8 and above.
-		// // Way faster than reflection and compatible with AOT(?) -> Guess not... -.-
-		// // https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.unsafeaccessorattribute
-		// [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_TextBox")]
-		// extern static TextBox GetTextBox(this AutoCompleteBox autoCompleteBox);
-		// [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "PopulateDropDown")]
-		// extern static void PopulateDropDown(this AutoCompleteBox autoCompleteBox, object? sender, EventArgs args);
-		// [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "OpeningDropDown")]
-		// extern static void OpeningDropDown(this AutoCompleteBox autoCompleteBox, bool value);
-		// [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ignorePropertyChange")]
-		// extern static ref bool RefGet_ignorePropertyChange(this AutoCompleteBox autoCompleteBox);
+		// OP way to access private members without reflection. Available only in .NET 8 and above.
+		// Way faster than reflection and compatible with AOT(?)
+		// https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.unsafeaccessorattribute
+		[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_textBox")]
+		extern static ref TextBox GetTextBox(this AutoCompleteBox autoCompleteBox);
+		[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "PopulateDropDown")]
+		extern static void PopulateDropDown(this AutoCompleteBox autoCompleteBox, object? sender, EventArgs args);
+		[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "OpeningDropDown")]
+		extern static void OpeningDropDown(this AutoCompleteBox autoCompleteBox, bool value);
+		[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ignorePropertyChange")]
+		extern static ref bool RefGet_ignorePropertyChange(this AutoCompleteBox autoCompleteBox);
 
 		// Cache this delegate just because we can. No need to allocate it each time.
 		private static readonly EventHandler<KeyEventArgs> showDropdownOnKeyUpAction = ShowDropdownOnKeyUp;
 
-		private static readonly PropertyInfo? textBoxProperty = typeof(AutoCompleteBox).GetProperty("TextBox", BindingFlags.Instance | BindingFlags.NonPublic);
-		private static readonly MethodInfo? populateDropDownMethod = typeof(AutoCompleteBox).GetMethod("PopulateDropDown", BindingFlags.NonPublic | BindingFlags.Instance);
-		private static readonly MethodInfo? openingDropDownMethod = typeof(AutoCompleteBox).GetMethod("OpeningDropDown", BindingFlags.NonPublic | BindingFlags.Instance);
-		private static readonly FieldInfo? ignorePropertyChangeField = typeof(AutoCompleteBox).GetField("_ignorePropertyChange", BindingFlags.NonPublic | BindingFlags.Instance);
-		private static readonly object[] populateDropDownArgs = [null!, EventArgs.Empty];
-		private static readonly object[] openingDropDownArgs = [false];
-
-		public static async void AddDropdownInteraction(this AutoCompleteBox autoCompleteBox)
+		public static async void AddDropdown(this AutoCompleteBox autoCompleteBox)
 		{
 			await Task.Delay(10).ContinueWith(_ => Dispatcher.UIThread.Invoke(autoCompleteBox.AddDropdownButton));
 		}
@@ -43,7 +36,7 @@ namespace CassetteBuilds.Logic
 			// Use KeyUp because AutoCompleteBox sometimes eats KeyDown events
 			autoCompleteBox.KeyUp += showDropdownOnKeyUpAction;
 
-			TextBox tb = autoCompleteBox.GetTextBox();
+			TextBox textBox = autoCompleteBox.GetTextBox();
 			Button button = new()
 			{
 				Content = "▼",
@@ -53,7 +46,7 @@ namespace CassetteBuilds.Logic
 				ClickMode = ClickMode.Press
 			};
 			button.Click += (s, e) => autoCompleteBox.ShowDropdown();
-			tb.InnerRightContent = button;
+			textBox.InnerRightContent = button;
 		}
 
 		private static void ShowDropdownOnKeyUp(object? sender, KeyEventArgs args)
@@ -64,41 +57,17 @@ namespace CassetteBuilds.Logic
 			}
 		}
 
-		// private static void ShowDropdown(this AutoCompleteBox autoCompleteBox)
-		// {
-		// 	if (!autoCompleteBox.IsDropDownOpen)
-		// 	{
-		// 		autoCompleteBox.PopulateDropDown(autoCompleteBox, EventArgs.Empty);
-		// 		autoCompleteBox.OpeningDropDown(false);
-
-		// 		if (!autoCompleteBox.IsDropDownOpen)
-		// 		{
-		// 			//We *must* set the field and not the property as we need to avoid the changed event being raised (which prevents the dropdown opening).
-		// 			autoCompleteBox.RefGet_ignorePropertyChange() = true;
-		// 			autoCompleteBox.SetCurrentValue(AutoCompleteBox.IsDropDownOpenProperty, true);
-		// 		}
-		// 	}
-		// }
-
-		private static TextBox GetTextBox(this AutoCompleteBox autoCompleteBox)
-		{
-			return textBoxProperty?.GetValue(autoCompleteBox) is TextBox tb ? tb : null!;
-		}
-
 		private static void ShowDropdown(this AutoCompleteBox autoCompleteBox)
 		{
 			if (!autoCompleteBox.IsDropDownOpen)
 			{
-				populateDropDownArgs[0] = autoCompleteBox;
-				populateDropDownMethod?.Invoke(autoCompleteBox, populateDropDownArgs);
-				openingDropDownMethod?.Invoke(autoCompleteBox, openingDropDownArgs);
+				autoCompleteBox.PopulateDropDown(autoCompleteBox, EventArgs.Empty);
+				autoCompleteBox.OpeningDropDown(false);
 
 				if (!autoCompleteBox.IsDropDownOpen)
 				{
 					//We *must* set the field and not the property as we need to avoid the changed event being raised (which prevents the dropdown opening).
-					if (ignorePropertyChangeField?.GetValue(autoCompleteBox) is bool val && !val)
-						ignorePropertyChangeField?.SetValue(autoCompleteBox, true);
-
+					autoCompleteBox.RefGet_ignorePropertyChange() = true;
 					autoCompleteBox.SetCurrentValue(AutoCompleteBox.IsDropDownOpenProperty, true);
 				}
 			}
