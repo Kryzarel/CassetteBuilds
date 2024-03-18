@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using CassetteBuilds.Code.Data;
+using Avalonia.Platform;
+using CassetteBuilds.Code.Logic;
 
 namespace CassetteBuilds.Code.Misc
 {
-	public static class Helpers
+    public static class Helpers
 	{
 		public static void Print<T, R>(in ReadOnlySpan<T> span, Func<T, R>? select = null, string? title = null, string? messageWhenEmpty = null)
 		{
@@ -43,12 +44,11 @@ namespace CassetteBuilds.Code.Misc
 
 		public static void PrintMovePagesWithMissingMonsters()
 		{
-			string baseDir = AppContext.BaseDirectory;
-			string movesPerMonsterPath = Path.Combine(baseDir, "Data", "MovesPerMonster.csv");
-			string movesPerMonsterOldPath = Path.Combine(baseDir, "Data", "MovesPerMonster_Old.csv");
+			using TextReader monsterMovesReader = new StreamReader(AssetLoader.Open(new Uri("/Assets/Data/MovesPerMonster.csv")));
+			using TextReader monsterMovesOldReader = new StreamReader(AssetLoader.Open(new Uri("/Assets/Data/MovesPerMonster_Old.csv")));
 
-			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs(movesPerMonsterPath);
-			MoveMonsterPair[] movesPerMonsterOld = DataDeserializer.DeserializeMoveMonsterPairsOld(movesPerMonsterOldPath);
+			MoveMonsterPair[] movesPerMonster = DataDeserializer.DeserializeMoveMonsterPairs(monsterMovesReader);
+			MoveMonsterPair[] movesPerMonsterOld = DataDeserializer.DeserializeMoveMonsterPairsOld(monsterMovesOldReader);
 
 			HashSet<MoveMonsterPair> missing = new(movesPerMonster);
 			missing.ExceptWith(movesPerMonsterOld);

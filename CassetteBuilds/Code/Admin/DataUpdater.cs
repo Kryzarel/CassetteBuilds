@@ -24,8 +24,8 @@ namespace CassetteBuilds.Code.Admin
 					if (Directory.Exists("Wiki Pages"))
 						Directory.Delete("Wiki Pages", recursive: true);
 
-					if (Directory.Exists("Images"))
-						Directory.Delete("Images", recursive: true);
+					if (Directory.Exists("Assets/Images"))
+						Directory.Delete("Assets/Images", recursive: true);
 				}
 				await Task.WhenAll(UpdateMonsters(stopwatch), UpdateMoves(stopwatch));
 			}
@@ -43,7 +43,7 @@ namespace CassetteBuilds.Code.Admin
 		{
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Monsters");
 			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", "Wiki Pages/Species.html");
-			using FileStream stream = File.Create("Data/Monsters.csv");
+			using FileStream stream = File.Create("Assets/Data/Monsters.csv");
 			using StreamWriter writer = new(stream);
 			List<(string, string)> namesAndLinks = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, writer);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monsters...Done");
@@ -57,7 +57,7 @@ namespace CassetteBuilds.Code.Admin
 		{
 			Task<StringWriter>[] tasks = new Task<StringWriter>[Math.Min(MaxConcurrentDownloads, namesAndLinks.Count)];
 
-			using FileStream stream = File.Create("Data/MovesPerMonster.csv");
+			using FileStream stream = File.Create("Assets/Data/MovesPerMonster.csv");
 			using StreamWriter writer = new(stream);
 			writer.Write("Monster,Move");
 
@@ -101,7 +101,7 @@ namespace CassetteBuilds.Code.Admin
 		{
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Moves");
 			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", "Wiki Pages/Moves.html");
-			using FileStream stream = File.Create("Data/Moves.csv");
+			using FileStream stream = File.Create("Assets/Data/Moves.csv");
 			using StreamWriter writer = new(stream);
 			MovesHtmlParser.Parse(movesHtml, WebsiteUrl, writer);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Moves...Done");

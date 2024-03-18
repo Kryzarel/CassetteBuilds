@@ -8,7 +8,7 @@ namespace Kryz.CSV
 	{
 		public delegate T CreateObject<T>(in CsvRow row);
 
-		private enum ColumnType { Both, CSV, TSV }
+		public enum ColumnType { Both, CSV, TSV }
 
 		public static T[] FromString<T>(string csv, CreateObject<T> createObject)
 		{
@@ -26,7 +26,12 @@ namespace Kryz.CSV
 			return Deserialize(path, streamReader, columnType, createObject);
 		}
 
-		private static T[] Deserialize<T>(string str, TextReader? textReader, ColumnType columnType, CreateObject<T> createObject)
+		public static T[] FromTextReader<T>(TextReader textReader, CreateObject<T> createObject, ColumnType columnType = ColumnType.Both)
+		{
+			return Deserialize(null, textReader, columnType, createObject);
+		}
+
+		private static T[] Deserialize<T>(string? str, TextReader? textReader, ColumnType columnType, CreateObject<T> createObject)
 		{
 			using NonAllocReader reader = textReader != null ? new(textReader, stackalloc char[1024]) : new(str);
 

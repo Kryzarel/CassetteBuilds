@@ -1,0 +1,29 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:CassetteBuilds"
+             x:Class="CassetteBuilds.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <!-- Theme Creator https://theme.xaml.live/ -->
+                <!-- Lavender with alterations -->
+                <ColorPaletteResources x:Key="Light" Accent="#ff8961cc" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="#FF080808" BaseLow="#ffeeceff" BaseMedium="#ffa987bc" BaseMediumHigh="#ff7b5890" BaseMediumLow="#ff9270a6" ChromeAltLow="#ff7b5890" ChromeBlackHigh="#FF080808" ChromeBlackLow="#ffeeceff" ChromeBlackMedium="#ff7b5890" ChromeBlackMediumLow="#ffa987bc" ChromeDisabledHigh="#ffeeceff" ChromeDisabledLow="#ffa987bc" ChromeGray="#ff9270a6" ChromeHigh="#ffeeceff" ChromeLow="#fffeeaff" ChromeMedium="#fffbe4ff" ChromeMediumLow="#fffeeaff" ChromeWhite="White" ListLow="#fffbe4ff" ListMedium="#ffeeceff" RegionColor="#fffef6ff" />
+                <ColorPaletteResources x:Key="Dark" Accent="#ff8961cc" AltHigh="#FF080808" AltLow="#FF080808" AltMedium="#FF080808" AltMediumHigh="#FF080808" AltMediumLow="#FF080808" BaseHigh="#FFF0F0F0" BaseLow="#ff64576b" BaseMedium="#ffb6aabc" BaseMediumHigh="#ffcbbfd0" BaseMediumLow="#ff8d8193" ChromeAltLow="#ffcbbfd0" ChromeBlackHigh="#FF080808" ChromeBlackLow="#ffcbbfd0" ChromeBlackMedium="#FF080808" ChromeBlackMediumLow="#FF080808" ChromeDisabledHigh="#ff64576b" ChromeDisabledLow="#ffb6aabc" ChromeGray="#ffa295a8" ChromeHigh="#ffa295a8" ChromeLow="#ff332041" ChromeMedium="#ff3f2e4b" ChromeMediumLow="#ff2c2530" ChromeWhite="#FFF0F0F0" ListLow="#ff3f2e4b" ListMedium="#ff64576b" RegionColor="#ff13131c" />
+                <!-- Default Dark alterations -->
+                <!-- <ColorPaletteResources x:Key="Dark" AltHigh="#FF080808" AltLow="#FF080808" AltMedium="#FF080808" AltMediumHigh="#FF080808" AltMediumLow="#FF080808" BaseHigh="#FFF0F0F0" RegionColor="#FF101010"/> -->
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+
+        <!-- <SimpleTheme/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml"/> -->
+    </Application.Styles>
+
+</Application>

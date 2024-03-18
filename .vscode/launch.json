@@ -1,0 +1,18 @@
+{
+	"configurations": [
+		{
+			"name": "C#: CassetteBuilds.Desktop",
+			"type": "dotnet",
+			"request": "launch",
+			"projectPath": "${workspaceFolder}\\CassetteBuilds.Desktop\\CassetteBuilds.Desktop.csproj",
+			"launchConfigurationId": "TargetFramework=;CassetteBuilds.Desktop"
+		},
+		{
+			"name": "C#: CassetteBuilds.Browser",
+			"type": "dotnet",
+			"request": "launch",
+			"projectPath": "${workspaceFolder}\\CassetteBuilds.Browser\\CassetteBuilds.Browser.csproj",
+			"launchConfigurationId": "TargetFramework=;CassetteBuilds.Browser"
+		}
+	]
+}
