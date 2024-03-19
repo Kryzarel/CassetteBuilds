@@ -9,22 +9,22 @@ namespace CassetteBuilds.Code.Logic
 	{
 		public static Monster[] DeserializeMonsters(TextReader reader)
 		{
-			return CsvDeserializer.FromTextReader(reader, CreateMonsterFromRow);
+			return CsvDeserializer.FromTextReader(reader, CreateMonsterFromRow, capacity: 150);
 		}
 
 		public static Move[] DeserializeMoves(TextReader reader)
 		{
-			return CsvDeserializer.FromTextReader(reader, CreateMoveFromRow);
+			return CsvDeserializer.FromTextReader(reader, CreateMoveFromRow, capacity: 300);
 		}
 
 		public static MoveMonsterPair[] DeserializeMoveMonsterPairs(TextReader reader)
 		{
-			return CsvDeserializer.FromTextReader(reader, CreateMoveMonsterPairFromRow);
+			return CsvDeserializer.FromTextReader(reader, CreateMoveMonsterPairFromRow, capacity: 13500);
 		}
 
 		public static MoveMonsterPair[] DeserializeMoveMonsterPairsOld(TextReader reader)
 		{
-			return CsvDeserializer.FromTextReader(reader, CreateMoveMonsterPairFromRowOld);
+			return CsvDeserializer.FromTextReader(reader, CreateMoveMonsterPairFromRowOld, capacity: 13500);
 		}
 
 		private static Monster CreateMonsterFromRow(in CsvRow row)
