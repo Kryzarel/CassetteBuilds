@@ -6,7 +6,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmStripILAfterAOT>false</WasmStripILAfterAOT> <!-- If "true" this breaks builds for now. Probably fixed in .NET 9 -->
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>true</InvariantGlobalization> <!-- Reduces build size by removing all languages except EN-US -->
 
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <WasmMainJSPath>wwwroot\main.js</WasmMainJSPath>
