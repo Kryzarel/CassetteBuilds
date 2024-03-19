@@ -4,6 +4,10 @@
     <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
     One for Windows with net8.0-windows TFM, one for MacOS with net8.0-macos and one with net8.0 TFM for Linux.-->
     <TargetFramework>net8.0</TargetFramework>
+
+    <PublishAot>true</PublishAot>
+    <PublishTrimmed>true</PublishTrimmed>
+
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
@@ -20,5 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CassetteBuilds\CassetteBuilds.csproj" />
+    <TrimmerRootAssembly Include="CassetteBuilds" />
   </ItemGroup>
 </Project>
