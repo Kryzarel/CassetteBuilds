@@ -15,9 +15,15 @@
   </Design.DataContext>
 
   <UserControl.Styles>
-    <Style Selector="DataGridRow:nth-child(odd)">
+    <Style Selector="TreeDataGridRow:nth-child(odd)">
       <!-- https://stackoverflow.com/questions/77666670/how-to-use-standard-theme-colors-in-my-avalonia-custom-control -->
-      <Setter Property="Background" Value="{DynamicResource DataGridDetailsPresenterBackgroundBrush}"/>
+      <Setter Property="Background" Value="{DynamicResource SystemChromeMediumLowColor}"/>
+    </Style>
+    <Style Selector="TreeDataGridColumnHeader">
+      <Setter Property="Background" Value="{DynamicResource SystemAltHighColor}"/>
+    </Style>
+    <Style Selector="TreeDataGridRow">
+      <Setter Property="Height" Value="40"/>
     </Style>
   </UserControl.Styles>
 
@@ -52,22 +58,7 @@
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    <!-- GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray" -->
-    <DataGrid Name="ResultsGrid" ItemsSource="{Binding Results}" IsReadOnly="True" GridLinesVisibility="Vertical">
-      <DataGrid.Columns>
-        <DataGridTemplateColumn><DataTemplate><Image Source="{Binding Image}" Height="40"/></DataTemplate></DataGridTemplateColumn>
-        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-        <DataGridTextColumn Header="Number" Binding="{Binding DisplayNumber}"/>
-        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
-        <DataGridTextColumn Header="HP" Binding="{Binding HP}"/>
-        <DataGridTextColumn Header="M. Attack" Binding="{Binding MeleeAttack}"/>
-        <DataGridTextColumn Header="M. Defense" Binding="{Binding MeleeDefense}"/>
-        <DataGridTextColumn Header="R. Attack" Binding="{Binding RangedAttack}"/>
-        <DataGridTextColumn Header="R. Defense" Binding="{Binding RangedDefense}"/>
-        <DataGridTextColumn Header="Speed" Binding="{Binding Speed}"/>
-        <DataGridTextColumn Header="Wiki Link" Binding="{Binding WikiLink}"/>
-      </DataGrid.Columns>
-    </DataGrid>
+    <TreeDataGrid Name="ResultsGrid" Source="{Binding Results}" CanUserResizeColumns="False"/>
   </DockPanel>
 
 </UserControl>

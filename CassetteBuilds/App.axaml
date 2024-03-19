@@ -20,10 +20,7 @@
                 <!-- <ColorPaletteResources x:Key="Dark" AltHigh="#FF080808" AltLow="#FF080808" AltMedium="#FF080808" AltMediumHigh="#FF080808" AltMediumLow="#FF080808" BaseHigh="#FFF0F0F0" RegionColor="#FF101010"/> -->
             </FluentTheme.Palettes>
         </FluentTheme>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-
-        <!-- <SimpleTheme/>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml"/> -->
+        <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
     </Application.Styles>
 
 </Application>

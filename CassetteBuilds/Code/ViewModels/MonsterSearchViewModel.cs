@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using CassetteBuilds.Code.Logic;
 using CassetteBuilds.Code.Models;
+using CassetteBuilds.Code.Misc;
 using ReactiveUI;
 
 namespace CassetteBuilds.ViewModels
@@ -21,7 +26,7 @@ namespace CassetteBuilds.ViewModels
 		public static IReadOnlyList<Monster> Monsters => Database.Monsters;
 
 		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
-		public ReadOnlyObservableCollection<Monster> Results { get; }
+		public FlatTreeDataGridSource<Monster> Results { get; }
 		public ReactiveCommand<string?, Unit> AddMoveCommand { get; }
 
 		private readonly ObservableCollection<Move> movesFilter = [];
@@ -44,7 +49,27 @@ namespace CassetteBuilds.ViewModels
 		public MonsterSearchViewModel()
 		{
 			MovesFilter = new(movesFilter);
-			Results = new(results);
+
+			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes, };
+			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = new Binding("Image") });
+			Results = new(results)
+			{
+				Columns = {
+					new TemplateColumn<Monster>("", imageTemplate),
+					new TextColumn<Monster, string>("Name", m => m.Name),
+					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
+					new TextColumn<Monster, string>("Type", m => m.Type),
+					new TextColumn<Monster, int>("HP", m => m.HP),
+					new TextColumn<Monster, int>("M. Attack", m => m.MeleeAttack),
+					new TextColumn<Monster, int>("M. Defense", m => m.MeleeDefense),
+					new TextColumn<Monster, int>("R. Attack", m => m.RangedAttack),
+					new TextColumn<Monster, int>("R. Defense", m => m.RangedDefense),
+					new TextColumn<Monster, int>("Speed", m => m.Speed),
+					new TextColumn<Monster, string>("Wiki Link", m => m.WikiLink),
+				},
+			};
+			Results.DisableSelection();
+
 			RecalculateResults();
 
 			IObservable<bool> canAddMove = this.WhenAnyValue(x => x.SelectedMove, CanAddMove);

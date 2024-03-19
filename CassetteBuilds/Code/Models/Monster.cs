@@ -24,11 +24,13 @@ namespace CassetteBuilds.Code.Models
 		public string DisplayNumber { get; }
 		public Bitmap Image { get; }
 
-		public static IComparer NumberComparer { get; }
+		public static Comparison<Monster?> NumberComparisonAsc { get; }
+		public static Comparison<Monster?> NumberComparisonDes { get; }
 
 		static Monster()
 		{
-			NumberComparer = Comparer<Monster>.Create(NumberComparison);
+			NumberComparisonAsc = CompareIndexes;
+			NumberComparisonDes = (a, b) => CompareIndexes(b, a);
 		}
 
 		public Monster(int index, int number, string name, string type, int hp, int meleeAttack, int meleeDefense, int rangedAttack, int rangedDefense, int speed, string wikiLink)
@@ -56,13 +58,11 @@ namespace CassetteBuilds.Code.Models
 			return $"{Index} | {Number} | {Name} | {Type} | {HP} | {MeleeAttack} | {MeleeDefense} | {RangedAttack} | {RangedDefense} | {Speed} | {WikiLink}";
 		}
 
-		public static int NumberComparison(Monster a, Monster b)
+		public static int CompareIndexes(Monster? a, Monster? b)
 		{
-			if (a.Number < 0 || b.Number < 0)
-			{
-				return a.Index.CompareTo(b.Index);
-			}
-			return a.Number.CompareTo(b.Number);
+			int indexA = a?.Index ?? int.MinValue;
+			int indexB = b?.Index ?? int.MinValue;
+			return indexA.CompareTo(indexB);
 		}
 	}
 }
