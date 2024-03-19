@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace CassetteBuilds.Logic
+namespace CassetteBuilds.Code.Misc
 {
 	public class Command : ICommand
 	{

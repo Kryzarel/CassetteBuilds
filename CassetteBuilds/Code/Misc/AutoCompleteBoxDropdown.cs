@@ -7,7 +7,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Threading;
 
-namespace CassetteBuilds.Logic
+namespace CassetteBuilds.Code.Misc
 {
 	public static class AutoCompleteBoxDropdown
 	{
@@ -15,13 +15,13 @@ namespace CassetteBuilds.Logic
 		// Way faster than reflection and compatible with AOT(?)
 		// https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.unsafeaccessorattribute
 		[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_textBox")]
-		extern static ref TextBox GetTextBox(this AutoCompleteBox autoCompleteBox);
+		private extern static ref TextBox GetTextBox(this AutoCompleteBox autoCompleteBox);
 		[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "PopulateDropDown")]
-		extern static void PopulateDropDown(this AutoCompleteBox autoCompleteBox, object? sender, EventArgs args);
+		private extern static void PopulateDropDown(this AutoCompleteBox autoCompleteBox, object? sender, EventArgs args);
 		[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "OpeningDropDown")]
-		extern static void OpeningDropDown(this AutoCompleteBox autoCompleteBox, bool value);
+		private extern static void OpeningDropDown(this AutoCompleteBox autoCompleteBox, bool value);
 		[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ignorePropertyChange")]
-		extern static ref bool RefGet_ignorePropertyChange(this AutoCompleteBox autoCompleteBox);
+		private extern static ref bool RefGet_ignorePropertyChange(this AutoCompleteBox autoCompleteBox);
 
 		// Cache this delegate just because we can. No need to allocate it each time.
 		private static readonly EventHandler<KeyEventArgs> showDropdownOnKeyUpAction = ShowDropdownOnKeyUp;
