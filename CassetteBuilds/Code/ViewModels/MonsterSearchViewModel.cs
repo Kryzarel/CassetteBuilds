@@ -5,11 +5,11 @@ using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Templates;
-using Avalonia.Data;
 using CassetteBuilds.Code.Logic;
 using CassetteBuilds.Code.Models;
 using CassetteBuilds.Code.Misc;
 using ReactiveUI;
+using Avalonia;
 
 namespace CassetteBuilds.ViewModels
 {
@@ -56,7 +56,7 @@ namespace CassetteBuilds.ViewModels
 			Number = number;
 
 			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes, };
-			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = new Binding("Image") });
+			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = value.WhenAnyValue(m => m.Image).ToBinding() });
 			Results = new(results)
 			{
 				Columns = {
