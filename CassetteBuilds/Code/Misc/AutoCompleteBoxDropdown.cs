@@ -1,11 +1,9 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
-using Avalonia.Threading;
 
 namespace CassetteBuilds.Code.Misc
 {
@@ -26,12 +24,7 @@ namespace CassetteBuilds.Code.Misc
 		// Cache this delegate just because we can. No need to allocate it each time.
 		private static readonly EventHandler<KeyEventArgs> showDropdownOnKeyUpAction = ShowDropdownOnKeyUp;
 
-		public static async void AddDropdown(this AutoCompleteBox autoCompleteBox)
-		{
-			await Task.Delay(10).ContinueWith(_ => Dispatcher.UIThread.Invoke(autoCompleteBox.AddDropdownButton));
-		}
-
-		private static void AddDropdownButton(this AutoCompleteBox autoCompleteBox)
+		public static void AddDropdown(this AutoCompleteBox autoCompleteBox)
 		{
 			// Use KeyUp because AutoCompleteBox sometimes eats KeyDown events
 			autoCompleteBox.KeyUp += showDropdownOnKeyUpAction;
