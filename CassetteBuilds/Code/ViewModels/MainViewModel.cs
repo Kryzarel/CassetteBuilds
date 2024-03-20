@@ -1,32 +1,36 @@
 ﻿using System.Collections.ObjectModel;
+using Kryz.Pools;
 using ReactiveUI;
 
 namespace CassetteBuilds.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-	private int _selectedIndex;
-	public int SelectedIndex
+	private class MonsterSearchViewModelPool(MainViewModel mainVM) : GenericPool<MonsterSearchViewModel>
 	{
-		get => _selectedIndex;
-		set
-		{
-			AutoCompleteBoxBugWorkaround(SelectedIndex);
-			this.RaiseAndSetIfChanged(ref _selectedIndex, value);
-		}
+		private readonly MainViewModel mainVM = mainVM;
+		private int NextNum => mainVM.Searches == null || mainVM.Searches.Count == 0 ? 1 : mainVM.Searches[^1].Number + 1;
+		protected override MonsterSearchViewModel Instantiate() => new();
+		protected override void OnGet(ref MonsterSearchViewModel searchVM) => searchVM.Number = NextNum;
+		protected override void OnReturn(ref MonsterSearchViewModel searchVM) => searchVM.Clear();
 	}
+
+	private readonly MonsterSearchViewModelPool viewModelPool;
 
 	public ObservableCollection<MonsterSearchViewModel> Searches { get; }
 
+	private int _selectedIndex;
+	public int SelectedIndex { get => _selectedIndex; set { BugWorkaround(SelectedIndex); this.RaiseAndSetIfChanged(ref _selectedIndex, value); } }
+
 	public MainViewModel()
 	{
-		Searches = [new MonsterSearchViewModel()];
+		viewModelPool = new MonsterSearchViewModelPool(this);
+		Searches = [viewModelPool.Get()];
 	}
 
 	public void AddSearch()
 	{
-		int nextNum = Searches.Count <= 0 ? 1 : Searches[^1].Number + 1;
-		Searches.Add(new MonsterSearchViewModel(nextNum));
+		Searches.Add(viewModelPool.Get());
 		SelectedIndex = Searches.Count - 1;
 	}
 
@@ -41,10 +45,15 @@ public class MainViewModel : ViewModelBase
 			}
 			Searches.RemoveAt(index);
 		}
+
+		if (Searches.Count == 0)
+		{
+			AddSearch();
+		}
 	}
 
 	// Workaround for AutoCompleteBox bug where it stops working when switching views if SearchText is not empty
-	private void AutoCompleteBoxBugWorkaround(int index)
+	private void BugWorkaround(int index)
 	{
 		if (index > 0 && index < Searches.Count)
 		{

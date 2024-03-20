@@ -15,8 +15,10 @@ namespace CassetteBuilds.ViewModels
 {
 	public class MonsterSearchViewModel : ViewModelBase
 	{
-		public string? Name { get; }
-		public int Number { get; }
+		public string? Name { get; private set; }
+
+		private int _number;
+		public int Number { get => _number; set { _number = value; Name = $"Search {_number}"; } }
 
 		private string? _searchText;
 		public string? SearchText { get => _searchText; set => this.RaiseAndSetIfChanged(ref _searchText, value); }
@@ -52,7 +54,6 @@ namespace CassetteBuilds.ViewModels
 		public MonsterSearchViewModel(int number = 1)
 		{
 			Number = number;
-			Name = $"Search {number}";
 
 			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes, };
 			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = new Binding("Image") });
@@ -130,6 +131,15 @@ namespace CassetteBuilds.ViewModels
 			RecalculateResults();
 		}
 
+		public void Clear()
+		{
+			SearchText = null;
+			SelectedMove = null;
+			movesFilter.Clear();
+			Array.Clear(moveIndexes);
+			RecalculateResults();
+		}
+
 		private void RecalculateResults()
 		{
 			results.Clear();
@@ -142,10 +152,12 @@ namespace CassetteBuilds.ViewModels
 					results.Add(monster);
 				}
 			}
-
-			foreach (ref readonly Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes))
+			else
 			{
-				results.Add(monster);
+				foreach (ref readonly Monster monster in MonsterFinder.EnumerateMonstersCompatibleWith(indexes))
+				{
+					results.Add(monster);
+				}
 			}
 		}
 	}
