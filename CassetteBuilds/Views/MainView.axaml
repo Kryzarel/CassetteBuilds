@@ -12,11 +12,65 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TabControl ItemsSource="{Binding Searches}" Margin="0,0,0,10">
+  <TabControl Name="Tabs" ItemsSource="{Binding Searches}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" Margin="0,0,0,10">
+
+    <!-- Copied and altered from: https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Controls/TabControl.xaml -->
+    <TabControl.Styles>
+      <Style Selector="TabControl">
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}">
+              <DockPanel>
+                <DockPanel DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                  <Button Name="AddSearchButton"
+                          Content="+"
+                          BorderBrush="{DynamicResource TabItemHeaderSelectedPipeFill}"
+                          BorderThickness="2"
+                          CornerRadius="{DynamicResource ControlCornerRadius}"
+                          Background="{TemplateBinding Background}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="10,0,0,0"
+                          Command="{Binding AddSearch}"/>
+                  <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+                  </ScrollViewer>
+                </DockPanel>
+                <ContentPresenter Name="PART_SelectedContentHost"
+                                  Margin="{TemplateBinding Padding}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Content="{TemplateBinding SelectedContent}"
+                                  ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
+              </DockPanel>
+            </Border>
+          </ControlTemplate>
+        </Setter>
+      </Style>
+    </TabControl.Styles>
+
     <TabControl.ItemTemplate>
       <DataTemplate>
-        <TextBlock Text="Search" FontSize="16"/>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="{Binding Name}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          <Button Content="X"
+                  FontSize="{DynamicResource ControlContentThemeFontSize}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  Command="{Binding #Tabs.((vm:MainViewModel)DataContext).RemoveSearch}"
+                  CommandParameter="{Binding .}"
+                  Margin="2,0,0,0"
+                  Padding="8,2,8,2"/>
+        </StackPanel>
       </DataTemplate>
     </TabControl.ItemTemplate>
+
   </TabControl>
+
 </UserControl>

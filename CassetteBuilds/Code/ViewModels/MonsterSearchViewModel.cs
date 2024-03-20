@@ -15,18 +15,21 @@ namespace CassetteBuilds.ViewModels
 {
 	public class MonsterSearchViewModel : ViewModelBase
 	{
-		private string? searchText;
-		public string? SearchText { get => searchText; set => this.RaiseAndSetIfChanged(ref searchText, value); }
+		public string? Name { get; }
+		public int Number { get; }
 
-		private string? selectedMove;
-		public string? SelectedMove { get => selectedMove; set => this.RaiseAndSetIfChanged(ref selectedMove, value); }
+		private string? _searchText;
+		public string? SearchText { get => _searchText; set => this.RaiseAndSetIfChanged(ref _searchText, value); }
+
+		private string? _selectedMove;
+		public string? SelectedMove { get => _selectedMove; set => this.RaiseAndSetIfChanged(ref _selectedMove, value); }
 
 		public static IReadOnlyList<string> MoveNames { get; }
 		public static IReadOnlyList<Move> Moves => Database.Moves;
 		public static IReadOnlyList<Monster> Monsters => Database.Monsters;
 
-		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
 		public FlatTreeDataGridSource<Monster> Results { get; }
+		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
 		public ReactiveCommand<string?, Unit> AddMoveCommand { get; }
 
 		private readonly ObservableCollection<Move> movesFilter = [];
@@ -46,9 +49,10 @@ namespace CassetteBuilds.ViewModels
 			MoveNames = moveNames;
 		}
 
-		public MonsterSearchViewModel()
+		public MonsterSearchViewModel(int number = 1)
 		{
-			MovesFilter = new(movesFilter);
+			Number = number;
+			Name = $"Search {number}";
 
 			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes, };
 			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = new Binding("Image") });
@@ -69,6 +73,7 @@ namespace CassetteBuilds.ViewModels
 				},
 			};
 			Results.DisableSelection();
+			MovesFilter = new(movesFilter);
 
 			RecalculateResults();
 
