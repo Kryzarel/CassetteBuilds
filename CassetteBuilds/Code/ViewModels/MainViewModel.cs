@@ -39,9 +39,9 @@ public class MainViewModel : ViewModelBase
 		int index = Searches.IndexOf(viewModel);
 		if (index >= 0)
 		{
-			if (SelectedIndex == index && index > 0)
+			if (SelectedIndex == index)
 			{
-				SelectedIndex = index - 1;
+				SelectedIndex = index >= Searches.Count - 1 ? index - 1 : index + 1;
 			}
 			Searches.RemoveAt(index);
 		}
