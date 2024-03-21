@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="CassetteBuilds">
+    <!-- Preserve all types with the prefix in their name -->
+    <type fullname="CassetteBuilds.Views*" />
+  </assembly>
+</linker>

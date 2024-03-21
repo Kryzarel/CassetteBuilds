@@ -23,6 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CassetteBuilds\CassetteBuilds.csproj" />
-    <TrimmerRootAssembly Include="CassetteBuilds" />
+    <TrimmerRootDescriptor Include="..\AssemblyRoot.xml" />
   </ItemGroup>
 </Project>
