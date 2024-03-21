@@ -8,8 +8,11 @@ namespace CassetteBuilds.Code.Misc
 		private static ProcessStartInfo? _processStartInfo;
 		private static ProcessStartInfo processStartInfo => _processStartInfo ??= new() { CreateNoWindow = true, UseShellExecute = true };
 
-		public static void OpenBrowser(string url)
+		public static void OpenBrowser(string? url)
 		{
+			if (string.IsNullOrWhiteSpace(url))
+				return;
+
 			if (OperatingSystem.IsWindows())
 			{
 				processStartInfo.FileName = url;

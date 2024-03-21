@@ -9,7 +9,6 @@ using CassetteBuilds.Code.Logic;
 using CassetteBuilds.Code.Models;
 using CassetteBuilds.Code.Misc;
 using ReactiveUI;
-using Avalonia;
 
 namespace CassetteBuilds.ViewModels
 {
@@ -33,7 +32,6 @@ namespace CassetteBuilds.ViewModels
 		public FlatTreeDataGridSource<Monster> Results { get; }
 		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
 		public ReactiveCommand<string?, Unit> AddMoveCommand { get; }
-		public ReactiveCommand<string, Unit> OpenLinkCommand { get; }
 
 		private readonly ObservableCollection<Move> movesFilter = [];
 		private readonly ObservableCollection<Monster> results = [];
@@ -85,21 +83,21 @@ namespace CassetteBuilds.ViewModels
 			RecalculateResults();
 
 			AddMoveCommand = ReactiveCommand.Create<string?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
-			OpenLinkCommand = ReactiveCommand.Create<string>(PlatformHelpers.OpenBrowser);
 		}
 
 		private static Image? ImageTemplate(Monster monster, INameScope scope)
 		{
-			return new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = monster.WhenAnyValue(m => m.Image).ToBinding() };
+			return new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = Bind<Monster>.Property(nameof(Monster.Image), m => m.Image) };
 		}
 
 		private Button? LinkTemplate(Monster monster, INameScope scope)
 		{
 			Button button = new();
 			button.Classes.Add("hyperlink");
-			button.Bind(Button.ContentProperty, monster.WhenAnyValue(m => m.Name));
-			button.Bind(Button.CommandProperty, this.WhenAnyValue(v => v.OpenLinkCommand));
-			button.Bind(Button.CommandParameterProperty, monster.WhenAnyValue(m => m.WikiLink));
+			button.MinWidth = 120;
+			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
+			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
+			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
 			return button;
 		}
 
