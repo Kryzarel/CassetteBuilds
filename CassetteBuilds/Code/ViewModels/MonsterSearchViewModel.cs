@@ -61,9 +61,9 @@ namespace CassetteBuilds.ViewModels
 			{
 				Columns = {
 					new TemplateColumn<Monster>("", new FuncDataTemplate<Monster>(ImageTemplate, supportsRecycling: true)),
-					new TextColumn<Monster, string>("Name", m => m.Name),
+					new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) }),
 					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
-					new TextColumn<Monster, string>("Type", m => m.Type),
+					new TextColumn<Monster, string>("Type", m => m.Type, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(75) }),
 					new TextColumn<Monster, int>("HP", m => m.HP),
 					new TextColumn<Monster, int>("M. Attack", m => m.MeleeAttack),
 					new TextColumn<Monster, int>("M. Defense", m => m.MeleeDefense),
@@ -94,7 +94,7 @@ namespace CassetteBuilds.ViewModels
 		{
 			Button button = new();
 			button.Classes.Add("hyperlink");
-			button.MinWidth = 120;
+			button.MinWidth = 110;
 			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
 			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
 			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
