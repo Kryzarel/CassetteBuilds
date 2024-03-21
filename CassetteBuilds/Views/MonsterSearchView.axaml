@@ -76,7 +76,7 @@
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
-        <DataTemplate>
+        <DataTemplate DataType="{x:Type m:Move}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,5,5">
             <TextBlock Name="Text" Text="{Binding Name}" VerticalAlignment="Center"/>
             <Button Content="X"

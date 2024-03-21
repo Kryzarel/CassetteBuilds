@@ -55,7 +55,7 @@
     </TabControl.Styles>
 
     <TabControl.ItemTemplate>
-      <DataTemplate>
+      <DataTemplate DataType="{x:Type vm:MonsterSearchViewModel}">
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="{Binding Name}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           <Button Content="X"
