@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CassetteBuilds.Views.MainWindow"
         Icon="/Assets/Icons/daf267bf21608ce58f4728253702f8c075055e81.jpg"
-        Title="Cassette Builds">
+        Title="Cassette Builds"
+        Width="900" Height="900">
         <views:MainView />
 </Window>
