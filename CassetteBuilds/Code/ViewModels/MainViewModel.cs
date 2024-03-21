@@ -20,7 +20,7 @@ public class MainViewModel : ViewModelBase
 	public ObservableCollection<MonsterSearchViewModel> Searches { get; }
 
 	private int _selectedIndex;
-	public int SelectedIndex { get => _selectedIndex; set { BugWorkaround(SelectedIndex); this.RaiseAndSetIfChanged(ref _selectedIndex, value); } }
+	public int SelectedIndex { get => _selectedIndex; set { BugWorkaround(_selectedIndex); this.RaiseAndSetIfChanged(ref _selectedIndex, value); } }
 
 	public MainViewModel()
 	{
@@ -55,7 +55,7 @@ public class MainViewModel : ViewModelBase
 	// Workaround for AutoCompleteBox bug where it stops working when switching views if SearchText is not empty
 	private void BugWorkaround(int index)
 	{
-		if (index > 0 && index < Searches.Count)
+		if (index >= 0 && index < Searches.Count)
 		{
 			MonsterSearchViewModel viewModel = Searches[index];
 			if (viewModel.SearchText != null)
