@@ -33,6 +33,7 @@ namespace CassetteBuilds.ViewModels
 		public FlatTreeDataGridSource<Monster> Results { get; }
 		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
 		public ReactiveCommand<string?, Unit> AddMoveCommand { get; }
+		public ReactiveCommand<string, Unit> OpenLinkCommand { get; }
 
 		private readonly ObservableCollection<Move> movesFilter = [];
 		private readonly ObservableCollection<Monster> results = [];
@@ -51,16 +52,17 @@ namespace CassetteBuilds.ViewModels
 			MoveNames = moveNames;
 		}
 
-		public MonsterSearchViewModel(int number = 1)
+		public MonsterSearchViewModel() : this(1) { }
+
+		public MonsterSearchViewModel(int number)
 		{
 			Number = number;
 
-			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes, };
-			FuncDataTemplate<Monster> imageTemplate = new((value, scope) => new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = value.WhenAnyValue(m => m.Image).ToBinding() });
+			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes };
 			Results = new(results)
 			{
 				Columns = {
-					new TemplateColumn<Monster>("", imageTemplate),
+					new TemplateColumn<Monster>("", new FuncDataTemplate<Monster>(ImageTemplate, supportsRecycling: true)),
 					new TextColumn<Monster, string>("Name", m => m.Name),
 					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
 					new TextColumn<Monster, string>("Type", m => m.Type),
@@ -70,16 +72,35 @@ namespace CassetteBuilds.ViewModels
 					new TextColumn<Monster, int>("R. Attack", m => m.RangedAttack),
 					new TextColumn<Monster, int>("R. Defense", m => m.RangedDefense),
 					new TextColumn<Monster, int>("Speed", m => m.Speed),
-					new TextColumn<Monster, string>("Wiki Link", m => m.WikiLink),
 				},
 			};
+			// TODO: Implement this for all platforms
+			if (PlatformHelpers.SupportsBrowser())
+			{
+				Results.Columns.Add(new TemplateColumn<Monster>("Wiki Link", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true)));
+			}
 			Results.DisableSelection();
 			MovesFilter = new(movesFilter);
 
 			RecalculateResults();
 
-			IObservable<bool> canAddMove = this.WhenAnyValue(x => x.SelectedMove, CanAddMove);
-			AddMoveCommand = ReactiveCommand.Create<string?>(AddMove, canAddMove);
+			AddMoveCommand = ReactiveCommand.Create<string?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
+			OpenLinkCommand = ReactiveCommand.Create<string>(PlatformHelpers.OpenBrowser);
+		}
+
+		private static Image? ImageTemplate(Monster monster, INameScope scope)
+		{
+			return new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = monster.WhenAnyValue(m => m.Image).ToBinding() };
+		}
+
+		private Button? LinkTemplate(Monster monster, INameScope scope)
+		{
+			Button button = new();
+			button.Classes.Add("hyperlink");
+			button.Bind(Button.ContentProperty, monster.WhenAnyValue(m => m.Name));
+			button.Bind(Button.CommandProperty, this.WhenAnyValue(v => v.OpenLinkCommand));
+			button.Bind(Button.CommandParameterProperty, monster.WhenAnyValue(m => m.WikiLink));
+			return button;
 		}
 
 		public bool CanAddMove(string? moveName)

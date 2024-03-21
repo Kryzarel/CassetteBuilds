@@ -6,7 +6,7 @@ using CassetteBuilds.Code.Logic;
 
 namespace CassetteBuilds.Code.Misc
 {
-    public static class Helpers
+	public static class Helpers
 	{
 		public static void Print<T, R>(in ReadOnlySpan<T> span, Func<T, R>? select = null, string? title = null, string? messageWhenEmpty = null)
 		{
