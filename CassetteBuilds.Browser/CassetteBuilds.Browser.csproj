@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
 
     <PublishTrimmed>true</PublishTrimmed>
-    <RunAOTCompilation>true</RunAOTCompilation>
+    <RunAOTCompilation Condition="'$(Configuration)' == 'Release'">true</RunAOTCompilation>
     <WasmStripILAfterAOT>false</WasmStripILAfterAOT> <!-- If "true" this breaks builds for now. Probably fixed in .NET 9 -->
     <InvariantGlobalization>true</InvariantGlobalization> <!-- Reduces build size by removing all languages except EN-US -->
 
