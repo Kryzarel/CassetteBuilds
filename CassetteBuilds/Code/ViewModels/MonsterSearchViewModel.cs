@@ -98,6 +98,7 @@ namespace CassetteBuilds.ViewModels
 			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
 			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
 			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
+			button[!ToolTip.TipProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
 			return button;
 		}
 

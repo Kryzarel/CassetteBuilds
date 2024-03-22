@@ -22,7 +22,10 @@ namespace CassetteBuilds.Code.Misc
 	{
 		public static CompiledBindingExtension Property<TValue>(string name, Func<TObj, TValue?> getter, Action<TObj, TValue?>? setter = null)
 		{
-			ClrPropertyInfo propertyInfo = new(name, o => getter((TObj)o), setter == null ? null : (o, v) => setter((TObj)o, (TValue?)v), typeof(TValue));
+			Func<object, object?>? get = o => getter((TObj)o);
+			Action<object, object?>? set = setter == null ? null : (o, v) => setter((TObj)o, (TValue?)v);
+
+			ClrPropertyInfo propertyInfo = new(name, get, set, typeof(TValue));
 			CompiledBindingPathBuilder builder = new();
 			CompiledBindingPath path = builder.Property(propertyInfo, PropertyInfoAccessorFactory.CreateInpcPropertyAccessor).Build();
 			return new CompiledBindingExtension(path);
