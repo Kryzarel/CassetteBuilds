@@ -21,15 +21,39 @@ namespace CassetteBuilds.Code.Misc
 		[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ignorePropertyChange")]
 		private extern static ref bool RefGet_ignorePropertyChange(this AutoCompleteBox autoCompleteBox);
 
-		// Cache this delegate just because we can. No need to allocate it each time.
-		private static readonly EventHandler<KeyEventArgs> showDropdownOnKeyUpAction = ShowDropdownOnKeyUp;
+		// Cache delegates to reduce allocations
+		private static readonly EventHandler addDropdownHandler = AddDropdown;
+		private static readonly EventHandler<KeyEventArgs> showDropdownOnKeyUpHandler = ShowDropdownOnKeyUp;
 
 		public static void AddDropdown(this AutoCompleteBox autoCompleteBox)
 		{
-			// Use KeyUp because AutoCompleteBox sometimes eats KeyDown events
-			autoCompleteBox.KeyUp += showDropdownOnKeyUpAction;
+			if (!autoCompleteBox.HasDropdown() && !autoCompleteBox.TryAddDropdown())
+			{
+				autoCompleteBox.LayoutUpdated += addDropdownHandler;
+			}
+		}
 
+		private static void AddDropdown(object? sender, EventArgs args)
+		{
+			if (sender is AutoCompleteBox autoCompleteBox && autoCompleteBox.TryAddDropdown())
+			{
+				autoCompleteBox.LayoutUpdated -= addDropdownHandler;
+			}
+		}
+
+		private static bool HasDropdown(this AutoCompleteBox autoCompleteBox)
+		{
+			return autoCompleteBox.GetTextBox()?.InnerRightContent is Button;
+		}
+
+		private static bool TryAddDropdown(this AutoCompleteBox autoCompleteBox)
+		{
 			TextBox textBox = autoCompleteBox.GetTextBox();
+			if (textBox is null || textBox.InnerRightContent is Button) return false;
+
+			// Use KeyUp because AutoCompleteBox sometimes eats KeyDown events
+			autoCompleteBox.KeyUp += showDropdownOnKeyUpHandler;
+
 			Button button = new()
 			{
 				Content = "▼",
@@ -40,6 +64,8 @@ namespace CassetteBuilds.Code.Misc
 			};
 			button.Click += (s, e) => autoCompleteBox.ShowDropdown();
 			textBox.InnerRightContent = button;
+			autoCompleteBox.UpdateLayout(); // Force the control to update, otherwise it might not show the button
+			return true;
 		}
 
 		private static void ShowDropdownOnKeyUp(object? sender, KeyEventArgs args)

@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using CassetteBuilds.Code.Misc;
@@ -11,20 +10,15 @@ public partial class MonsterSearchView : UserControl
 	{
 		InitializeComponent();
 
-		LayoutUpdated += ChangeView;
-	}
-
-	private void ChangeView(object? sender, EventArgs args)
-	{
-		LayoutUpdated -= ChangeView; // We must unsubscribe from the event to prevent infinite LayoutUpdate loop
-
 		MoveSearchBox.AddDropdown();
-		MoveSearchBox.KeyUp += (sender, args) =>
+		MoveSearchBox.KeyUp += PressButtonOnEnter;
+
+		void PressButtonOnEnter(object? sender, KeyEventArgs args)
 		{
 			if (args.Key is Key.Enter or Key.Return)
 			{
 				AddButton.Command?.Execute(AddButton.CommandParameter);
 			}
-		};
+		}
 	}
 }
