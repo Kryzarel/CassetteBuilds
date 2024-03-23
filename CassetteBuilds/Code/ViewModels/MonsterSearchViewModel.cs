@@ -71,6 +71,29 @@ namespace CassetteBuilds.ViewModels
 			AddMoveCommand = ReactiveCommand.Create<Move?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
 		}
 
+		private static ColumnBase<Monster> GetNameColumn()
+		{
+			// TODO: Implement this for all platforms
+			if (PlatformHelpers.SupportsBrowser())
+			{
+				return new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true));
+			}
+			return new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) });
+		}
+
+		private static Button? LinkTemplate(Monster monster, INameScope scope)
+		{
+			Button button = new();
+			button.Classes.Add("hyperlink");
+			button.MinWidth = 110;
+			button.Margin = new Thickness(5, 0, 0, 0);
+			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
+			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
+			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
+			button[!ToolTip.TipProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
+			return button;
+		}
+
 		private static Image? ImageTemplate(Monster monster, INameScope scope)
 		{
 			return new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = Bind<Monster>.Property(nameof(Monster.Image), m => m.Image) };
@@ -93,29 +116,6 @@ namespace CassetteBuilds.ViewModels
 					},
 				}
 			};
-		}
-
-		private ColumnBase<Monster> GetNameColumn()
-		{
-			// TODO: Implement this for all platforms
-			if (PlatformHelpers.SupportsBrowser())
-			{
-				return new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true));
-			}
-			return new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) });
-		}
-
-		private Button? LinkTemplate(Monster monster, INameScope scope)
-		{
-			Button button = new();
-			button.Classes.Add("hyperlink");
-			button.MinWidth = 110;
-			button.Margin = new Thickness(5, 0, 0, 0);
-			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
-			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
-			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
-			button[!ToolTip.TipProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
-			return button;
 		}
 
 		public bool CanAddMove(string? moveName)
