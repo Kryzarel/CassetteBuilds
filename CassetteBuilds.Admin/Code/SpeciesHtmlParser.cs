@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CassetteBuilds.Code.Admin
 {
@@ -9,21 +10,27 @@ namespace CassetteBuilds.Code.Admin
 	/// </summary>
 	public static class SpeciesHtmlParser
 	{
-		public static List<(string, string)> Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		public readonly struct Result(IReadOnlyList<(string, string)> monsters, IReadOnlyList<(string, string)> types)
+		{
+			public readonly IReadOnlyList<(string, string)> MonsterNamesAndLinks = monsters;
+			public readonly IReadOnlyList<(string, string)> TypeNamesAndLinks = types;
+		}
+
+		public static Result Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
 			const StringComparison cmp = StringComparison.OrdinalIgnoreCase;
-
 			ReadOnlySpan<char> table = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
 			table = table[table.IndexOf("<table", cmp)..table.IndexOf("</table>", cmp)];
 			return ParseTable(table, baseUrl, writer);
 		}
 
-		private static List<(string, string)> ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		private static Result ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
-			List<(string, string)> namesAndLinks = new(150);
+			List<(string, string)> monsterNamesAndLinks = new(150);
+			HashSet<(string, string)> typeNamesAndLinks = new(20);
 
 			// Write header
-			if (table.IsEmpty) return namesAndLinks;
+			if (table.IsEmpty) return default;
 			table = table.NextRow(out ReadOnlySpan<char> headerRow);
 			headerRow = headerRow.NextHeaderCol(out _); // Skip image column
 			while (!headerRow.IsEmpty)
@@ -44,23 +51,21 @@ namespace CassetteBuilds.Code.Admin
 					row = row.NextCol(out ReadOnlySpan<char> col);
 				}
 
-				ReadOnlySpan<char> wikiLink;
+				ReadOnlySpan<char> monsterLink;
 				// Name & Link
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					wikiLink = col.GetBetween("href=\"", "\"");
+					monsterLink = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> name = col.GetBetween("title=\"", "\"");
 					writer.Write(name);
 					writer.Write(',');
 
-					namesAndLinks.Add((name.ToString(), baseUrl.ConcatToString(wikiLink)));
+					monsterNamesAndLinks.Add((name.ToString(), baseUrl.ConcatToString(monsterLink)));
 				}
 
 				// Number
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					// ReadOnlySpan<char> numberText = col[(col.IndexOf('#') + 1)..];
-					// int number = int.TryParse(numberText, out int n) ? n : -1;
 					writer.Write(col[(col.IndexOf('#') + 1)..]);
 					writer.Write(',');
 				}
@@ -68,9 +73,12 @@ namespace CassetteBuilds.Code.Admin
 				// Type
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
+					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> type = col.GetBetween("title=\"", "\"");
 					writer.Write(type);
 					writer.Write(',');
+
+					typeNamesAndLinks.Add((type.ToString(), baseUrl.ConcatToString(link)));
 				}
 
 				// HP, MeleeAttack, MeleeDefense, RangedAttack, RangedDefense, Speed
@@ -82,10 +90,10 @@ namespace CassetteBuilds.Code.Admin
 				}
 
 				writer.Write(baseUrl);
-				writer.Write(wikiLink);
+				writer.Write(monsterLink);
 				table = table.NextRow(out row);
 			}
-			return namesAndLinks;
+			return new Result(monsterNamesAndLinks, typeNamesAndLinks.ToArray());
 		}
 	}
 }
