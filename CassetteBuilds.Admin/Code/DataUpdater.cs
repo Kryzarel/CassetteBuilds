@@ -58,19 +58,15 @@ namespace CassetteBuilds.Code.Admin
 			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", $"{WikiPagesPath}/Species.html");
 			using FileStream stream = File.Create($"{DataPath}/Monsters.csv");
 			using StreamWriter writer = new(stream);
-			SpeciesHtmlParser.Result result = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, writer);
+			List<(string, string)> monsterNamesAndLinks = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, writer);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monsters...Done");
 
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Monster Moves and Images");
-			await ParseMonsters(result.MonsterNamesAndLinks);
+			await ParseMonsters(monsterNamesAndLinks);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monster Moves and Images...Done");
-
-			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Types and Images");
-			await ParseTypes(result.TypeNamesAndLinks);
-			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Types...Done");
 		}
 
-		private static async Task ParseMonsters(IReadOnlyList<(string, string)> namesAndLinks)
+		private static async Task ParseMonsters(List<(string, string)> namesAndLinks)
 		{
 			string imagesPath = ImagesPath + "/Monsters";
 			Task<StringWriter>[] tasks = new Task<StringWriter>[Math.Min(MaxConcurrentDownloads, namesAndLinks.Count)];
@@ -115,7 +111,21 @@ namespace CassetteBuilds.Code.Admin
 			return writer;
 		}
 
-		private static async Task ParseTypes(IReadOnlyList<(string, string)> namesAndLinks)
+		public static async Task UpdateMoves(Stopwatch stopwatch)
+		{
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Moves");
+			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", $"{WikiPagesPath}/Moves.html");
+			using FileStream stream = File.Create($"{DataPath}/Moves.csv");
+			using StreamWriter writer = new(stream);
+			List<(string, string)> typeNamesAndLinks = MovesHtmlParser.Parse(movesHtml, WebsiteUrl, writer);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Moves...Done");
+
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Types and Images");
+			await ParseTypes(typeNamesAndLinks);
+			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Types...Done");
+		}
+
+		private static async Task ParseTypes(List<(string, string)> namesAndLinks)
 		{
 			string imagesPath = ImagesPath + "/Types";
 			Task[] tasks = new Task[namesAndLinks.Count];
@@ -139,16 +149,6 @@ namespace CassetteBuilds.Code.Admin
 				Directory.CreateDirectory(directory);
 				await Downloader.DownloadAndSaveFile(imageLink, imagePath);
 			}
-		}
-
-		public static async Task UpdateMoves(Stopwatch stopwatch)
-		{
-			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Moves");
-			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", $"{WikiPagesPath}/Moves.html");
-			using FileStream stream = File.Create($"{DataPath}/Moves.csv");
-			using StreamWriter writer = new(stream);
-			MovesHtmlParser.Parse(movesHtml, WebsiteUrl, writer);
-			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Moves...Done");
 		}
 	}
 }

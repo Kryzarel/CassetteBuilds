@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace CassetteBuilds.Code.Admin
 {
@@ -10,13 +9,7 @@ namespace CassetteBuilds.Code.Admin
 	/// </summary>
 	public static class SpeciesHtmlParser
 	{
-		public readonly struct Result(IReadOnlyList<(string, string)> monsters, IReadOnlyList<(string, string)> types)
-		{
-			public readonly IReadOnlyList<(string, string)> MonsterNamesAndLinks = monsters;
-			public readonly IReadOnlyList<(string, string)> TypeNamesAndLinks = types;
-		}
-
-		public static Result Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		public static List<(string, string)> Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
 			const StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 			ReadOnlySpan<char> table = html[html.IndexOf("id=\"List_of_species\"", cmp)..];
@@ -24,13 +17,12 @@ namespace CassetteBuilds.Code.Admin
 			return ParseTable(table, baseUrl, writer);
 		}
 
-		private static Result ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		private static List<(string, string)> ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
 			List<(string, string)> monsterNamesAndLinks = new(150);
-			HashSet<(string, string)> typeNamesAndLinks = new(20);
 
 			// Write header
-			if (table.IsEmpty) return default;
+			if (table.IsEmpty) return monsterNamesAndLinks;
 			table = table.NextRow(out ReadOnlySpan<char> headerRow);
 			headerRow = headerRow.NextHeaderCol(out _); // Skip image column
 			while (!headerRow.IsEmpty)
@@ -73,12 +65,9 @@ namespace CassetteBuilds.Code.Admin
 				// Type
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
-					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> type = col.GetBetween("title=\"", "\"");
 					writer.Write(type);
 					writer.Write(',');
-
-					typeNamesAndLinks.Add((type.ToString(), baseUrl.ConcatToString(link)));
 				}
 
 				// HP, MeleeAttack, MeleeDefense, RangedAttack, RangedDefense, Speed
@@ -93,7 +82,7 @@ namespace CassetteBuilds.Code.Admin
 				writer.Write(monsterLink);
 				table = table.NextRow(out row);
 			}
-			return new Result(monsterNamesAndLinks, typeNamesAndLinks.ToArray());
+			return monsterNamesAndLinks;
 		}
 	}
 }

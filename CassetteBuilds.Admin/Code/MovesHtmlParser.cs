@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CassetteBuilds.Code.Admin
 {
@@ -8,19 +10,21 @@ namespace CassetteBuilds.Code.Admin
 	/// </summary>
 	public static class MovesHtmlParser
 	{
-		public static void Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		public static List<(string, string)> Parse(in ReadOnlySpan<char> html, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
 			const StringComparison cmp = StringComparison.OrdinalIgnoreCase;
 
 			ReadOnlySpan<char> table = html[html.IndexOf("id=\"List_of_moves\"", cmp)..];
 			table = table[table.IndexOf("<table", cmp)..table.IndexOf("</table>", cmp)];
-			ParseTable(table, baseUrl, writer);
+			return ParseTable(table, baseUrl, writer);
 		}
 
-		private static void ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
+		private static List<(string, string)> ParseTable(ReadOnlySpan<char> table, in ReadOnlySpan<char> baseUrl, TextWriter writer)
 		{
+			HashSet<(string, string)> typeNamesAndLinks = new(20);
+
 			// Write header
-			if (table.IsEmpty) return;
+			if (table.IsEmpty) return null!;
 			table = table.NextRow(out ReadOnlySpan<char> headerRow);
 			while (!headerRow.IsEmpty)
 			{
@@ -49,9 +53,12 @@ namespace CassetteBuilds.Code.Admin
 				// Type
 				{
 					row = row.NextCol(out ReadOnlySpan<char> col);
+					ReadOnlySpan<char> link = col.GetBetween("href=\"", "\"");
 					ReadOnlySpan<char> type = col.GetBetween("title=\"", "\"");
 					writer.Write(type);
 					writer.Write(',');
+
+					typeNamesAndLinks.Add((type.ToString(), baseUrl.ConcatToString(link)));
 				}
 
 				// Category
@@ -87,6 +94,7 @@ namespace CassetteBuilds.Code.Admin
 				writer.Write(wikiLink);
 				table = table.NextRow(out row);
 			}
+			return typeNamesAndLinks.ToList();
 		}
 	}
 }
