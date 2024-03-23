@@ -5,6 +5,8 @@ using Avalonia;
 using Avalonia.Browser;
 using Avalonia.ReactiveUI;
 using CassetteBuilds;
+using CassetteBuilds.Browser.Code;
+using CassetteBuilds.Code.Logic;
 
 [assembly: SupportedOSPlatform("browser")]
 
@@ -14,6 +16,8 @@ internal sealed partial class Program
 	{
 		try
 		{
+			Features.UrlOpener = new BrowserUrlLauncher();
+
 			return BuildAvaloniaApp()
 				.WithInterFont()
 				.UseReactiveUI()

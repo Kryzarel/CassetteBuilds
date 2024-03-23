@@ -16,6 +16,16 @@ namespace CassetteBuilds.Code.Misc
 			CompiledBindingPath path = builder.Command(name, executeHelper, canExecuteHelper, null).Build();
 			return new CompiledBindingExtension(path);
 		}
+
+		public static CompiledBindingExtension Command<TValue, TReturn>(string name, Func<TValue?, TReturn> execute, Func<TValue?, bool>? canExecute = null)
+		{
+			Action<object, object?> executeHelper = (o, p) => execute((TValue?)p);
+			Func<object, object?, bool>? canExecuteHelper = canExecute == null ? null : (o, p) => canExecute((TValue?)p);
+
+			CompiledBindingPathBuilder builder = new();
+			CompiledBindingPath path = builder.Command(name, executeHelper, canExecuteHelper, null).Build();
+			return new CompiledBindingExtension(path);
+		}
 	}
 
 	public static class Bind<TObj>

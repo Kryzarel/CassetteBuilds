@@ -11,6 +11,8 @@
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <WasmMainJSPath>wwwroot\main.js</WasmMainJSPath>
     <WasmRuntimeAssetsLocation>./_framework</WasmRuntimeAssetsLocation>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- Required for JSInterop -->
   </PropertyGroup>
 
   <ItemGroup>

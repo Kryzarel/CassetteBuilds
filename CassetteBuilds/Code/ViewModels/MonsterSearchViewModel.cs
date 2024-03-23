@@ -52,7 +52,7 @@ namespace CassetteBuilds.ViewModels
 			{
 				Columns = {
 					new TemplateColumn<Monster>("", new FuncDataTemplate<Monster>(ImageTemplate, supportsRecycling: true)),
-					GetNameColumn(),
+					new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true)),
 					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
 					new TemplateColumn<Monster>("Type", new FuncDataTemplate<Monster>(TypeTemplate, supportsRecycling: false), options: typeOptions),
 					new TextColumn<Monster, int>("HP", m => m.HP),
@@ -71,16 +71,6 @@ namespace CassetteBuilds.ViewModels
 			AddMoveCommand = ReactiveCommand.Create<Move?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
 		}
 
-		private static ColumnBase<Monster> GetNameColumn()
-		{
-			// TODO: Implement this for all platforms
-			if (PlatformHelpers.SupportsBrowser())
-			{
-				return new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true));
-			}
-			return new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) });
-		}
-
 		private static Button? LinkTemplate(Monster monster, INameScope scope)
 		{
 			Button button = new();
@@ -88,7 +78,7 @@ namespace CassetteBuilds.ViewModels
 			button.MinWidth = 110;
 			button.Margin = new Thickness(5, 0, 0, 0);
 			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
-			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
+			button[!Button.CommandProperty] = Bind.Command<string?, bool>(nameof(Features.UrlOpener.OpenUrl), Features.UrlOpener.OpenUrl);
 			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
 			button[!ToolTip.TipProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
 			return button;

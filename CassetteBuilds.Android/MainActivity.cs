@@ -4,6 +4,8 @@ using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
+using CassetteBuilds.Android.Code;
+using CassetteBuilds.Code.Logic;
 
 namespace CassetteBuilds.Android;
 
@@ -19,6 +21,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 	{
 		try
 		{
+			Features.UrlOpener = new AndroidUrlOpener(this);
+
 			return base.CustomizeAppBuilder(builder)
 				.WithInterFont()
 				.UseReactiveUI();
