@@ -9,8 +9,20 @@ namespace CassetteBuilds.Code.Admin
 {
 	public static class DataUpdater
 	{
+		public static readonly string AssetsPath = Path.Combine(GetProjectPath(), "..", "CassetteBuilds", "Assets");
+		public static readonly string DataPath = AssetsPath + "/Data";
+		public static readonly string ImagesPath = AssetsPath + "/Images";
+		public static readonly string WikiPagesPath = "Wiki Pages";
+
 		public const string WebsiteUrl = "https://wiki.cassettebeasts.com";
 		public const int MaxConcurrentDownloads = 25;
+
+		private static string GetProjectPath()
+		{
+			ReadOnlySpan<char> assembly = typeof(DataUpdater).Assembly.GetName().Name;
+			ReadOnlySpan<char> directory = AppContext.BaseDirectory;
+			return directory[..(directory.LastIndexOf(assembly, StringComparison.Ordinal) + assembly.Length)].ToString();
+		}
 
 		public static async Task<Exception?> UpdateAll(bool clearCache = false)
 		{
@@ -21,12 +33,13 @@ namespace CassetteBuilds.Code.Admin
 			{
 				if (clearCache)
 				{
-					if (Directory.Exists("Wiki Pages"))
-						Directory.Delete("Wiki Pages", recursive: true);
+					if (Directory.Exists(WikiPagesPath))
+						Directory.Delete(WikiPagesPath, recursive: true);
 
-					if (Directory.Exists("Assets/Images"))
-						Directory.Delete("Assets/Images", recursive: true);
+					if (Directory.Exists(ImagesPath))
+						Directory.Delete(ImagesPath, recursive: true);
 				}
+				Directory.CreateDirectory(DataPath);
 				await Task.WhenAll(UpdateMonsters(stopwatch), UpdateMoves(stopwatch));
 			}
 			catch (Exception e)
@@ -42,8 +55,8 @@ namespace CassetteBuilds.Code.Admin
 		public static async Task UpdateMonsters(Stopwatch stopwatch)
 		{
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Monsters");
-			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", "Wiki Pages/Species.html");
-			using FileStream stream = File.Create("Assets/Data/Monsters.csv");
+			string speciesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Species", $"{WikiPagesPath}/Species.html");
+			using FileStream stream = File.Create($"{DataPath}/Monsters.csv");
 			using StreamWriter writer = new(stream);
 			List<(string, string)> namesAndLinks = SpeciesHtmlParser.Parse(speciesHtml, WebsiteUrl, writer);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Monsters...Done");
@@ -57,7 +70,7 @@ namespace CassetteBuilds.Code.Admin
 		{
 			Task<StringWriter>[] tasks = new Task<StringWriter>[Math.Min(MaxConcurrentDownloads, namesAndLinks.Count)];
 
-			using FileStream stream = File.Create("Assets/Data/MovesPerMonster.csv");
+			using FileStream stream = File.Create($"{DataPath}/MovesPerMonster.csv");
 			using StreamWriter writer = new(stream);
 			writer.Write("Monster,Move");
 
@@ -65,7 +78,7 @@ namespace CassetteBuilds.Code.Admin
 			for (int i = 0; i < namesAndLinks.Count; i++, j = i % tasks.Length)
 			{
 				(string monsterName, string link) = namesAndLinks[i];
-				tasks[j] = ParseMonster(link, monsterName, "Images");
+				tasks[j] = ParseMonster(link, monsterName, ImagesPath);
 				if (j + 1 >= tasks.Length)
 				{
 					await Task.WhenAll(tasks); // Wait for the current batch of tasks
@@ -86,7 +99,7 @@ namespace CassetteBuilds.Code.Admin
 		private static async Task<StringWriter> ParseMonster(string url, string monsterName, string directory)
 		{
 			StringWriter writer = new(new StringBuilder(3000));
-			string monsterHtml = await Downloader.ReadFileOrDownload(url, $"Wiki Pages/Monsters/{monsterName}.html");
+			string monsterHtml = await Downloader.ReadFileOrDownload(url, $"{WikiPagesPath}/Monsters/{monsterName}.html");
 			string imageLink = MonsterHtmlParser.Parse(monsterHtml, WebsiteUrl, monsterName, writer);
 			string imagePath = Path.ChangeExtension(Path.Combine(directory, monsterName), ".png");
 			if (!File.Exists(imagePath))
@@ -100,8 +113,8 @@ namespace CassetteBuilds.Code.Admin
 		public static async Task UpdateMoves(Stopwatch stopwatch)
 		{
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Updating Moves");
-			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", "Wiki Pages/Moves.html");
-			using FileStream stream = File.Create("Assets/Data/Moves.csv");
+			string movesHtml = await Downloader.ReadFileOrDownload($"{WebsiteUrl}/wiki/Moves", $"{WikiPagesPath}/Moves.html");
+			using FileStream stream = File.Create($"{DataPath}/Moves.csv");
 			using StreamWriter writer = new(stream);
 			MovesHtmlParser.Parse(movesHtml, WebsiteUrl, writer);
 			Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds}) Moves...Done");

@@ -1,6 +1,13 @@
 {
 	"configurations": [
 		{
+			"name": "C#: CassetteBuilds.Admin",
+			"type": "dotnet",
+			"request": "launch",
+			"projectPath": "${workspaceFolder}\\CassetteBuilds.Admin\\CassetteBuilds.Admin.csproj",
+			"launchConfigurationId": "TargetFramework=;CassetteBuilds.Admin"
+		},
+		{
 			"name": "C#: CassetteBuilds.Desktop",
 			"type": "dotnet",
 			"request": "launch",
