@@ -9,6 +9,8 @@ using CassetteBuilds.Code.Logic;
 using CassetteBuilds.Code.Models;
 using CassetteBuilds.Code.Misc;
 using ReactiveUI;
+using Avalonia.Layout;
+using Avalonia;
 
 namespace CassetteBuilds.ViewModels
 {
@@ -22,33 +24,21 @@ namespace CassetteBuilds.ViewModels
 		private string? _searchText;
 		public string? SearchText { get => _searchText; set => this.RaiseAndSetIfChanged(ref _searchText, value); }
 
-		private string? _selectedMove;
-		public string? SelectedMove { get => _selectedMove; set => this.RaiseAndSetIfChanged(ref _selectedMove, value); }
+		private Move? _selectedMove;
+		public Move? SelectedMove { get => _selectedMove; set => this.RaiseAndSetIfChanged(ref _selectedMove, value); }
 
-		public static IReadOnlyList<string> MoveNames { get; }
 		public static IReadOnlyList<Move> Moves => Database.Moves;
 		public static IReadOnlyList<Monster> Monsters => Database.Monsters;
 
 		public FlatTreeDataGridSource<Monster> Results { get; }
 		public ReadOnlyObservableCollection<Move> MovesFilter { get; }
-		public ReactiveCommand<string?, Unit> AddMoveCommand { get; }
+		public ReactiveCommand<Move?, Unit> AddMoveCommand { get; }
 
 		private readonly ObservableCollection<Move> movesFilter = [];
 		private readonly ObservableCollection<Monster> results = [];
 
 		private int count = 0;
 		private readonly int[] moveIndexes = new int[8]; // A monster can't have more than 8 moves
-
-		static MonsterSearchViewModel()
-		{
-			string[] moveNames = new string[Database.Moves.Count];
-			for (int i = 0; i < Database.Moves.Count; i++)
-			{
-				Move move = Database.Moves[i];
-				moveNames[move.Index] = move.Name;
-			}
-			MoveNames = moveNames;
-		}
 
 		public MonsterSearchViewModel() : this(1) { }
 
@@ -57,13 +47,14 @@ namespace CassetteBuilds.ViewModels
 			Number = number;
 
 			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes };
+			TemplateColumnOptions<Monster> typeOptions = new() { MinWidth = new GridLength(110) };
 			Results = new(results)
 			{
 				Columns = {
 					new TemplateColumn<Monster>("", new FuncDataTemplate<Monster>(ImageTemplate, supportsRecycling: true)),
-					new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) }),
+					GetNameColumn(),
 					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
-					new TextColumn<Monster, string>("Type", m => m.Type, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(75) }),
+					new TemplateColumn<Monster>("Type", new FuncDataTemplate<Monster>(TypeTemplate, supportsRecycling: false), options: typeOptions),
 					new TextColumn<Monster, int>("HP", m => m.HP),
 					new TextColumn<Monster, int>("M. Attack", m => m.MeleeAttack),
 					new TextColumn<Monster, int>("M. Defense", m => m.MeleeDefense),
@@ -72,17 +63,12 @@ namespace CassetteBuilds.ViewModels
 					new TextColumn<Monster, int>("Speed", m => m.Speed),
 				},
 			};
-			// TODO: Implement this for all platforms
-			if (PlatformHelpers.SupportsBrowser())
-			{
-				Results.Columns.Add(new TemplateColumn<Monster>("Wiki Link", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true)));
-			}
 			Results.DisableSelection();
 			MovesFilter = new(movesFilter);
 
 			RecalculateResults();
 
-			AddMoveCommand = ReactiveCommand.Create<string?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
+			AddMoveCommand = ReactiveCommand.Create<Move?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
 		}
 
 		private static Image? ImageTemplate(Monster monster, INameScope scope)
@@ -90,11 +76,41 @@ namespace CassetteBuilds.ViewModels
 			return new Image() { Height = 40, Width = 40, [!Image.SourceProperty] = Bind<Monster>.Property(nameof(Monster.Image), m => m.Image) };
 		}
 
+		private static StackPanel? TypeTemplate(Monster monster, INameScope scope)
+		{
+			return new StackPanel()
+			{
+				Orientation = Orientation.Horizontal,
+				Children = {
+					new Image() {
+						VerticalAlignment = VerticalAlignment.Center,
+						Height = 25, Width = 25, Margin = new Thickness(5, 0),
+						[!Image.SourceProperty] = Bind<Monster>.Property(nameof(Monster.TypeImage), m => m.TypeImage)
+					},
+					new TextBlock() {
+						VerticalAlignment = VerticalAlignment.Center,
+						[!TextBlock.TextProperty] = Bind<Monster>.Property(nameof(Monster.Type), m => m.Type)
+					},
+				}
+			};
+		}
+
+		private ColumnBase<Monster> GetNameColumn()
+		{
+			// TODO: Implement this for all platforms
+			if (PlatformHelpers.SupportsBrowser())
+			{
+				return new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true));
+			}
+			return new TextColumn<Monster, string>("Name", m => m.Name, options: new TextColumnOptions<Monster>() { MinWidth = new GridLength(120) });
+		}
+
 		private Button? LinkTemplate(Monster monster, INameScope scope)
 		{
 			Button button = new();
 			button.Classes.Add("hyperlink");
 			button.MinWidth = 110;
+			button.Margin = new Thickness(5, 0, 0, 0);
 			button[!Button.ContentProperty] = Bind<Monster>.Property(nameof(Monster.Name), m => m.Name);
 			button[!Button.CommandProperty] = Bind.Command<string>(nameof(PlatformHelpers.OpenBrowser), PlatformHelpers.OpenBrowser);
 			button[!Button.CommandParameterProperty] = Bind<Monster>.Property(nameof(Monster.WikiLink), m => m.WikiLink);
@@ -109,6 +125,11 @@ namespace CassetteBuilds.ViewModels
 			if (!MoveFinder.TryGetMoveIndex(moveName, out _))
 				return false;
 			return true;
+		}
+
+		public bool CanAddMove(Move? move)
+		{
+			return count < moveIndexes.Length && move != null && move.Index >= 0;
 		}
 
 		public void AddMove(string? moveName)

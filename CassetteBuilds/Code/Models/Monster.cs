@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using CassetteBuilds.Code.Logic;
 
 namespace CassetteBuilds.Code.Models
 {
@@ -21,6 +22,7 @@ namespace CassetteBuilds.Code.Models
 
 		public string DisplayNumber { get; }
 		public Bitmap Image { get; }
+		public Bitmap TypeImage { get; }
 
 		public static Comparison<Monster?> NumberComparisonAsc { get; }
 		public static Comparison<Monster?> NumberComparisonDes { get; }
@@ -47,8 +49,10 @@ namespace CassetteBuilds.Code.Models
 
 			DisplayNumber = Number < 0 ? "#???" : string.Format("#{0:000}", Number);
 
-			using Stream stream = AssetLoader.Open(new Uri($"avares://CassetteBuilds/Assets/Images/{Name}.png"));
+			using Stream stream = AssetLoader.Open(new Uri($"avares://CassetteBuilds/Assets/Images/Monsters/{Name}.png"));
 			Image = new Bitmap(stream);
+
+			TypeImage = TypeImageDatabase.GetImage(Type);
 		}
 
 		public override string ToString()

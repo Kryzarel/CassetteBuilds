@@ -1,3 +1,6 @@
+using Avalonia.Media.Imaging;
+using CassetteBuilds.Code.Logic;
+
 namespace CassetteBuilds.Code.Models
 {
 	public class Move
@@ -11,6 +14,8 @@ namespace CassetteBuilds.Code.Models
 		public int Cost { get; }
 		public string WikiLink { get; }
 
+		public Bitmap TypeImage { get; }
+
 		public Move(int index, string name, string type, string category, int power, int accuracy, int cost, string wikiLink)
 		{
 			Index = index;
@@ -21,9 +26,16 @@ namespace CassetteBuilds.Code.Models
 			Accuracy = accuracy;
 			Cost = cost;
 			WikiLink = wikiLink;
+
+			TypeImage = TypeImageDatabase.GetImage(Type);
 		}
 
 		public override string ToString()
+		{
+			return Name;
+		}
+
+		public string ToString_Full()
 		{
 			return $"{Index} | {Name} | {Type} | {Category} | {Power} | {Accuracy} | {Cost} | {WikiLink}";
 		}
