@@ -27,6 +27,7 @@
     </Style>
 
     <Style Selector="Button.hyperlink">
+      <!-- https://github.com/AvaloniaUI/Avalonia/discussions/6664 -->
       <Setter Property="Template">
         <ControlTemplate>
           <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource SystemAccentColor}" TextDecorations="Underline">
