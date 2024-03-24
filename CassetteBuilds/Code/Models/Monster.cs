@@ -24,15 +24,6 @@ namespace CassetteBuilds.Code.Models
 		public Bitmap Image { get; }
 		public Bitmap TypeImage { get; }
 
-		public static Comparison<Monster?> NumberComparisonAsc { get; }
-		public static Comparison<Monster?> NumberComparisonDes { get; }
-
-		static Monster()
-		{
-			NumberComparisonAsc = CompareIndexes;
-			NumberComparisonDes = (a, b) => CompareIndexes(b, a);
-		}
-
 		public Monster(int index, int number, string name, string type, int hp, int meleeAttack, int meleeDefense, int rangedAttack, int rangedDefense, int speed, string wikiLink)
 		{
 			Index = index;
@@ -60,11 +51,12 @@ namespace CassetteBuilds.Code.Models
 			return $"{Index} | {Number} | {Name} | {Type} | {HP} | {MeleeAttack} | {MeleeDefense} | {RangedAttack} | {RangedDefense} | {Speed} | {WikiLink}";
 		}
 
-		public static int CompareIndexes(Monster? a, Monster? b)
-		{
-			int indexA = a?.Index ?? int.MinValue;
-			int indexB = b?.Index ?? int.MinValue;
-			return indexA.CompareTo(indexB);
-		}
+		public static int CompareIndexAsc(Monster? a, Monster? b) => (a?.Index ?? int.MinValue).CompareTo(b?.Index ?? int.MinValue);
+		public static int CompareNameAsc(Monster? a, Monster? b) => (a?.Name ?? string.Empty).CompareTo(b?.Name ?? string.Empty);
+		public static int CompareTypeAsc(Monster? a, Monster? b) => (a?.Type ?? string.Empty).CompareTo(b?.Type ?? string.Empty);
+
+		public static int CompareIndexDes(Monster? a, Monster? b) => CompareIndexAsc(b, a);
+		public static int CompareNameDes(Monster? a, Monster? b) => CompareNameAsc(b, a);
+		public static int CompareTypeDes(Monster? a, Monster? b) => CompareTypeAsc(b, a);
 	}
 }

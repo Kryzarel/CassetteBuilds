@@ -46,13 +46,14 @@ namespace CassetteBuilds.ViewModels
 		{
 			Number = number;
 
-			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.NumberComparisonAsc, CompareDescending = Monster.NumberComparisonDes };
-			TemplateColumnOptions<Monster> typeOptions = new() { MinWidth = new GridLength(110) };
+			TextColumnOptions<Monster> numberOptions = new() { CompareAscending = Monster.CompareIndexAsc, CompareDescending = Monster.CompareIndexDes };
+			TemplateColumnOptions<Monster> nameOptions = new() { CompareAscending = Monster.CompareNameAsc, CompareDescending = Monster.CompareNameDes };
+			TemplateColumnOptions<Monster> typeOptions = new() { CompareAscending = Monster.CompareTypeAsc, CompareDescending = Monster.CompareTypeDes, MinWidth = new GridLength(110) };
 			Results = new(results)
 			{
 				Columns = {
 					new TemplateColumn<Monster>("", new FuncDataTemplate<Monster>(ImageTemplate, supportsRecycling: true)),
-					new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(LinkTemplate, supportsRecycling: true)),
+					new TemplateColumn<Monster>("Name", new FuncDataTemplate<Monster>(NameTemplate, supportsRecycling: true), options: nameOptions),
 					new TextColumn<Monster, string>("Number", m => m.DisplayNumber, options: numberOptions),
 					new TemplateColumn<Monster>("Type", new FuncDataTemplate<Monster>(TypeTemplate, supportsRecycling: false), options: typeOptions),
 					new TextColumn<Monster, int>("HP", m => m.HP),
@@ -71,7 +72,7 @@ namespace CassetteBuilds.ViewModels
 			AddMoveCommand = ReactiveCommand.Create<Move?>(AddMove, this.WhenAnyValue(x => x.SelectedMove, CanAddMove));
 		}
 
-		private static Button? LinkTemplate(Monster monster, INameScope scope)
+		private static Button? NameTemplate(Monster monster, INameScope scope)
 		{
 			Button button = new();
 			button.Classes.Add("hyperlink");
